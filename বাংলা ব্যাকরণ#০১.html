@@ -1,0 +1,1325 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<title>বাংলা ব্যাকরণ#০১</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+#searchBox{padding:8px;
+  width:100%;
+  max-width:300px;
+  margin-bottom:12px;
+  border:1;/*px solid #cbd5e1*/
+  border-radius:6px
+}
+:root{
+  --highlight-color: yellow;
+  --bg-color:#DAA520;
+  --op-color:#B9AF63;
+}
+
+body{
+  font-family:sans-serif;
+  padding:20px;
+  background:var(--bg-color);
+}
+
+.question{
+  border:2px solid #ccc;/*px solid #ccc*/
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:8px;
+  background:var(--bg-color);
+}
+
+.qtext{
+  font-weight:600;
+  margin-bottom:8px;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.opt{/*❤️‍🔥❤️‍🔥option button design করার কোড */
+  padding:10px;
+  border-radius:8px;
+  border:5;/*px solid #cbd5e1*/
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  background:var(--op-color);
+}
+
+.opt.correct{
+  background:#a7f3d0;
+  border-color:#10b981;
+  color:#065f46;
+}
+
+.opt.wrong{
+  background:#ffcaca;
+  border-color:#f87171;
+  color:#7f1d1d;
+}
+
+.opt.disabled{
+  opacity:.95;
+  cursor:default;
+}
+
+.btn{
+  padding:8px 10px;
+  border-radius:6px;
+  border:1;
+  background:#2563eb;
+  color:#fff;
+  cursor:pointer;
+  opacity: 0.5;
+}
+
+.btn.ghost{
+  background:#e2e8f0;
+  color:#111;
+  opacity: 1;
+}
+
+.explanation{
+  margin-top:6px;
+  font-size:16px;
+  color:#334155;/*334155*/
+  display:none;
+  background:var(--op-color);
+  padding:6px;
+  border-radius:6px;
+  white-space:pre-line;
+  font-weight:300;/*লেখা কতটুকু মোটা হবে*/
+}
+
+.explanation.show{
+  display:block;
+}
+
+.img-preview{
+  max-width:100%;
+  border-radius:6px;
+  margin-top:8px;
+}
+
+.controls{
+  margin-bottom:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.scroll-btn{
+  position:fixed;
+  right:20px;
+  width:42px;
+  height:42px;
+  border:1;
+  border-radius:50%;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  z-index:1000;
+  opacity:0.4;
+}
+#refreshViewer{
+  width:50px;
+  height:30px;
+  position:fixed;
+  top:415px;
+  right:20px;
+  font-size:12px;      /* ছোট লেখা */
+  padding:0;           /* extra space remove */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  z-index:3000;
+}
+#scrollUp{bottom:70px;}
+#scrollDown{bottom:20px;}
+
+#statsBtn{
+  bottom:120px;
+}
+
+#statsPanel{
+  position:fixed;
+  right:70px;
+  bottom:120px;
+  width:250px;
+  background:var(--bg-color);
+  border:1px solid #ccc;
+  border-radius:10px;
+  padding:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+
+  display:none;
+  z-index:2000;
+  
+  overscroll-behavior: contain;
+  touch-action: manipulation;
+}
+
+#statsPanel.show{
+  display:block;
+}
+#fontSizeBox{
+  width:70px;
+  padding:6px;
+  border-radius:6px;
+  border:1px solid #cbd5e1;
+}
+mark{
+  background:var(--highlight-color);
+  padding:2px;
+  border-radius:3px;
+}
+@media print{
+
+.scroll-btn,
+.controls,
+#statsBtn,
+#statsPanel,
+.btn{
+display:none !important;
+}
+
+.explanation{
+display:block !important;
+}
+
+body{
+background:white !important;
+}
+
+.question{
+break-inside:avoid;
+page-break-inside:avoid;
+-webkit-print-color-adjust:exact;
+print-color-adjust:exact;
+}
+  table{
+width:100% !important;
+table-layout:fixed !important;
+}
+
+td{
+white-space:normal !important;
+word-break:break-word !important;
+overflow-wrap:break-word !important;
+font-size:12px !important;
+padding:4px !important;
+}
+
+.explanation{
+overflow:visible !important;
+}
+
+}
+  
+  /* ৪র্থ শুরু রিফ্রেশ এলার্ট দেওয়ার যে সংকেত */
+  #customAlert{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.75);
+color:white;
+padding:12px 20px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+z-index:5000;
+display:none;
+backdrop-filter:blur(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+  /* ৪র্থ শেষ */
+</style>
+</head>
+
+<body>
+
+<h2>Engr.Md.Nahid Amin<br><span style="font-size:18px;font-weight:bold;background:yellow;">	বাংলা ব্যাকরণ#01</span></h2><h3><b>Quiz search👇</h3><h4><b>সকল</b></h4>
+
+<div class="controls">
+  <input type="text" id="searchBox" placeholder="প্রশ্ন সার্চ করুন..."/>
+  
+  <button id="refreshViewer" class="btn">রিফ্রেশ</button>
+  <button id="printViewer" class="btn">প্রিন্ট</button>
+  <input type="color" id="bgColor" value="#DAA520">
+  <label>:BG</label>
+  <input type="color" id="opColor" value="#B9AF63">
+  <label>:OP</label>
+  <input type="color" id="hlColor" value="#ffff00">
+					<label>:HL</label> <input type="number" id="fontSizeBox" placeholder="Size">
+  <label>:Font</label>
+<input id="qRange" placeholder="QBox (1 or 1-50)">
+<input id="mVal" type="number" placeholder="Mark">
+<input id="nVal" type="number" placeholder="Negative">
+<button id="applyBatch">Apply</button>
+</div>
+
+<div class="stats">
+মোট: <span id="totalQ">0</span> |
+উত্তর দেয়া: <span id="answeredQ">0</span> |
+সঠিক: <span id="correctQ">0</span> |
+ভুল: <span id="wrongQ">0</span> |
+স্কোর: <span id="scoreQ">0</span>
+</div>
+
+<div id="topTimerBar" style="
+position:sticky;
+top:0;
+z-index:1000;
+background:#111827;
+color:white;
+padding:10px;
+border-radius:8px;
+margin-bottom:12px;
+font-size:18px;
+font-weight:bold;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.3);
+">
+⏳ সময় বাকি:
+<span id="timer">00:00</span>
+</div>
+<div id="quizArea"></div>
+
+<button id="statsBtn" class="scroll-btn">📊</button>
+
+<div id="statsPanel">
+
+<h3>MCQ রিপোর্ট</h3>
+
+<p>
+<b>সময় বাকি:</b>
+<span id="liveTime">00:00</span>
+</p>
+
+<div style="
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-bottom:10px;
+">
+
+<input
+type="number"
+id="timeInput"
+placeholder="মিনিট"
+style="
+width:80px;
+padding:6px;
+border-radius:6px;
+border:1px solid #ccc;
+"
+/>
+
+<button id="startTimerBtn" class="btn">
+▶ Start
+</button> <button id="refreshTimerBtn" class="btn">
+⟳ Refresh
+</button>
+ <!-- ১০ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড  --><button id="changePasswordBtn" class="btn">🔑 Change Pass</button><!--১০ম শেষ -->
+
+<button id="pauseTimer" class="btn">
+⏸ Pause
+</button>
+
+<button id="resumeTimer" class="btn">
+▶ Resume
+</button>
+
+<button id="fullscreenBtn" class="btn">
+📱 Full
+</button>
+
+</div>
+
+<div id="statsContent"></div>
+
+</div>
+
+<button id="scrollUp" class="scroll-btn">👆</button>
+<button id="scrollDown" class="scroll-btn">👇</button>
+
+<script>
+
+  
+/*৮ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড */
+  let timerPassword = "1234"; // default password
+ /*৮ম শেষ */
+  /*৯ম শুরু রিফ্রেস বাটন এর পাসওয়ার্ডের ফাংশন */
+  function checkPassword(){
+
+const input = prompt("Password দিন:");
+
+if(input === timerPassword){
+return true;
+}
+
+showAlert("Wrong Password ❌");
+return false;
+
+}
+  /* ৯ম শেষ*/
+  /*১১তম রিফ্রেশ বাটন পাসওয়ার্ড এর লজিক */
+  document.getElementById("changePasswordBtn").onclick=()=>{
+
+const oldPass = prompt("Old Password দিন:");
+
+if(oldPass !== timerPassword){
+
+showAlert("Old password ভুল ❌");
+
+return;
+
+}
+
+const newPass = prompt("New Password দিন:");
+
+if(!newPass){
+
+showAlert("Invalid password ❌");
+
+return;
+
+}
+
+timerPassword = newPass;
+
+showAlert("Password changed ✅");
+
+};
+  /*১১তম শেষ*/
+const questions = [
+  {
+    "text": "শব্দের উৎস মূলক শ্রেণীবিভাগ কয়টি?",
+    "options": ["৩","৪","৫","৬"
+    ],
+    "correct": 2,
+    "answered": false,
+    "explanation": "👉শব্দ হলো বাগযন্ত্রের সাহায্যে বিশেষ কৌশলে উচ্চারিত অর্থবোধক ধ্বনি সমষ্টি। অর্থাৎ এক বা একাধিক ধ্বনি বা বর্ণ মিলে যখন একটি পূর্ণ অর্থ প্রকাশ করে তাকে শব্দ বলে। \n❤️‍🔥বিভিন্ন দৃষ্টিকোণ থেকে শব্দের শ্রেণীবিভাগ করা যায় ❤️‍🔥👇\n<u>শ্রেণীবিভাগঃ—</u>\n\n১. ◑ গঠনমূলক  =২টি (মৌলিক ও সাধিত) \n২. ◑ অর্থ মূলক =৩টি (যৌগিক，রূঢ়ি，যোগরূঢ়)\n৩. ◑ উৎস মূলক =৫টি (তৎসম ，অর্থ তৎসম， তদ্ভব， দেশি， ও বিদেশি ) \n৪. ◑ পদভিত্তিক =৮টি (বিশেষ্য， বিশেষণ ，সর্বনাম ，ক্রিয়া，ক্রিয়া বিশেষণ ，অনুসর্গ যোজক，ও আবেগ) \n👉◑ গঠনমূলক =২টি (মৌলিক শব্দ，সাধিত শব্দ) \n☞<u>মৌলিক শব্দঃ </u>যে সকল শব্দগুলোকে আর কোন অর্থযুক্ত ক্ষুদ্রতম অংশে বিশ্লেষণ করা যায় না বা ভেঙে আলাদা করা যায় না এগুলোকে মৌলিক শব্দ বলে।<span style=\"font-size:18px; font-weight:bold;background:yellow;\"> যেমনঃ গোলাপ， ভাই ，বোন， মাছ ，বই， লাল， গোলাম， ফুল ，নাক， তিন ，হাত， কলম </span>ইত্যাদি। \n<u>মৌলিক শব্দগুলোই ভাষার মূল উপকরণ </u>\n🤔এখানে একটি বিষয় লক্ষ্য করুন 👉মৌলিক শব্দগুলোর সাথে কোন বিভক্তি বা প্রত্যয় যুক্ত হয়নি। আর আমরা জানি，<u style=\"font-size:18px; font-weight:bold;\">বিভক্তিহীন নাম শব্দকে বলে প্রাতিপদিক</u>।তার মানে মৌলিক শব্দগুলোকেই আমরা প্রাতিপদিক বলতে পারি।\n☞<u>সাধিত শব্দঃ—</u> মৌলিক শব্দ বা ধাতু অথবা প্রকৃতির সঙ্গে সন্ধি， উপসর্গ বা প্রত্যয় যোগে কিংবা সমাসনিষ্পন্ন হয়ে যেসব শব্দ গঠিত হয় তাকে সাধিত শব্দ বলে। যেমনঃ—\n🔹উপসর্গ যোগেঃ- পরাজয় ，উপহার ，উপকার， গরমিল। \n🔹প্রত্যয় যোগেঃ- গোলাপি, হাতা, ঢাকাই, চলন্ত, ফুলেল। \n🔹সমাস যোগেঃ- নীলপদ্ম，পীতাম্বর，বীণাপাণি\n🔹সন্ধি যোগেঃ- দ্বৈপায়ন，হিমাচল，বিদ্যালয়，দম্পতি \n👉 ◑ শব্দের অর্থমূলকঃ—\n☞যৌগিক শব্দঃ- যে সকল শব্দের ব্যুৎপত্তিগত অর্থ ও ব্যবহারিক অর্থ একই তাদেরকে যৌগিক শব্দ বলে। \n🤔 ব্যুৎপত্তিগত অর্থ মানে হলো শব্দটি বিশ্লেষণ করলে আমরা যে অর্থ পায়，আর ব্যবহারিক অর্থ মানে হলো বাস্তবে আমরা শব্দটিকে যে অর্থে ব্যবহার করি। \nএই দুটো দিক বিবেচনা করে অর্থ যদি একই রকম হয় তাহলে তাকে যৌগিক শব্দ বলে। \n যেমনঃ-❤️‍🔥❤️‍🔥<table border=\"2\" style=\"border-collapse:2; width:100%; text-align:center;\"><tr><th>শব্দ</th><th>ব্যুৎপত্তিগত অর্থ</th><th>ব্যবহারিক অর্থ</th></tr>		<tr><td>গায়ক</td>	<td>√গৈ+ণক(অক)</td>	<td>গান করে যে</td></tr> <tr> <td>কর্তব্য</td> <td>√কৃ+তব্য</td> <td>যা করা উচিত</td></tr> <tr> <td>মধুর</td><td>মধু+র</td> <td>মধুর মত মিষ্টি গুণযুক্ত</td></tr><tr><td>বাবুয়ানা</td><td>বাবু+আনা</td><td>বাবুর ভাব</td></tr><tr><td>দৌহিত্র</td><td>দুহিতা+ষ্ণ্য</td><td>কন্যার পুত্র, নাতি</td></tr><tr><td>চিকামারা</td><td>চিকা+মারা</td><td>দেওয়ালে লিখন</td></tr><tr><td>গোলাপি</td><td>গোলাপ+ই</td><td>গোলাপের মতো</td></tr><tr><td>পিতৃহীন</td><td>পিতা+হীন</td><td>যার পিতা নেই</td></tr><tr><td>পক্ষী</td><td>পক্ষ+ইন</td><td>যার পক্ষ (ডানা) আছে</td></tr><tr><td>মিতালি</td><td>মিতা+আলি</td><td>বন্ধুর মতো ভাব</td></tr></table>	",
+    "image": null,
+    "writtenMode": false,
+    "hiddenAnswer": "৫",
+    "extraBox": "<b style= \"display:block;text-align:center\">বাংলা ভাষার শব্দভান্ডার ও শব্দের শ্রেণীবিভাগ<br>19-05-2026</b>",
+    "mark": 1,
+    "negative": 0,
+    "id": 1,
+    "gotCorrect": false
+  },
+  {
+    "text": "<u style=\"font-weight : bold;\">‘দহন’</u> শব্দের বিশেষণ কোনটি?",
+    "options": ["দাহ্য","দগ্ধ","দহনকারী","দহনীয়"
+    ],
+    "correct": 0,
+    "answered": false,
+    "explanation": "❤️‍🔥❤️‍🔥\nব্যাকরণে বিশেষ্য বলতে বোঝায় —\nযে শব্দ দ্বারা কোনো ব্যক্তি, বস্তু, স্থান, গুণ, অবস্থা, কাজ বা ভাবের নাম বোঝায়।\nঅর্থাৎ সহজভাবে:\n“নামের পদ” = বিশেষ্য\nযেমন: মানুষ ; ঢাকা ; বই ; সৌন্দর্য ; দহন\nএগুলো সব কোনো না কোনো কিছুর “নাম” প্রকাশ করছে।\nএখন  উদাহরণে আসি —\n“দহন একটি বিশেষ্য পদ”\nএখানে “দহন” দ্বারা “পোড়ার ঘটনা/অবস্থা”র নাম বোঝানো হচ্ছে।\nঅর্থাৎ এটি কোনো কাজকে শুধু করা বোঝাচ্ছে না, বরং সেই কাজ বা অবস্থার নাম হিসেবে ব্যবহৃত হচ্ছে।\nতাই “দহন” এখানে বিশেষ্য।\nতুলনা করো:\n“কাঠ পুড়ছে।” → এখানে “পুড়ছে” ক্রিয়া (কাজ হচ্ছে)\n“কাঠের দহন দ্রুত ঘটেছে।” → এখানে “দহন” একটি ঘটনার নাম, তাই বিশেষ্য\nঅর্থাৎ, কোনো শব্দ যদি “কাজ করা” বোঝায় → ক্রিয়া হতে পারে\nআর সেই কাজ/অবস্থার “নাম” বোঝালে → বিশেষ্য হতে পারে।\n\n❤️‍🔥বিশেষণ মানে হলো —\nযে শব্দ কোনো বিশেষ্য বা সর্বনামের দোষ, গুণ, অবস্থা, পরিমাণ, সংখ্যা ইত্যাদি বোঝায়, তাকে বিশেষণ বলে।\nসহজভাবে:\nবিশেষ্য “কেমন”, “কত”, “কোন”, “কতগুলো” — এসব জানায় যে শব্দ, সেটাই বিশেষণ।\n\nএখন “ভালো” দেখি 👇\nভালো মানুষ\nভালো বই\nভালো ছেলে\nএখানে “ভালো” শব্দটি মানুষ/বই/ছেলের গুণ কেমন তা বোঝাচ্ছে।\nঅর্থাৎ “কেমন?” প্রশ্নের উত্তর দিচ্ছে।\nতাই “ভালো” = বিশেষণ।\nতুলনা করো:\n“রহিম ছাত্র।” → শুধু নাম বলা হয়েছে\n“রহিম ভালো ছাত্র।” → “কেমন ছাত্র?” → ভালো\nঅর্থাৎ:\nনাম বোঝায় → বিশেষ্য\nনামের গুণ/অবস্থা বোঝায় → বিশেষণ\nআরেকটু সহজভাবে:\n“মানুষ” = কে? → বিশেষ্য\n“ভালো মানুষ” → কেমন মানুষ? → “ভালো” = বিশেষণ\n❤️‍🔥👉এখানে “বিশেষণ”কে শুধু “কেমন?” প্রশ্ন দিয়ে ধরতে গেলে একটু বিভ্রান্তি হয়। এখন ধীরে ধীরে দেখি।\n\nপ্রথমেঃ\n☞“দহন” = পোড়ার ঘটনা/প্রক্রিয়ার নাম → বিশেষ্য\n☞“দহনীয়” = যা পোড়ানো যায় / যা দাহ হতে পারে\nএখন “দহনীয়” কেন বিশেষণ?\n☞ কারণ এটি কোনো বস্তুর গুণ বা বৈশিষ্ট্য বোঝায়।\n\nযেমনঃ—\n◑ দহনীয় পদার্থ\n◑ দহনীয় গ্যাস\n\nএখানে প্রশ্ন করলে পাইঃ—\n“কেমন পদার্থ?” → দহনীয় পদার্থ\nঅর্থাৎ এমন পদার্থ যার জ্বলে যাওয়ার ক্ষমতা আছে।\n☞তাই “দহনীয়” পদার্থের একটি বৈশিষ্ট্য বা গুণ জানাচ্ছে। এজন্য এটি বিশেষণ।\n\n👇\n“দহনীয়” শুনে তো সরাসরি “ভালো”, “খারাপ”, “বড়” এর মতো মনে হচ্ছে না! ঠিক। \n\nকারণ সব বিশেষণ খুব সরল গুণ বোঝায় না। কিছু বিশেষণঃ—\n◑ সক্ষমতা বোঝায়\n◑ অবস্থা বোঝায়\n◑ প্রকৃতি বোঝায়\n◑ সম্পর্ক বোঝায়\n☞ “দহনীয়” আসলে বোঝাচ্ছে: “যা দহন হতে সক্ষম”\n\nআরও উদাহরণ দেখোঃ—\n◑ ভঙ্গুর কাচ → যে কাচ সহজে ভাঙে\n◑ খাদ্যযোগ্য ফল → যে ফল খাওয়া যায়\n◑ পাঠ্য বই → যা পড়ার জন্য নির্ধারিত\n◑ দহনীয় পদার্থ → যা জ্বলে যেতে পারে\n◑ এগুলো সবই বস্তুর বৈশিষ্ট্য বোঝাচ্ছে, তাই বিশেষণ।\n\nঅর্থাৎ বিশেষণ শুধু “ভালো/মন্দ” না; কোনো কিছুর ধর্ম, ক্ষমতা, অবস্থা, উপযোগিতা—এসবও বোঝাতে পারে।\n\n👉দহনীয়” আর “দাহ্য” — দুটোই প্রায় একই ধরনের বিশেষণ।\nদাহ্য পদার্থ\nদহনীয় পদার্থ\nদুটোরই অর্থ: “যে পদার্থ জ্বলতে পারে / পোড়ানো যায়”\nঅর্থাৎ এখানে বস্তুটির একটি বৈশিষ্ট্য বোঝানো হচ্ছে। তাই এগুলো বিশেষণ।\nতুমি ঠিকই ধরেছো যে:\n“এটা দ্বারা কি আমি বুঝতেছি না যে বস্তুটি পুড়ানো যাবে?”\nহ্যাঁ, ঠিক সেটাই বোঝা যাচ্ছে। আর কোনো বস্তুর এই ধরনের গুণ/ধর্ম/ক্ষমতা বোঝানোর কারণেই “দাহ্য” বিশেষণ।\nএখন পার্থক্যটা দেখো:\n“দহন” → পোড়ার ঘটনা বা প্রক্রিয়ার নাম → বিশেষ্য\n“দাহ্য” → কেমন বস্তু? যে জ্বলে → বিশেষণ\nউদাহরণ:\n“কাগজের দহন দ্রুত হয়।”\nএখানে “দহন” = একটি ঘটনার নাম → বিশেষ্য\n“কাগজ দাহ্য পদার্থ।”\nএখানে “দাহ্য” = কাগজের ধর্ম/গুণ → বিশেষণ\n❤️‍🔥তথ্যসূত্রঃ—\n<a href=\" https://sattacademy.com/mcq/%E0%A6%A6%E0%A6%B9%E0%A6%A8-%E0%A6%B6%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%BF%E0%A6%B6%E0%A7%87%E0%A6%B7%E0%A6%A3-%E0%A6%95%E0%A7%8B%E0%A6%A8%E0%A6%9F%E0%A6%BF   \" target=\"_blank\"> sattacademy</a>",
+    "image": null,
+    "writtenMode": false,
+    "hiddenAnswer": "দাহ্য",
+    "extraBox": null,
+    "mark": 1,
+    "negative": 0,
+    "id": 1,
+"gotCorrect": false
+  },
+  ];
+
+questions.forEach((q,i)=>q.id=i+1);
+
+const quizArea=document.getElementById("quizArea");
+const totalQ=document.getElementById("totalQ");
+const answeredQ=document.getElementById("answeredQ");
+const correctQ=document.getElementById("correctQ");
+const wrongQ=document.getElementById("wrongQ");
+const scoreQ=document.getElementById("scoreQ");
+  const timerEl = document.getElementById("timer");
+
+let totalTime = 0;
+let timeLeft = 0;
+
+let timerInterval = null;
+let timerStarted = false;
+  function formatTime(seconds){
+
+const min = Math.floor(seconds / 60);
+const sec = seconds % 60;
+
+return String(min).padStart(2,"0")
++ ":"
++ String(sec).padStart(2,"0");
+
+}
+  function updateTimerDisplay(){
+
+const formatted = formatTime(timeLeft);
+
+timerEl.textContent = formatted;
+
+document.getElementById("liveTime")
+.textContent = formatted;
+
+}
+
+function startTimer(){
+
+clearInterval(timerInterval);
+  /*১২ তম রিফ্রেশ বাড়ানোর জন্য */
+  quizLocked = true;
+/*১২তম শেষ*/
+
+const inputMin = parseInt(
+document.getElementById("timeInput").value
+);
+
+if(!inputMin || inputMin <= 0){
+
+alert("টাইম সেট করুন");
+
+return;
+
+}
+
+timerStarted = true;
+
+totalTime = inputMin * 60;
+
+timeLeft = totalTime;
+
+document.getElementById("topTimerBar")
+.style.background = "#111827";
+
+updateTimerDisplay();
+
+timerInterval = setInterval(()=>{
+
+timeLeft--;
+
+if(timeLeft < 0){
+
+clearInterval(timerInterval);
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+timeUp();
+
+return;
+
+}
+
+updateTimerDisplay();
+
+if(timeLeft <= 300){
+
+document.getElementById("topTimerBar")
+.style.background = "#dc2626";
+
+}
+
+},1000);
+
+}
+
+/*Time Up fun.শুরু ১ম*/
+function timeUp(){
+
+showAlert("⛔ সময় শেষ!");
+
+quizLocked = true;
+
+questions.forEach(q=>{
+
+if(!q.answered){
+
+q.timeExpired = true;
+
+}
+
+});
+
+document.querySelectorAll(".opt").forEach(btn=>{
+
+btn.classList.add("disabled");
+
+btn.style.pointerEvents = "none";
+
+});
+
+updateCounters();
+
+}
+  /*শেষ ১ম */
+function updateCounters(){
+
+totalQ.textContent=questions.length;
+
+answeredQ.textContent=
+questions.filter(q=>q.answered).length;
+
+correctQ.textContent=
+questions.filter(q=>q.gotCorrect).length;
+
+wrongQ.textContent=
+questions.filter(q=>q.answered && !q.gotCorrect).length;
+
+let score=0;
+
+questions.forEach(q=>{
+
+if(q.answered){
+
+if(q.gotCorrect){
+
+score += Number(q.mark || 1);
+
+}
+  else{
+
+score -= Number(q.negative || 0);
+
+}
+
+}
+
+});
+
+scoreQ.textContent=score;
+
+}
+  
+function highlight(text,term){
+
+if(!term) return text;
+
+const parts = text.split(
+/(\(.*?\)|\[.*?\]|$.*?$|\begin{.*?}.*?\end{.*?})/g
+);
+
+return parts.map(part=>{
+
+// LaTeX অংশ untouched থাকবে
+if(
+part.startsWith("\(") ||
+part.startsWith("\[") ||
+part.startsWith("$") ||
+part.startsWith("\begin")
+){
+return part;
+}
+
+// normal text highlight হবে
+const regex = new RegExp("(" + term + ")","gi");
+
+return part.replace(regex,"<mark>$1</mark>");
+
+}).join("");
+
+}
+  
+ /*untouch function*/ 
+  function parseQRange(v){
+v = v.trim();
+if(v.includes("-")){
+let [a,b] = v.split("-").map(Number);
+return [a,b];
+}
+let x = Number(v);
+return [x,x];
+}
+
+document.getElementById("applyBatch").onclick = ()=>{
+  let [start,end] = parseQRange(document.getElementById("qRange").value);
+
+  let m = parseFloat(document.getElementById("mVal").value || 1);
+  let n = parseFloat(document.getElementById("nVal").value || 0);
+
+  questions.forEach((q,i)=>{
+    let qNo = i+1;
+
+    if(qNo >= start && qNo <= end){
+      q.mark = m;
+      q.negative = n;
+    }
+  });
+
+  updateCounters();
+  render(); // চাইলে এটা যোগ করতে পারো
+};
+
+function render(filtered=questions,term=""){
+
+quizArea.innerHTML="";
+
+filtered.forEach((q)=>{
+
+const qBox=document.createElement("div");
+qBox.className="question";
+
+const qh=document.createElement("div");
+qh.className="qtext";
+
+qh.innerHTML=q.id+". "+highlight(q.text,term);
+
+qBox.appendChild(qh);
+
+if(q.image){
+
+const img=document.createElement("img");
+
+img.src=q.image;
+
+img.className="img-preview";
+
+qBox.appendChild(img);
+
+}
+
+const optWrap=document.createElement("div");
+optWrap.className="options";
+
+q.options.forEach((optText,oi)=>{
+
+const opt=document.createElement("button");
+
+opt.className="opt";
+
+opt.innerHTML="<span>"+highlight(optText,term)+"</span><span></span>";
+
+  opt.onclick=()=>{
+
+if(q.answered) return;
+
+q.answered=true;
+
+const children=[...optWrap.children];
+
+children.forEach((btn,idx)=>{
+
+btn.classList.add("disabled");
+
+if(Number(idx) === Number(q.correct)){
+btn.classList.add("correct");
+
+btn.lastChild.textContent="✓";
+
+}
+
+if(idx===oi && idx!==q.correct){
+
+btn.classList.add("wrong");
+
+btn.lastChild.textContent="✕";
+
+}
+
+});
+
+q.gotCorrect=(oi===q.correct);
+
+updateCounters();
+
+};
+
+optWrap.appendChild(opt);
+
+});
+
+qBox.appendChild(optWrap);
+/*❤️‍🔥new card line*/
+  
+if(q.writtenMode){
+
+  optWrap.style.display = "none";
+
+ const answerWrap = document.createElement("div");
+  answerWrap.style.marginTop = "10px";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "উত্তর লিখুন...";
+  input.style.width = "100%";
+  input.style.boxSizing = "border-box";
+  input.style.padding = "10px";
+  input.style.borderRadius = "8px";
+  input.style.border = "1px solid #cbd5e1";
+
+  const resultBox = document.createElement("div");
+
+  resultBox.style.display = "none";
+  resultBox.style.marginTop = "10px";
+  resultBox.style.padding = "10px";
+  resultBox.style.borderRadius = "8px";
+  resultBox.style.fontWeight = "bold";
+
+input.addEventListener("change",()=>{
+  q.answered = true;
+  input.disabled = true;
+  input.style.background = "#f1f5f9";
+  input.style.border = "2px solid #10b981";
+  input.blur();
+
+  const userAns = input.value.trim().toLowerCase();
+
+const correctAnsList = q.hiddenAnswer
+  .split(",")
+  .map(v => v.trim().toLowerCase());
+
+const isCorrect = correctAnsList.includes(userAns);
+
+resultBox.style.display = "block";
+  
+
+if(isCorrect){
+
+  q.gotCorrect = true;
+
+resultBox.style.background = "#dcfce7";
+
+resultBox.innerHTML =
+    "✓ সঠিক উত্তর: " + q.hiddenAnswer;
+
+}
+  else{
+
+ q.gotCorrect = false;
+
+ resultBox.style.background = "#fee2e2";
+
+  resultBox.innerHTML =
+    "✕ সঠিক উত্তর: " + q.hiddenAnswer;
+
+}
+
+  updateCounters();
+});
+
+  answerWrap.appendChild(input);
+  answerWrap.appendChild(resultBox);
+
+ qBox.appendChild(answerWrap);
+
+}
+    
+/*❤️‍🔥new card*/ 
+const wrapper = document.createElement("div");
+
+/* ❤️‍🔥 EXTRA BOX আগে (TOP) */
+if(q.extraBox){
+  const extraDiv = document.createElement("div");
+  extraDiv.style.marginBottom = "10px";
+  extraDiv.style.padding = "10px";
+  extraDiv.style.border = "1px solid #cbd5e1";
+  extraDiv.style.borderRadius = "8px";
+  extraDiv.style.background = "#f8fafc";
+
+  extraDiv.innerHTML = highlight(q.extraBox,term);
+
+  wrapper.appendChild(extraDiv); // 👈 আগে যাবে
+}
+
+/* QUESTION পরে (BOTTOM) */
+wrapper.appendChild(qBox);
+
+quizArea.appendChild(wrapper);
+  /*❤️‍🔥new card line end*/
+ 
+const explBtn=document.createElement("button"); explBtn.className="btn ghost";
+explBtn.style.marginTop="8px";
+explBtn.textContent="ব্যাখ্যা";
+
+const exDiv=document.createElement("div");
+exDiv.className="explanation";
+
+exDiv.innerHTML=highlight(
+(q.explanation || "ব্যাখ্যা নেই")
+.replace(/\n/g,"<br>"),
+term
+);
+  if(q.table){
+
+  const tableWrap = document.createElement("div");
+
+  // ✅ table text highlight
+  tableWrap.innerHTML = highlight(q.table,term);
+
+  tableWrap.style.marginTop = "10px";
+  tableWrap.style.overflowX = "auto";
+
+  // ✅ Excel style compact table
+  tableWrap.querySelectorAll("table").forEach(tbl=>{
+
+    tbl.style.borderCollapse = "collapse";
+    tbl.style.tableLayout = "auto";
+    tbl.style.width = "auto";
+    tbl.style.maxWidth = "100%";
+
+  });
+
+  // ✅ Small compact cells
+  tableWrap.querySelectorAll("td").forEach(td=>{
+
+  td.style.minWidth = "40px";
+  td.style.height = "auto";
+  td.style.padding = "4px";
+  td.style.fontSize = "14px";
+
+  /* ✅ লেখাকে নিচে নামতে দিবে */
+ td.style.whiteSpace = "normal";
+td.style.wordBreak = "break-word";
+td.style.overflowWrap = "break-word";
+
+  /* ✅ বড় শব্দ ভাঙবে */
+  td.style.wordBreak = "break-word";
+
+  /* ✅ page এর ভিতরে রাখবে */
+  td.style.overflowWrap = "break-word";
+
+  td.style.verticalAlign = "middle";
+
+  /* ❌ resize remove */
+  td.style.resize = "none";
+
+  /* ✅ overflow hidden */
+  td.style.overflow = "hidden";
+
+});
+
+  exDiv.appendChild(tableWrap);
+
+}
+explBtn.onclick=()=>{
+
+exDiv.classList.toggle("show");
+
+if(window.MathJax){
+
+MathJax.typesetClear([exDiv]);
+
+MathJax.typesetPromise([exDiv])
+.then(()=>{})
+.catch((err)=>console.log(err));
+
+}
+
+applyFontSize();
+};
+
+qBox.appendChild(explBtn);
+qBox.appendChild(exDiv);
+
+ /*❤️‍🔥new card end line*/
+});
+
+if(window.MathJax){
+
+MathJax.typesetClear();
+
+MathJax.typesetPromise()
+.then(()=>{})
+.catch((err)=>console.log(err));
+
+}
+
+}
+  
+function normalizeLatex(str){
+  return (str || "")
+    .toLowerCase()
+    .replace(/\frac/g,"frac")
+    .replace(/\sqrt/g,"sqrt")
+    .replace(/[{}\^_]/g,"")
+    .replace(/s+/g,"")
+    .trim();
+}
+
+document.getElementById("searchBox").addEventListener("input",(e)=>{
+
+  const term = normalizeLatex(e.target.value);
+
+  const filtered = questions.filter(q =>
+
+    normalizeLatex(q.text).includes(term) ||
+
+    q.options.some(o =>
+      normalizeLatex(o).includes(term)
+    ) ||
+
+    (q.extraBox &&
+      normalizeLatex(q.extraBox).includes(term)
+    ) ||
+
+    (q.explanation &&
+      normalizeLatex(q.explanation).includes(term)
+    ) ||
+
+    (
+      q.table &&
+      normalizeLatex(
+        q.table.replace(/<[^>]*>/g," ")
+      ).includes(term)
+    )
+
+  );
+
+  render(filtered, term);
+
+});
+
+  
+   /*সার্চ ফিলিংস এর জন্য */ document.getElementById("searchBox").addEventListener("keydown",(e)=>{
+
+  if(e.key==="Enter"){
+
+  e.target.blur();
+
+  window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+  }
+
+});
+  /*সার্চ ফিলিংস এর লাস্ট লাইন */
+function renderStatsPanel(){
+  const statsContent = document.getElementById("statsContent");
+
+  let correct=[], wrong=[], pending=[];
+  let totalScore=0;
+
+  questions.forEach(q=>{
+    if(q.answered){
+      if(q.gotCorrect){
+        correct.push(q.id);
+        totalScore += Number(q.mark || 1);
+      } else {
+        wrong.push(q.id);
+        totalScore -= Number(q.negative || 0);
+      }
+    } else {
+      pending.push(q.id);
+    }
+  });
+
+  statsContent.innerHTML =
+    "<p>🏆 স্কোর: " + totalScore + "</p>" +
+    "<p>✔ সঠিক: " + correct.length + "</p>" +
+    "<p>❌ ভুল: " + wrong.length + "</p>";
+}
+document.getElementById("bgColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--bg-color",e.target.value);
+});
+
+document.getElementById("opColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--op-color",e.target.value);
+});
+
+document.getElementById("hlColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--highlight-color",e.target.value);
+});
+
+let currentFontSize = "16px";
+
+function applyFontSize(){
+
+document.querySelectorAll(".qtext,.opt span,.explanation")
+.forEach(el=>{
+
+el.style.fontSize = currentFontSize;
+
+});
+
+}
+
+document.getElementById("fontSizeBox")
+.addEventListener("input",(e)=>{
+
+  let val = parseFloat(e.target.value);
+
+if(isNaN(val)) return;
+
+if(val < 10) val = 10;
+  if(val > 40) val = 40;
+
+  currentFontSize = val + "px";
+  applyFontSize();
+});
+
+/*২য় শুর Time up func.এর অংশ 👇*/
+document.getElementById("refreshViewer").onclick=()=>{
+
+if(quizLocked){
+/*৭ম দেখানোর জন্য*/
+showAlert("Timer Refresh First");
+ /*৭ম শেষ*/
+return;
+
+}
+
+questions.forEach(q=>{
+
+q.answered=false;
+q.gotCorrect=false;
+
+});
+
+document.querySelectorAll(".opt").forEach(btn=>{
+
+btn.style.pointerEvents = "auto";
+
+btn.classList.remove("disabled");
+
+});
+
+render();
+updateCounters();
+
+applyFontSize();
+
+};
+/*২য় শেষ  */
+document.getElementById("printViewer").onclick = async () => {
+
+  // print এর আগে explanation show
+  document.querySelectorAll(".explanation").forEach(el=>{
+    el.classList.add("show");
+  });
+
+  // MathJax render finish হওয়া পর্যন্ত wait
+  if(window.MathJax){
+
+    try{
+
+      await MathJax.typesetPromise();
+
+    }catch(err){
+
+     console.log(err);
+
+    }
+
+  }
+
+  applyFontSize();
+
+  // browser render settle হওয়ার জন্য ছোট delay
+  setTimeout(()=>{
+
+    window.print();
+
+  },500);
+
+};
+document.getElementById("scrollUp").onclick=()=>{
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+};
+
+document.getElementById("startTimerBtn").onclick=()=>{
+
+
+startTimer();
+
+};
+ /*৩য় শুরু TimeUp fresh Btn এর একটি অংশ*/
+document.getElementById("refreshTimerBtn").onclick=()=>{
+
+if(!checkPassword()) return;
+
+quizLocked = false;
+
+timerStarted = false;
+
+clearInterval(timerInterval);
+
+totalTime = 0;
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+document.getElementById("timeInput").value = "";
+
+document.getElementById("topTimerBar")
+.style.background = "#111827";
+
+};
+/*৩য় শেষ*/
+
+document.getElementById("pauseTimer").onclick=()=>{
+
+clearInterval(timerInterval);
+
+};
+
+document.getElementById("resumeTimer").onclick=()=>{
+
+clearInterval(timerInterval);
+
+timerInterval = setInterval(()=>{
+
+timeLeft--;
+
+updateTimerDisplay();
+
+if(timeLeft <= 300){
+
+document.getElementById("topTimerBar")
+.style.background = "#dc2626";
+
+}
+
+if(timeLeft <= 0){
+
+clearInterval(timerInterval);
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+timeUp();
+
+}
+
+},1000);
+
+};
+
+document.getElementById("fullscreenBtn").onclick=()=>{
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen();
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+};
+document.getElementById("scrollDown").onclick=()=>{
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+};
+
+const statsBtn=document.getElementById("statsBtn");
+
+const statsPanel=document.getElementById("statsPanel");
+
+const statsContent=document.getElementById("statsContent");
+  document.getElementById("timeInput")
+.addEventListener("focus",()=>{
+
+setTimeout(()=>{
+
+window.scrollTo({
+top:0,
+behavior:"instant"
+});
+
+},50);
+
+});
+
+statsBtn.onclick=()=>{
+
+statsPanel.classList.toggle("show");
+
+const correct=[];
+const wrong=[];
+const pending=[];
+
+let totalScore=0;
+
+questions.forEach(q=>{
+
+if(q.answered){
+
+if(q.gotCorrect){
+
+correct.push(q.id);
+
+totalScore += Number(q.mark || 1);
+
+}else{
+
+wrong.push(q.id);
+
+totalScore -= Number(q.negative || 0);
+
+}
+
+}else{
+
+pending.push(q.id);
+
+}
+
+});
+
+  statsContent.innerHTML =
+"<p>🏆 স্কোর: " + totalScore + "</p>" +
+
+"<p>✔ সঠিক: " + correct.length + "</p>" +
+
+"<p>❌ ভুল: " + wrong.length + "</p>" +
+
+"<p><b>ভুল নং:</b><br>" + wrong.join(", ") + "</p>" +
+
+"<p><b>বাকি:</b><br>" + pending.length + "</p>";
+
+};
+
+/*৬ষ্ঠ রিফ্রেশের ফাংশন যেটা বলে আগে টাইমার রিফ্রেশ থাকুন  */
+  function showAlert(msg){
+
+const box = document.getElementById("customAlert");
+
+box.textContent = msg;
+
+box.style.display = "block";
+
+setTimeout(()=>{
+
+box.style.display = "none";
+
+},2000);
+
+}
+  /* ৬ষ্ঠ শেষ */
+render();
+updateCounters();
+applyFontSize();
+</script>
+
+<!-- ৫ম শুরু রিফ্রেশের জন্য -->
+  <div id="customAlert"></div>
+  <!--৫ম শেষ -->
+</body>
+</html>
