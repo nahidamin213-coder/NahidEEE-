@@ -1,0 +1,2913 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<title>কুইজ ভিউ</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+#searchBox{padding:8px;
+  width:100%;
+  max-width:300px;
+  margin-bottom:12px;
+  border:1;/*px solid #cbd5e1*/
+  border-radius:6px
+}
+:root{
+  --highlight-color: yellow;
+  --bg-color:#DAA520;
+  --op-color:#B9AF63;
+}
+
+body{
+  font-family:sans-serif;
+  padding:20px;
+  background:var(--bg-color);
+}
+
+.question{
+  border:2px solid #ccc;/*px solid #ccc*/
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:8px;
+  background:var(--bg-color);
+}
+
+.qtext{
+  font-weight:600;
+  margin-bottom:8px;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.opt{/*❤️‍🔥❤️‍🔥option button design করার কোড */
+  padding:10px;
+  border-radius:8px;
+  border:5;/*px solid #cbd5e1*/
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  background:var(--op-color);
+}
+
+.opt.correct{
+  background:#a7f3d0;
+  border-color:#10b981;
+  color:#065f46;
+}
+
+.opt.wrong{
+  background:#ffcaca;
+  border-color:#f87171;
+  color:#7f1d1d;
+}
+
+.opt.disabled{
+  opacity:.95;
+  cursor:default;
+}
+
+.btn{
+  padding:8px 10px;
+  border-radius:6px;
+  border:1;
+  background:#2563eb;
+  color:#fff;
+  cursor:pointer;
+  opacity: 0.5;
+}
+
+.btn.ghost{
+  background:#e2e8f0;
+  color:#111;
+  opacity: 1;
+}
+
+.explanation{
+  margin-top:6px;
+  font-size:16px;
+  color:#334155;/*334155*/
+  display:none;
+  background:var(--op-color);
+  padding:6px;
+  border-radius:6px;
+  white-space:pre-line;
+  font-weight:300;/*লেখা কতটুকু মোটা হবে*/
+}
+
+.explanation.show{
+  display:block;
+}
+
+.img-preview{
+  max-width:100%;
+  border-radius:6px;
+  margin-top:8px;
+}
+
+.controls{
+  margin-bottom:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.scroll-btn{
+  position:fixed;
+  right:20px;
+  width:42px;
+  height:42px;
+  border:1;
+  border-radius:50%;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  z-index:1000;
+  opacity:0.4;
+}
+#refreshViewer{
+  width:50px;
+  height:30px;
+  position:fixed;
+  top:415px;
+  right:20px;
+  font-size:12px;      /* ছোট লেখা */
+  padding:0;           /* extra space remove */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  z-index:3000;
+}
+#scrollUp{bottom:70px;}
+#scrollDown{bottom:20px;}
+
+#statsBtn{
+  bottom:120px;
+}
+
+#statsPanel{
+  position:fixed;
+  right:70px;
+  bottom:120px;
+  width:250px;
+  background:var(--bg-color);
+  border:1px solid #ccc;
+  border-radius:10px;
+  padding:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+
+  display:none;
+  z-index:2000;
+  
+  overscroll-behavior: contain;
+  touch-action: manipulation;
+}
+
+#statsPanel.show{
+  display:block;
+}
+#fontSizeBox{
+  width:70px;
+  padding:6px;
+  border-radius:6px;
+  border:1px solid #cbd5e1;
+}
+mark{
+  background:var(--highlight-color);
+  padding:2px;
+  border-radius:3px;
+}
+@media print{
+
+.scroll-btn,
+.controls,
+#statsBtn,
+#statsPanel,
+.btn{
+display:none !important;
+}
+
+.explanation{
+display:block !important;
+}
+
+body{
+background:white !important;
+}
+
+.question{
+break-inside:avoid;
+page-break-inside:avoid;
+-webkit-print-color-adjust:exact;
+print-color-adjust:exact;
+}
+  table{
+width:100% !important;
+table-layout:fixed !important;
+}
+
+td{
+white-space:normal !important;
+word-break:break-word !important;
+overflow-wrap:break-word !important;
+font-size:12px !important;
+padding:4px !important;
+}
+
+.explanation{
+overflow:visible !important;
+}
+
+}
+  
+  /* ৪র্থ শুরু রিফ্রেশ এলার্ট দেওয়ার যে সংকেত */
+  #customAlert{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.75);
+color:white;
+padding:12px 20px;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+z-index:5000;
+display:none;
+backdrop-filter:blur(4px);
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+  /* ৪র্থ শেষ */
+</style>
+</head>
+
+<body>
+
+<h2>Engr.Md.Nahid Amin<br><span style="font-size:18px;font-weight:bold;background:yellow;">	আন্তর্জাতিক বিষয়াবলি;বাংলাদেশ বিষয়াবলি#01</span></h2><h3><b>Quiz search👇</h3><h4><b>বিষয়</b></h4>
+
+<div class="controls">
+  <input type="text" id="searchBox" placeholder="প্রশ্ন সার্চ করুন..."/>
+  
+  <button id="refreshViewer" class="btn">রিফ্রেশ</button>
+  <button id="printViewer" class="btn">প্রিন্ট</button>
+  <input type="color" id="bgColor" value="#DAA520">
+  <label>:BG</label>
+  <input type="color" id="opColor" value="#B9AF63">
+  <label>:OP</label>
+  <input type="color" id="hlColor" value="#ffff00">
+					<label>:HL</label> <input type="number" id="fontSizeBox" placeholder="Size">
+  <label>:Font</label>
+<input id="qRange" placeholder="QBox (1 or 1-50)">
+<input id="mVal" type="number" placeholder="Mark">
+<input id="nVal" type="number" placeholder="Negative">
+<button id="applyBatch">Apply</button>
+</div>
+
+<div class="stats">
+মোট: <span id="totalQ">0</span> |
+উত্তর দেয়া: <span id="answeredQ">0</span> |
+সঠিক: <span id="correctQ">0</span> |
+ভুল: <span id="wrongQ">0</span> |
+স্কোর: <span id="scoreQ">0</span>
+</div>
+
+<div id="topTimerBar" style="
+position:sticky;
+top:0;
+z-index:1000;
+background:#111827;
+color:white;
+padding:10px;
+border-radius:8px;
+margin-bottom:12px;
+font-size:18px;
+font-weight:bold;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.3);
+">
+⏳ সময় বাকি:
+<span id="timer">00:00</span>
+</div>
+<div id="quizArea"></div>
+
+<button id="statsBtn" class="scroll-btn">📊</button>
+
+<div id="statsPanel">
+
+<h3>MCQ রিপোর্ট</h3>
+
+<p>
+<b>সময় বাকি:</b>
+<span id="liveTime">00:00</span>
+</p>
+
+<div style="
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-bottom:10px;
+">
+
+<input
+type="number"
+id="timeInput"
+placeholder="মিনিট"
+style="
+width:80px;
+padding:6px;
+border-radius:6px;
+border:1px solid #ccc;
+"
+/>
+
+<button id="startTimerBtn" class="btn">
+▶ Start
+</button> <button id="refreshTimerBtn" class="btn">
+⟳ Refresh
+</button>
+ <!-- ১০ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড  --><button id="changePasswordBtn" class="btn">🔑 Change Pass</button><!--১০ম শেষ -->
+
+<button id="pauseTimer" class="btn">
+⏸ Pause
+</button>
+
+<button id="resumeTimer" class="btn">
+▶ Resume
+</button>
+
+<button id="fullscreenBtn" class="btn">
+📱 Full
+</button>
+
+</div>
+
+<div id="statsContent"></div>
+
+</div>
+
+<button id="scrollUp" class="scroll-btn">👆</button>
+<button id="scrollDown" class="scroll-btn">👇</button>
+
+<script>
+
+  
+/*৮ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড */
+  let timerPassword = "1234"; // default password
+ /*৮ম শেষ */
+  /*৯ম শুরু রিফ্রেস বাটন এর পাসওয়ার্ডের ফাংশন */
+  function checkPassword(){
+
+const input = prompt("Password দিন:");
+
+if(input === timerPassword){
+return true;
+}
+
+showAlert("Wrong Password ❌");
+return false;
+
+}
+  /* ৯ম শেষ*/
+  /*১১তম রিফ্রেশ বাটন পাসওয়ার্ড এর লজিক */
+  document.getElementById("changePasswordBtn").onclick=()=>{
+
+const oldPass = prompt("Old Password দিন:");
+
+if(oldPass !== timerPassword){
+
+showAlert("Old password ভুল ❌");
+
+return;
+
+}
+
+const newPass = prompt("New Password দিন:");
+
+if(!newPass){
+
+showAlert("Invalid password ❌");
+
+return;
+
+}
+
+timerPassword = newPass;
+
+showAlert("Password changed ✅");
+
+};
+  /*১১তম শেষ*/
+const questions = [
+  /*১*/ {
+    "text": "কার্জন লাইন (Curzon Line) কোন দুটি অঞ্চলের মধ্যে সীমারেখা নির্ধারণের প্রস্তাব ছিল?",
+    "options": [
+      "ফ্রান্স ও জার্মানি",
+      "ভারত ও পাকিস্তান",
+      "পোল্যান্ড ও সোভিয়েত রাশিয়া",
+      "তুরস্ক ও গ্রীস"
+    ],
+    "correct": 2,
+    "answered": false,
+    "explanation": "কার্জন লাইন (Curzon Line) 1919 সালে ব্রিটিশ পররাষ্ট্রমন্ত্রী লর্ড কার্জন প্রস্তাব করেন। এটি প্রথম বিশ্বযুদ্ধের পর পূর্ব ইউরোপে পোল্যান্ড ও সোভিয়েত রাশিয়ার মধ্যে সীমারেখা নির্ধারণের একটি প্রস্তাব ছিল। এর উদ্দেশ্য ছিল জাতিগত ভিত্তিতে একটি ভারসাম্যপূর্ণ সীমান্ত নির্ধারণ করা, যেখানে পোলিশ জনগোষ্ঠী একদিকে এবং রুশ জনগোষ্ঠী অন্যদিকে পড়ে।"
+  },
+
+  /*২*/ {
+    "text": "ফচ লাইন (Foch Line) কোন দুটি দেশের সীমান্ত বিরোধের সাথে সম্পর্কিত?",
+    "options": [
+      "পোল্যান্ড ও লিথুয়ানিয়া",
+      "ফ্রান্স ও জার্মানি",
+      "রাশিয়া ও ফিনল্যান্ড",
+      "ইতালি ও অস্ট্রিয়া"
+    ],
+    "correct": 0,
+    "answered": false,
+    "explanation": "ফচ লাইন (Foch Line) মার্শাল ফচ (Marshal Foch) কর্তৃক প্রস্তাবিত একটি সাময়িক সীমারেখা ছিল। এটি পোল্যান্ড ও লিথুয়ানিয়ার মধ্যে বিশেষ করে ভিলনিয়াস (Vilnius) অঞ্চলের নিয়ন্ত্রণ নিয়ে বিরোধ নিষ্পত্তির জন্য ব্যবহৃত হয়। এটি কোনো স্থায়ী আন্তর্জাতিক সীমান্ত নয়, বরং যুদ্ধ-পরবর্তী প্রশাসনিক সমাধান হিসেবে ব্যবহৃত হয়েছিল।"
+  },
+
+  /*৩*/ {
+    "text": "ম্যানারহেইম লাইন (Mannerheim Line) কোন দুটি দেশের সীমান্তে অবস্থিত প্রতিরক্ষা ব্যবস্থা ছিল?",
+    "options": [
+      "সুইডেন ও নরওয়ে",
+      "ফিনল্যান্ড ও সোভিয়েত ইউনিয়ন",
+      "জার্মানি ও পোল্যান্ড",
+      "ফ্রান্স ও বেলজিয়াম"
+    ],
+    "correct": 1,
+    "answered": false,
+    "explanation": "ম্যানারহেইম লাইন (Mannerheim Line) ফিনল্যান্ড ও সোভিয়েত ইউনিয়নের সীমান্তে নির্মিত একটি শক্তিশালী প্রতিরক্ষা দুর্গ ব্যবস্থা ছিল। এটি 1930-এর দশকে নির্মিত হয় এবং 1939–1940 সালের শীতকালীন যুদ্ধে (Winter War) সোভিয়েত আক্রমণ প্রতিরোধে গুরুত্বপূর্ণ ভূমিকা রাখে।"
+  },
+
+  /*৪*/ {
+    "text": "ম্যাজিনো লাইন (Maginot Line) কোন দেশের প্রতিরক্ষা ব্যবস্থা ছিল এবং কোন সীমান্তকে কেন্দ্র করে তৈরি হয়?",
+    "options": [
+      "বেলজিয়াম, নেদারল্যান্ডস সীমান্ত",
+      "জার্মানি, রাশিয়া সীমান্ত",
+      "ফ্রান্স, ইতালি সীমান্ত",
+      "ফ্রান্স, জার্মানি সীমান্ত"
+    ],
+    "correct": 3,
+    "answered": false,
+    "explanation": "ম্যাজিনো লাইন (Maginot Line) ছিল ফ্রান্সের নির্মিত একটি শক্তিশালী প্রতিরক্ষা দুর্গ ও বাংকার ব্যবস্থা। এটি মূলত জার্মানির সম্ভাব্য আক্রমণ ঠেকানোর জন্য ফ্রান্স–জার্মানি সীমান্ত বরাবর নির্মিত হয়েছিল। যদিও এটি অত্যন্ত শক্তিশালী ছিল, দ্বিতীয় বিশ্বযুদ্ধে জার্মানি বেলজিয়াম হয়ে ফ্রান্স আক্রমণ করে এটি পাশ কাটিয়ে যায়।"
+  },
+
+  /*৫*/ {
+    "text": "সোনোরা লাইন (Sonora Line) কোন অঞ্চলের সীমান্ত প্রসঙ্গের সাথে সম্পর্কিত?",
+    "options": [
+      "ব্রাজিল ও পেরু",
+      "কানাডা ও যুক্তরাষ্ট্র",
+      "যুক্তরাষ্ট্র ও মেক্সিকো",
+      "স্পেন ও পর্তুগাল"
+    ],
+    "correct": 2,
+    "answered": false,
+    "explanation": "সোনোরা লাইন (Sonora Line) মূলত মেক্সিকোর সোনোরা (Sonora) অঞ্চলকে কেন্দ্র করে যুক্তরাষ্ট্র–মেক্সিকো সীমান্ত প্রসঙ্গে ব্যবহৃত একটি ভৌগোলিক/সীমান্ত নির্দেশক ধারণা। এটি দক্ষিণ-পশ্চিম যুক্তরাষ্ট্র ও উত্তর মেক্সিকোর সীমান্ত অঞ্চলের আলোচনায় ব্যবহৃত হয়।"
+  },
+
+  /*৬*/{
+    "text":"মেসোপটেমিয়া (Mesopotamia) শব্দের অর্থ কী?",
+    "options":[
+      "দুই পাহাড়ের দেশ",
+      "দুই নদীর মধ্যবর্তী ভূমি",
+      "মরুভূমির নগর",
+      "সাত নদীর দেশ"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"মেসোপটেমিয়া (Mesopotamia) একটি গ্রিক শব্দ। 'Meso' অর্থ মধ্যবর্তী এবং 'Potamos' অর্থ নদী। তাই Mesopotamia এর অর্থ ‘দুই নদীর মধ্যবর্তী ভূমি’।"
+  },
+
+  /*৭*/{
+    "text":"মেসোপটেমীয় সভ্যতা (Mesopotamian Civilization) কোন দুটি নদীর তীরে গড়ে ওঠে?",
+    "options":[
+      "নীল ও কঙ্গো",
+      "সিন্ধু ও গঙ্গা",
+      "ইয়াংসিকিয়াং ও হোয়াংহো",
+      "টাইগ্রিস ও ইউফ্রেটিস"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"মেসোপটেমীয় সভ্যতা বর্তমান ইরাকে টাইগ্রিস (Tigris) ও ইউফ্রেটিস (Euphrates) নদীর উর্বর তীরাঞ্চলে গড়ে ওঠে।"
+  },
+
+  /*৮*/{
+    "text":"বিশ্বের প্রাচীনতম সভ্যতা হিসেবে কোন সভ্যতাকে গণ্য করা হয়?",
+    "options":[
+      "মেসোপটেমীয় সভ্যতা",
+      "মিশরীয় সভ্যতা",
+      "সিন্ধু সভ্যতা",
+      "চীনা সভ্যতা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"বিশ্বের প্রাচীনতম সভ্যতা হিসেবে মেসোপটেমীয় সভ্যতাকে গণ্য করা হয়। এটি আনুমানিক খ্রিস্টপূর্ব ৫০০০ অব্দে গড়ে ওঠে।"
+  },
+
+  /*৯*/{
+    "text":"মেসোপটেমিয়া সভ্যতার পর্যায় কয়টি ছিল?",
+    "options":[
+      "তিনটি",
+      "পাঁচটি",
+      "চারটি",
+      "দুইটি"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"মেসোপটেমিয়া সভ্যতার প্রধান চারটি পর্যায় ছিল— সুমেরীয় (Sumerian), ব্যাবিলনীয় (Babylonian), অ্যাসিরীয় (Assyrian) ও ক্যালডীয় (Chaldean) সভ্যতা। সিরিয়াল মনে রাখার জন্য <span style=\"font-size:16px; font-weight:500;background:Yellow;\"> \n সুমেরী☞ সুমেরীয় \n ব্যাবি ☞ ব্যাবিলনীয় \n আসিয়া ☞ অ্যাসিরীয়  \n ক্যান্ডী ☞ ক্যালডীয় \n খায় 		</span>"
+  },
+
+  /*১০*/{
+    "text":"মেসোপটেমিয়ার সবচেয়ে প্রাচীন সভ্যতা কোনটি?",
+    "options":[
+      "ব্যাবিলনীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "ক্যালডীয় সভ্যতা",
+      "সুমেরীয় সভ্যতা"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"মেসোপটেমিয়ার সবচেয়ে প্রাচীন সভ্যতা হলো সুমেরীয় (Sumerian) সভ্যতা। এরাই প্রথম নগরসভ্যতা গড়ে তোলে।"
+  },
+
+  /*১১*/{
+    "text":"সুমেরীয়দের আবিষ্কৃত বিখ্যাত লিখন পদ্ধতির নাম কী?",
+    "options":[
+      "কিউনিফর্ম",
+      "হায়ারোগ্লিফিক",
+      "ব্রাহ্মী",
+      "খরোষ্ঠী"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"সুমেরীয়দের সবচেয়ে বড় অবদান হলো কিউনিফর্ম (Cuneiform) লিখন পদ্ধতি। এটি পৃথিবীর অন্যতম প্রাচীন লিখন পদ্ধতি।"
+  },
+
+  /*১২*/{
+    "text":"নিম্নের কোনটি সুমেরীয় সভ্যতার অন্যতম আবিষ্কার?",
+    "options":[
+      "কাগজ",
+      "কম্পাস",
+      "চাকা",
+      "বারুদ"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"সুমেরীয়দের অন্যতম গুরুত্বপূর্ণ আবিষ্কার ছিল চাকা (Wheel)। এটি পরিবহন ও কৃষিক্ষেত্রে বিপ্লব ঘটায়।"
+  },
+
+  /*১৩*/{
+    "text":"সুমেরীয়দের মন্দিরকে কী বলা হতো?",
+    "options":[
+      "পিরামিড",
+      "জিগুরাত",
+      "প্যাগোডা",
+      "কলোসিয়াম"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"সুমেরীয়দের ধর্মীয় উপাসনালয় বা মন্দিরকে জিগুরাত (Ziggurat) বলা হতো। এগুলো ধাপবিশিষ্ট উঁচু স্থাপনা ছিল।"
+  },
+
+  /*১৪*/{
+    "text":"সুমেরীয়দের প্রধান আয়ের উৎস কী ছিল?",
+    "options":[
+      "মৎস্য শিকার",
+      "বাণিজ্য",
+      "কৃষি",
+      "পশুপালন"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"সুমেরীয় সভ্যতার প্রধান আয়ের উৎস ছিল কৃষি (Agriculture)। টাইগ্রিস ও ইউফ্রেটিস নদীর উর্বর পলিমাটি কৃষিকাজে সহায়ক ছিল।"
+  },
+
+  /*১৫*/{
+    "text":"সুমেরীয়রা কোন উন্নত ব্যবস্থা গড়ে তুলেছিল?",
+    "options":[
+      "সেচ ব্যবস্থা",
+      "ডাক ব্যবস্থা",
+      "রেল ব্যবস্থা",
+      "ব্যাংক ব্যবস্থা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"সুমেরীয়রা উন্নত সেচ ব্যবস্থা (Irrigation System) গড়ে তুলেছিল। নদীর পানি খাল কেটে কৃষিজমিতে পৌঁছে দেওয়ার ব্যবস্থা করা হতো। "
+  },
+
+  /*১৬*/{
+    "text":"কিউনিফর্ম লিপিতে রচিত বিখ্যাত মহাকাব্যের নাম কী?",
+    "options":[
+      "ইলিয়াড",
+      "ওডিসি",
+      "মহাভারত",
+      "গিলগামেশ"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"কিউনিফর্ম লিপিতে রচিত বিখ্যাত মহাকাব্যের নাম হলো গিলগামেশ (Gilgamesh)। এটি পৃথিবীর প্রাচীনতম মহাকাব্যগুলোর একটি।"
+  },
+
+  /*১৭*/{
+    "text":"গিলগামেশ (Gilgamesh) কোন নগরের শাসক ছিলেন?",
+    "options":[
+      "উর",
+      "উরুক",
+      "ব্যাবিলন",
+      "নিনেভে"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"গিলগামেশ (Gilgamesh) ছিলেন উরুক (Uruk) নগরের শাসক। তিনি সুমেরীয় সভ্যতার কিংবদন্তিতুল্য রাজা হিসেবে পরিচিত। \n<span style=\"font-size:16px; font-weight:bold;background:yellow;\"> 'উর' (Ur) এবং 'উরুক' (Uruk) দুটি ভিন্ন শহর।</span> যদি উরুক (Uruk) শহরের শাসকের কথা বলা হয়, তবে বিখ্যাত শাসক হলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গিলগামেশ		</span>। "
+  },
+
+  /*১৮*/{
+    "text":"মেসোপটেমিয়া সভ্যতা বর্তমানে কোন দেশে অবস্থিত ছিল?",
+    "options":[
+      "ইরান",
+      "মিশর",
+      "ইরাক",
+      "সিরিয়া"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"প্রাচীন মেসোপটেমিয়া সভ্যতা বর্তমান ইরাক (Iraq) অঞ্চলে অবস্থিত ছিল। "
+  },
+  
+  /*১৯*/{
+    "text":"ব্যাবিলনীয় সভ্যতার (Babylonian Civilization) প্রধান স্থপতি কে ছিলেন?",
+    "options":[
+      "গিলগামেশ",
+      "হাম্মুরাবি",
+      "সারগন",
+      "নেবুচাডনেজার"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ব্যাবিলনীয় সভ্যতার (Babylonian Civilization) প্রধান স্থপতি ছিলেন হাম্মুরাবি (Hammurabi)। তিনি একজন শক্তিশালী রাজা ছিলেন এবং তার শাসনামলে ব্যাবিলন নগর রাষ্ট্র একটি শক্তিশালী সাম্রাজ্যে পরিণত হয়।"
+  },
+
+  /*২০*/{
+    "text":"পৃথিবীতে প্রথম লিখিত আইন প্রবর্তিত হয় কোন সভ্যতায়?",
+    "options":[
+      "মিশরীয় সভ্যতা",
+      "সিন্ধু সভ্যতা",
+      "ব্যাবিলনীয় সভ্যতা",
+      "চীনা সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"পৃথিবীর প্রথম লিখিত আইন প্রবর্তিত হয় ব্যাবিলনীয় সভ্যতায় (Babylonian Civilization)। এই আইনসংহিতা 'হাম্মুরাবির আইন' (Code of Hammurabi) নামে পরিচিত।"
+  },
+
+  /*২১*/{
+    "text":"হাম্মুরাবি (Hammurabi) ইতিহাসে বিশেষভাবে পরিচিত কেন?",
+    "options":[
+      "প্রথম পিরামিড নির্মাণের জন্য",
+      "প্রথম লিখিত আইন প্রণয়নের জন্য",
+      "চাকা আবিষ্কারের জন্য",
+      "কাগজ আবিষ্কারের জন্য"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"হাম্মুরাবি (Hammurabi) পৃথিবীর প্রথম লিখিত আইন প্রণেতা হিসেবে পরিচিত। তার প্রণীত আইনসংহিতা সমাজে শৃঙ্খলা ও বিচারব্যবস্থা প্রতিষ্ঠায় গুরুত্বপূর্ণ ভূমিকা পালন করে।"
+  },
+
+  /*২২*/{
+    "text":"হাম্মুরাবির আইনে (Code of Hammurabi) মোট কতটি ধারা ছিল?",
+    "options":[
+      "৩০০টি",
+      "২৫২টি",
+      "২৮২টি",
+      "৩১২টি"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হাম্মুরাবির আইনে (Code of Hammurabi) মোট ২৮২টি ধারা ছিল। এই আইনগুলো পাথরের স্তম্ভে খোদাই করে লেখা হয়েছিল।"
+  },
+
+  /*২৩*/{
+    "text":"হাম্মুরাবির আইন কোন মাধ্যমে সংরক্ষণ করা হয়েছিল?",
+    "options":[
+      "তালপাতায় লিখে",
+      "চামড়ায় লিখে",
+      "পাথরে খোদাই করে",
+      "তাম্রফলকে লিখে"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হাম্মুরাবির আইন (Code of Hammurabi) পাথরের স্তম্ভে খোদাই করে সংরক্ষণ করা হয়েছিল। এজন্য এটি পৃথিবীর অন্যতম প্রাচীন সংরক্ষিত আইনসংহিতা।"
+  },
+
+  /*২৪*/{
+    "text":"পৃথিবীর প্রাচীনতম মানচিত্র কোথা থেকে আবিষ্কৃত হয়েছে?",
+    "options":[
+      "মিশরের মেমফিস",
+      "গ্রীসের এথেন্স",
+      "রোমের পম্পেই",
+      "ব্যাবিলনের উত্তরের গাথুর শহর"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"পৃথিবীর প্রাচীনতম মানচিত্র ব্যাবিলনের উত্তরের গাথুর (Ga-Sur) শহরের ধ্বংসাবশেষ থেকে আবিষ্কৃত হয়েছে। এটি ব্যাবিলনীয়দের ভূগোল ও পরিকল্পনা জ্ঞানের প্রমাণ বহন করে।"
+  },
+
+  /*২৫*/{
+    "text":"সর্বপ্রথম পঞ্জিকার (Calendar) প্রচলন শুরু করে কোন সভ্যতা?",
+    "options":[
+      "ব্যাবিলনীয় সভ্যতা",
+      "মিশরীয় সভ্যতা",
+      "চীনা সভ্যতা",
+      "সুমেরীয় সভ্যতা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"সর্বপ্রথম পঞ্জিকার (Calendar) প্রচলন শুরু করে ব্যাবিলনীয়রা। তারা চন্দ্র ও সৌর গতির উপর ভিত্তি করে সময় গণনার পদ্ধতি তৈরি করেছিল।"
+  },
+
+  /*২৬*/{
+    "text":"'Code of Hammurabi' কী?",
+    "options":[
+      "একটি ধর্মগ্রন্থ",
+      "একটি যুদ্ধনীতি",
+      "একটি আইনসংহিতা",
+      "একটি মহাকাব্য"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"'Code of Hammurabi' হলো হাম্মুরাবি প্রণীত একটি আইনসংহিতা (Law Code)। এতে সমাজ, বিচার, অপরাধ ও শাস্তি সম্পর্কিত বহু আইন অন্তর্ভুক্ত ছিল।"
+  },
+
+  /*২৭*/{
+    "text":"ব্যাবিলনীয় সভ্যতার আইনসংহিতা সমাজে কী প্রতিষ্ঠা করেছিল?",
+    "options":[
+      "শুধু ধর্মীয় নিয়ম",
+      "শুধু সামরিক শাসন",
+      "বাণিজ্যিক একচেটিয়া ব্যবস্থা",
+      "সুশৃঙ্খল বিচারব্যবস্থা"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"হাম্মুরাবির আইনসংহিতা (Code of Hammurabi) সমাজে সুশৃঙ্খল বিচারব্যবস্থা প্রতিষ্ঠা করেছিল। এতে অপরাধ অনুযায়ী শাস্তির নির্দিষ্ট বিধান ছিল।"
+  },
+
+  /*২৮*/{
+    "text":"নিম্নের কোনটি ব্যাবিলনীয় সভ্যতার গুরুত্বপূর্ণ অবদান?",
+    "options":[
+      "কিউনিফর্ম লিপি আবিষ্কার",
+      "প্রথম লিখিত আইন প্রবর্তন",
+      "জিগুরাত নির্মাণ",
+      "চাকা আবিষ্কার"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ব্যাবিলনীয় সভ্যতার অন্যতম গুরুত্বপূর্ণ অবদান হলো পৃথিবীর প্রথম লিখিত আইন প্রবর্তন। এটি হাম্মুরাবির আইন নামে পরিচিত।"
+  },
+
+  /*২৯*/{
+    "text":"হাম্মুরাবির আইনসংহিতার মূল উদ্দেশ্য কী ছিল?",
+    "options":[
+      "সাম্রাজ্য বিস্তার",
+      "ধর্ম প্রচার",
+      "সমাজে ন্যায়বিচার প্রতিষ্ঠা",
+      "বাণিজ্য সম্প্রসারণ"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হাম্মুরাবির আইনসংহিতার প্রধান উদ্দেশ্য ছিল সমাজে ন্যায়বিচার প্রতিষ্ঠা করা এবং অপরাধ দমন করা। এতে অপরাধ অনুযায়ী শাস্তির নির্দিষ্ট বিধান ছিল।"
+  },
+  /*৩০*/{
+    "text":"ব্যাবিলনীয়দের পঞ্জিকা প্রবর্তনের ভিত্তি কী ছিল?",
+    "options":[
+      "চন্দ্র ও সৌর গণনা",
+      "শুধু সৌর গণনা",
+      "শুধু চন্দ্র গণনা",
+      "ঋতুভিত্তিক অনুমান"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ব্যাবিলনীয়রা চন্দ্র ও সৌর গতির উপর ভিত্তি করে পঞ্জিকা (Calendar) প্রবর্তন করেছিল। এর মাধ্যমে সময় ও ঋতু নির্ধারণ সহজ হয়।"
+  },
+
+  /*৩১*/{
+    "text":"অ্যাসিরীয় সভ্যতা (Assyrian Civilization) কোন নদীর তীরে গড়ে উঠেছিল?",
+    "options":[
+      "নীল নদ",
+      "ইউফ্রেটিস নদ",
+      "টাইগ্রিস নদ",
+      "সিন্ধু নদ"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতা (Assyrian Civilization) টাইগ্রিস (Tigris) নদীর তীরে গড়ে উঠেছিল। এটি মেসোপটেমিয়া অঞ্চলের একটি শক্তিশালী সামরিক সভ্যতা ছিল।"
+  },
+
+  /*৩২*/{
+    "text":"অ্যাসিরীয় সভ্যতার রাজধানীর নাম কী ছিল?",
+    "options":[
+      "নিপ্পুর",
+      "উর",
+      "ব্যাবিলন",
+      "উরুক"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতার রাজধানী ছিল নিপ্পুর (Nippur)। এটি রাজনৈতিক ও ধর্মীয় দিক থেকে গুরুত্বপূর্ণ নগর ছিল।"
+  },
+
+  /*৩৩*/{
+    "text":"যুদ্ধে সর্বপ্রথম লোহার অস্ত্র ব্যবহার করে কোন সভ্যতা?",
+    "options":[
+      "সুমেরীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "ব্যাবিলনীয় সভ্যতা",
+      "ক্যালডীয় সভ্যতা"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"যুদ্ধে সর্বপ্রথম লোহার অস্ত্র (Iron Weapons) ব্যবহার করে অ্যাসিরীয়রা। এর ফলে তারা সামরিক শক্তিতে অত্যন্ত অগ্রসর হয়ে ওঠে।"
+  },
+
+  /*৩৪*/{
+    "text":"প্রথম গোলন্দাজ বাহিনী (Artillery Force) গঠন করে কোন সভ্যতা?",
+    "options":[
+      "অ্যাসিরীয় সভ্যতা",
+      "মিশরীয় সভ্যতা",
+      "চীনা সভ্যতা",
+      "গ্রিক সভ্যতা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"অ্যাসিরীয়রা (Assyrians) ইতিহাসে প্রথম গোলন্দাজ বাহিনী (Artillery Force) গঠন করে। তারা যুদ্ধক্ষেত্রে উন্নত সামরিক কৌশল প্রয়োগ করত।  \n\nগোলন্দাজ বাহিনী (Artillery Force) বলতে এমন সামরিক বাহিনীকে বোঝায় যারা দূরপাল্লার ভারী অস্ত্র ব্যবহার করে যুদ্ধ পরিচালনা করে।\n\nএরা সাধারণত—\n◑কামান (Cannon)\n◑ মর্টার (Mortar)\n◑ হাউইটজার (Howitzer)\n◑ রকেট লঞ্চার (Rocket Launcher)\n\nইত্যাদি অস্ত্র ব্যবহার করে দূর থেকে শত্রুর ওপর আক্রমণ চালায়।\n\nসহজভাবেঃ—\nপদাতিক বাহিনী (Infantry) যেখানে সরাসরি সামনে থেকে যুদ্ধ করে,\nগোলন্দাজ বাহিনী সেখানে দূর থেকে ভারী গোলা নিক্ষেপ করে শত্রুর দুর্গ, সেনাঘাঁটি বা সৈন্যদল ধ্বংস করে।\n\n“গোলন্দাজ” শব্দের অর্থঃ—\n“গোলা” = কামানের গোলা\n“ন্দাজ/অন্দাজ” = নিক্ষেপকারী\nঅর্থাৎ, যারা গোলা নিক্ষেপ করে তারা হলো গোলন্দাজ।\n\nইতিহাসেঃ—\nঅ্যাসিরীয়রা (Assyrians) সর্বপ্রথম সংগঠিত গোলন্দাজ বাহিনী গঠন করেছিল বলে ইতিহাসে উল্লেখ পাওয়া যায়।"
+  },
+
+  /*৩৫*/{
+    "text":"ইতিহাসে কোন সভ্যতা সামরিক রাষ্ট্র হিসেবে পরিচিত?",
+    "options":[
+      "ব্যাবিলনীয় সভ্যতা",
+      "সুমেরীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "মিশরীয় সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতা (Assyrian Civilization) ইতিহাসে সামরিক রাষ্ট্র (Military State) হিসেবে পরিচিত। কারণ তাদের রাষ্ট্রব্যবস্থা ও শক্তির মূল ভিত্তি ছিল সামরিক ক্ষমতা।"
+  },
+
+  /*৩৬*/{
+    "text":"সর্বপ্রথম বৃত্তকে ৩৬০ ডিগ্রিতে ভাগ করে কোন সভ্যতা?",
+    "options":[
+      "গ্রিক সভ্যতা",
+      "রোমান সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "চীনা সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"অ্যাসিরীয়রা সর্বপ্রথম বৃত্তকে ৩৬০ ডিগ্রিতে ভাগ করে। পরবর্তীতে গণিত ও জ্যোতির্বিজ্ঞানে এই ধারণা অত্যন্ত গুরুত্বপূর্ণ হয়ে ওঠে।"
+  },
+
+  /*৩৭*/{
+    "text":"পৃথিবীকে সর্বপ্রথম অক্ষাংশ (Latitudes) ও দ্রাঘিমাংশে (Longitudes) ভাগ করে কোন সভ্যতা?",
+    "options":[
+      "মিশরীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "সিন্ধু সভ্যতা",
+      "ফিনিশীয় সভ্যতা"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতা পৃথিবীকে সর্বপ্রথম অক্ষাংশ (Latitudes) ও দ্রাঘিমাংশে (Longitudes) ভাগ করার ধারণা দেয়। এটি পরবর্তীতে ভূগোল ও মানচিত্রবিদ্যায় গুরুত্বপূর্ণ ভূমিকা রাখে।"
+  },
+
+  /*৩৮*/{
+    "text":"অ্যাসিরীয় সভ্যতা কত খ্রিস্টপূর্বাব্দে ধ্বংস হয়?",
+    "options":[
+      "৫৩৯ খ্রিস্টপূর্বাব্দে",
+      "৭১২ খ্রিস্টপূর্বাব্দে",
+      "৪৭৬ খ্রিস্টপূর্বাব্দে",
+      "৬১২ খ্রিস্টপূর্বাব্দে"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতা ৬১২ খ্রিস্টপূর্বাব্দে (612 BC) ধ্বংস হয়। মিডীয় (Medes) ও ক্যালডীয়দের যৌথ আক্রমণে তাদের পতন ঘটে।"
+  },
+
+  /*৩৯*/{
+    "text":"নিম্নের কোন বৈশিষ্ট্যটি অ্যাসিরীয় সভ্যতার সঙ্গে সবচেয়ে বেশি সম্পর্কিত?",
+    "options":[
+      "সামরিক শক্তি ও যুদ্ধনীতি",
+      "পিরামিড নির্মাণ",
+      "গণতান্ত্রিক শাসন",
+      "রেশম শিল্প"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"অ্যাসিরীয় সভ্যতা সামরিক শক্তি, যুদ্ধনীতি ও আগ্রাসী সাম্রাজ্য বিস্তারের জন্য বিখ্যাত ছিল। তাই ইতিহাসে এটি সামরিক রাষ্ট্র হিসেবে পরিচিত।"
+  },
+  
+  /*৪০*/{
+    "text":"ক্যালডীয় সভ্যতার (Chaldean Civilization) অপর নাম কী?",
+    "options":[
+      "সুমেরীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "নব্য ব্যাবিলনীয় সভ্যতা",
+      "মিশরীয় সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"ক্যালডীয় সভ্যতার (Chaldean Civilization) অপর নাম হলো নব্য ব্যাবিলনীয় সভ্যতা (Neo-Babylonian Civilization)।"
+  },
+
+  /*৪১*/{
+    "text":"কে ব্যাবিলন শহরে ক্যালডীয় সভ্যতা গড়ে তোলেন?",
+    "options":[
+      "হাম্মুরাবি",
+      "গিলগামেশ",
+      "সারগন",
+      "নেবুচাঁদনেজার"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"সম্রাট নেবুচাঁদনেজার (Nebuchadnezzar) ব্যাবিলন শহরে ক্যালডীয় সভ্যতা গড়ে তোলেন। তার শাসনামলেই নব্য ব্যাবিলনীয় সভ্যতা সর্বাধিক সমৃদ্ধি লাভ করে।"
+  },
+
+  /*৪২*/{
+    "text":"নব্য ব্যাবিলনীয় সভ্যতা (Neo-Babylonian Civilization) নামে কোন সভ্যতা পরিচিত?",
+    "options":[
+      "ক্যালডীয় সভ্যতা",
+      "সুমেরীয় সভ্যতা",
+      "অ্যাসিরীয় সভ্যতা",
+      "ফিনিশীয় সভ্যতা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ক্যালডীয় সভ্যতাকেই (Chaldean Civilization) নব্য ব্যাবিলনীয় সভ্যতা (Neo-Babylonian Civilization) বলা হয়।"
+  },
+
+  /*৪৩*/{
+    "text":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) বর্তমানে কোন দেশে অবস্থিত ছিল?",
+    "options":[
+      "মিশর",
+      "ইরান",
+      "ইরাক",
+      "সিরিয়া"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) বর্তমান ইরাক (Iraq) অঞ্চলে অবস্থিত ছিল।"
+  },
+
+  /*৪৪*/{
+    "text":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) নির্মাণ করেন কে?",
+    "options":[
+      "হাম্মুরাবি",
+      "নেবুচাঁদনেজার",
+      "সাইরাস",
+      "আলেকজান্ডার"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) নির্মাণ করেন রাজা নেবুচাঁদনেজার (Nebuchadnezzar)।"
+  },
+
+  /*৪৫*/{
+    "text":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) কী হিসেবে পরিচিত?",
+    "options":[
+      "প্রাচীন পৃথিবীর সপ্তাশ্চর্যের একটি",
+      "বিশ্বের প্রাচীনতম মন্দির",
+      "প্রথম দুর্গনগর",
+      "প্রথম মানমন্দির"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ব্যাবিলনের শূন্য উদ্যান (The Hanging Gardens of Babylon) প্রাচীন পৃথিবীর সপ্তাশ্চর্যের (Seven Wonders of the Ancient World) একটি হিসেবে পরিচিত।"
+  },
+
+  /*৪৬*/{
+    "text":"সপ্তাহকে সাত দিনে বিভক্ত করার কৃতিত্ব কোন সভ্যতার?",
+    "options":[
+      "মিশরীয় সভ্যতা",
+      "ক্যালডীয় সভ্যতা",
+      "সুমেরীয় সভ্যতা",
+      "গ্রিক সভ্যতা"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ক্যালডীয়রা (Chaldeans) সর্বপ্রথম সপ্তাহকে সাত দিনে বিভক্ত করার পদ্ধতি চালু করে।"
+  },
+
+  /*৪৭*/{
+    "text":"দিনকে ১২ জোড়া ঘণ্টায় বিভক্ত করার পদ্ধতি প্রবর্তন করে কারা?",
+    "options":[
+      "ক্যালডীয়রা",
+      "রোমানরা",
+      "গ্রিকরা",
+      "ফিনিশীয়রা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ক্যালডীয়রা দিনকে ১২ জোড়া ঘণ্টায় অর্থাৎ ২৪ ঘণ্টায় বিভক্ত করার পদ্ধতি প্রচলন করে।"
+  },
+
+  /*৪৮*/{
+    "text":"ক্যালডীয়দের প্রধান দেবতার নাম কী ছিল?",
+    "options":[
+      "মারস",
+      "অ্যাপোলো",
+      "জুপিটার",
+      "ওসিরিস"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"ক্যালডীয়দের প্রধান দেবতার নাম ছিল জুপিটার (Jupiter)।"
+  },
+
+  /*৪৯*/{
+    "text":"ক্যালডীয় সভ্যতার পতন ঘটে কার আক্রমণের ফলে?",
+    "options":[
+      "গ্রিক",
+      "রোমান",
+      "মঙ্গোল",
+      "পারস্য"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"পারস্যের (Persian) আক্রমণের ফলে ক্যালডীয় সভ্যতার পতন ঘটে।"
+  },
+
+  /*৫০*/{
+    "text":"নিম্নের কোনটি ক্যালডীয় সভ্যতার গুরুত্বপূর্ণ অবদান?",
+    "options":[
+      "কিউনিফর্ম লিপির আবিষ্কার",
+      "সপ্তাহকে সাত দিনে বিভক্ত করা",
+      "চাকা আবিষ্কার",
+      "পিরামিড নির্মাণ"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ক্যালডীয়দের গুরুত্বপূর্ণ অবদানের মধ্যে অন্যতম হলো সপ্তাহকে সাত দিনে বিভক্ত করা।"
+  },
+ 
+  /*৫১*/{
+    "text":"প্রাচীন মিশরীয় সভ্যতা (Egyptian Civilization) কোন নদীকে কেন্দ্র করে গড়ে উঠেছিল?",
+    "options":[
+      "টাইগ্রিস নদ",
+      "ইউফ্রেটিস নদ",
+      "নীল নদ",
+      "সিন্ধু নদ"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"প্রাচীন মিশরীয় সভ্যতা (Egyptian Civilization) নীল নদ (Nile River) কে কেন্দ্র করে গড়ে উঠেছিল। নীল নদের উর্বর পলিমাটি কৃষিকাজের জন্য অত্যন্ত উপযোগী ছিল।"
+  },
+
+  /*৫২*/{
+    "text":"মিশরে নগর সভ্যতা আনুমানিক কত খ্রিস্টপূর্বাব্দে গড়ে ওঠে?",
+    "options":[
+      "খ্রিস্টপূর্ব ৩০০০ অব্দে",
+      "খ্রিস্টপূর্ব ৫০০০ অব্দে",
+      "খ্রিস্টপূর্ব ২০০০ অব্দে",
+      "খ্রিস্টপূর্ব ১৫০০ অব্দে"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"মিশরে নগর সভ্যতা আনুমানিক খ্রিস্টপূর্ব ৫০০০ অব্দে গড়ে ওঠে। এটি পৃথিবীর অন্যতম প্রাচীন সভ্যতা।"
+  },
+
+  /*৫৩*/{
+    "text":"❝মিশর নীলনদের দান❞ — উক্তিটি কে বলেছেন?",
+    "options":[
+      "প্লেটো",
+      "এরিস্টটল",
+      "সক্রেটিস",
+      "হেরোডোটাস"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"গ্রিক দার্শনিক ও ইতিহাসবিদ <span style=\"font-size:16px; font-weight:bold;background:yellow;\">হেরোডোটাস (Herodotus)</span> মিশরকে ❝নীলনদের দান❞ বলেছিলেন। তাকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ইতিহাসের জনক (Father of History)</span> বলা হয়। তিনি গ্রিসের একজন বিখ্যাত ঐতিহাসিক ছিলেন।"
+  },
+
+  /*৫৪*/{
+    "text":"পৃথিবীর সবচেয়ে প্রাচীন স্থাপত্য হিসেবে কোনটি পরিচিত?",
+    "options":[
+      "কলোসিয়াম",
+      "চীনের প্রাচীর",
+      "পিরামিড",
+      "তাজমহল"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"মিশরের <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পিরামিড (Pyramid)</span> পৃথিবীর সবচেয়ে প্রাচীন ও বিস্ময়কর স্থাপত্যগুলোর একটি। এটি মূলত ফেরাউনদের সমাধি হিসেবে নির্মিত হয়েছিল।"
+  },
+
+  /*৫৫*/{
+    "text":"Serpent of the Nile নামে কাকে অভিহিত করা হয়?",
+    "options":[
+      "নেফারতিতি",
+      "ক্লিওপেট্রা",
+      "হাটশেপসুট",
+      "আইসিস"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"মিশরের রানি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ক্লিওপেট্রা (Cleopatra)</span> কে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Serpent of the Nile</span> বলা হয়। তিনি ছিলেন মিশরের অন্যতম বিখ্যাত নারী শাসক।"
+  },
+
+  /*৫৬*/{
+    "text":"নগর সভ্যতার সূচনা কোথায় হয়েছিল বলে ধরা হয়?",
+    "options":[
+      "চীনে",
+      "মিশরে",
+      "গ্রীসে",
+      "রোমে"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"নগর সভ্যতার সূচনা মিশরে হয়েছিল বলে ধরা হয়। নীল নদের তীরে গড়ে ওঠা নগরগুলো ছিল সুসংগঠিত ও উন্নত।"
+  },
+
+  /*৫৭*/{
+    "text":"সভ্যতায় মিশরীয়দের অন্যতম বড় অবদান কী?",
+    "options":[
+      "সামরিক শক্তি",
+      "সমুদ্র বাণিজ্য",
+      "স্থাপত্য নির্মাণ",
+      "রেশম শিল্প"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"মিশরীয়রা ইতিহাসের শ্রেষ্ঠ নির্মাতাদের অন্যতম ছিল। <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পিরামিড, মন্দির ও ভাস্কর্য</span> নির্মাণে তারা অসাধারণ দক্ষতা দেখিয়েছিল।"
+  },
+
+  /*৫৮*/{
+    "text":"মিশরীয়রা কোন গাছের সাদা বাকল থেকে কাগজ তৈরি করত?",
+    "options":[
+      "প্যাপিরাস গাছ",
+      "খেজুর গাছ",
+      "নারিকেল গাছ",
+      "অশ্বত্থ গাছ"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"মিশরীয়রা <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্যাপিরাস (Papyrus)</span> গাছের সাদা বাকল থেকে কাগজ তৈরি করত। এটি ছিল পৃথিবীর প্রাচীনতম কাগজের অন্যতম রূপ।"
+  },
+
+  /*৫৯*/{
+    "text":"৩৬৫ দিনে বছর গণনার রীতি কারা প্রবর্তন করে?",
+    "options":[
+      "মিশরীয়রা",
+      "গ্রিকরা",
+      "রোমানরা",
+      "সুমেরীয়রা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"৩৬৫ দিনে ১ বছর, ১২ মাসে ১ বছর এবং ৩০ দিনে ১ মাস গণনার রীতি প্রবর্তন করে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">মিশরীয়রা</span>।"
+  },
+
+  /*৬০*/{
+    "text":"প্রথম বর্ণমালা উদ্ভাবনের কৃতিত্ব কার?",
+    "options":[
+      "ফিনিশীয়দের",
+      "মিশরীয়দের",
+      "গ্রিকদের",
+      "রোমানদের"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"প্রথম বর্ণমালা উদ্ভাবনের কৃতিত্ব <span style=\"font-size:16px; font-weight:bold;background:yellow;\">মিশরীয়দের</span> দেওয়া হয়।"
+  },
+
+  /*৬১*/{
+    "text":"মিশরীয়দের বর্ণমালার সংখ্যা কত ছিল?",
+    "options":[
+      "২০টি",
+      "২২টি",
+      "২৪টি",
+      "২৬টি"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"মিশরীয়দের বর্ণমালার সংখ্যা ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">২৪টি</span>।"
+  },
+
+  /*৬২*/{
+    "text":"মিশরীয়দের লিখন পদ্ধতির নাম কী ছিল?",
+    "options":[
+      "কিউনিফর্ম",
+      "হায়ারোগ্লিফিক",
+      "ব্রাহ্মী",
+      "খরোষ্ঠী"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"মিশরীয়দের <span style=\"font-size:16px; font-weight:bold;background:yellow;\">লিখন পদ্ধতি</span> ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">হায়ারোগ্লিফিক (Hieroglyphic)</span>। এটি একটি গ্রিক শব্দ যার অর্থ <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পবিত্র লিপি</span>।"
+  },
+
+  /*৬৩*/{
+    "text":"Hieroglyphic শব্দটির অর্থ কী?",
+    "options":[
+      "চিত্রলিপি",
+      "রাজকীয় লিপি",
+      "ধর্মীয় ভাষা",
+      "পবিত্র লিপি"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">Hieroglyphic</span> একটি গ্রিক শব্দ। এর অর্থ হলো <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পবিত্র লিপি</span>।"
+  },
+  
+  /*৬৪*/{
+    "text":"সিন্ধু সভ্যতা (Indus Civilization) কোন নদীর তীরে গড়ে উঠেছিল?",
+    "options":[
+      "নীল নদ",
+      "সিন্ধু নদ",
+      "টাইগ্রিস নদ",
+      "হোয়াংহো নদ"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"সিন্ধু সভ্যতা (Indus Civilization) পাকিস্তানের <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সিন্ধু নদ (Indus River)</span> এর তীরে গড়ে উঠেছিল।"
+  },
+
+  /*৬৫*/{
+    "text":"সিন্ধু সভ্যতার প্রধান দুটি নগরের নাম কী?",
+    "options":[
+      "উর ও উরুক",
+      "থিবস ও মেমফিস",
+      "হরপ্পা ও মহেঞ্জোদারো",
+      "নিনেভে ও নিপ্পুর"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"সিন্ধু সভ্যতার প্রধান দুটি নগর ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">হরপ্পা (Harappa)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">মহেঞ্জোদারো (Mohenjo-daro)</span>।"
+  },
+
+  /*৬৬*/{
+    "text":"সিন্ধু সভ্যতা আবিষ্কৃত হয় কত সালে?",
+    "options":[
+      "১৯১১ সালে",
+      "১৯২২ সালে",
+      "১৯৩১ সালে",
+      "১৯০৫ সালে"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"সিন্ধু সভ্যতা আনুষ্ঠানিকভাবে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">১৯২২ সালে</span> আবিষ্কৃত হয়। তবে এর প্রাথমিক নিদর্শন ১৯২১ সালেও পাওয়া যায়।"
+  },
+
+  /*৬৭*/{
+    "text":"সিন্ধু সভ্যতার আবিষ্কারকদের মধ্যে কে ছিলেন না?",
+    "options":[
+      "জন মার্শাল",
+      "রাখালদাস বন্দ্যোপাধ্যায়",
+      "দয়ারাম সাহনী",
+      "হেরোডোটাস"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"সিন্ধু সভ্যতার আবিষ্কারকদের মধ্যে ছিলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">জন মার্শাল (John Marshall)</span>, <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দয়ারাম সাহনী (Daya Ram Sahni)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">রাখালদাস বন্দ্যোপাধ্যায় (Rakhaldas Banerji)</span>।"
+  },
+
+  /*৬৮*/{
+    "text":"সিন্ধু সভ্যতা কোন জাতি গড়ে তুলেছিল বলে ধারণা করা হয়?",
+    "options":[
+      "আর্য জাতি",
+      "দ্রাবিড় জাতি",
+      "মঙ্গোলীয় জাতি",
+      "সেমিটিক জাতি"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"সিন্ধু সভ্যতা <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দ্রাবিড় জাতি (Dravidian)</span> গড়ে তুলেছিল বলে মনে করা হয়। 'দ্রাবিড়' বলতে মূলত দক্ষিণ এশিয়ার এক প্রাচীন জনগোষ্ঠীকে বোঝায়, যারা নিজস্ব ভাষা ও সংস্কৃতির অধিকারী ছিল।"
+  },
+
+  /*৬৯*/{
+    "text":"ফিনিশীয় রাষ্ট্র (Phoenician State) কোথায় গড়ে উঠেছিল?",
+    "options":[
+      "লেবানন পর্বত ও ভূমধ্যসাগরের মাঝামাঝি সরু ভূমিতে",
+      "নীল নদের তীরে",
+      "টাইগ্রিস নদীর তীরে",
+      "সিন্ধু উপত্যকায়"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ফিনিশীয় রাষ্ট্র (Phoenician State) <span style=\"font-size:16px; font-weight:bold;background:yellow;\">লেবানন পর্বত</span> এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ভূমধ্যসাগরের</span> মাঝামাঝি সরু উপকূলীয় অঞ্চলে গড়ে উঠেছিল।"
+  },
+
+  /*৭০*/{
+    "text":"প্রাচীন ইতিহাসে ফিনিশীয়দের প্রধান পরিচয় কী ছিল?",
+    "options":[
+      "শ্রেষ্ঠ কৃষক",
+      "শ্রেষ্ঠ নাবিক ও জাহাজ নির্মাতা",
+      "শ্রেষ্ঠ যোদ্ধা",
+      "শ্রেষ্ঠ দার্শনিক"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"ফিনিশীয়রা (Phoenicians) ইতিহাসে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">শ্রেষ্ঠ নাবিক ও জাহাজ নির্মাতা</span> হিসেবে পরিচিত ছিল। তারা সমুদ্রপথে বাণিজ্যে অত্যন্ত দক্ষ ছিল।"
+  },
+
+  /*৭১*/{
+    "text":"ফিনিশীয়রা কতটি ব্যঞ্জনবর্ণ নিয়ে বর্ণমালা উদ্ভাবন করে?",
+    "options":[
+      "১৮টি",
+      "২০টি",
+      "২২টি",
+      "২৪টি"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"ফিনিশীয়রা <span style=\"font-size:16px; font-weight:bold;background:yellow;\">২২টি ব্যঞ্জনবর্ণ</span> নিয়ে ফিনিশীয় বর্ণমালা (Phoenician Alphabet) উদ্ভাবন করে।"
+  },
+
+  /*৭২*/{
+    "text":"বর্তমান কোন দেশ প্রাচীনকালে পারস্য নামে পরিচিত ছিল?",
+    "options":[
+      "ইরাক",
+      "তুরস্ক",
+      "ইরান",
+      "সিরিয়া"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"বর্তমান <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ইরান (Iran)</span> প্রাচীনকালে পারস্য (Persia) নামে পরিচিত ছিল।"
+  },
+
+  /*৭৩*/{
+    "text":"পারস্য সভ্যতার গুরুত্বপূর্ণ অবদানের মধ্যে কোনটি অন্যতম?",
+    "options":[
+      "পিরামিড নির্মাণ",
+      "সুষ্ঠু প্রশাসন ব্যবস্থা",
+      "কিউনিফর্ম লিপি",
+      "জিগুরাত নির্মাণ"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"পারস্যীয়দের অন্যতম গুরুত্বপূর্ণ অবদান ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সুষ্ঠু ও দক্ষ প্রশাসন ব্যবস্থা</span> গড়ে তোলা।"
+  },
+
+  /*৭৪*/{
+    "text":"পারস্যে আবির্ভূত বিখ্যাত ধর্মগুরু ও দার্শনিকের নাম কী?",
+    "options":[
+      "কনফুসিয়াস",
+      "সক্রেটিস",
+      "জরাথ্রুস্ট",
+      "প্লেটো"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"পারস্যে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">জরাথ্রুস্ট (Zoroaster)</span> নামে এক ধর্মগুরু ও দার্শনিকের আবির্ভাব ঘটে।"
+  },
+
+  /*৭৫*/{
+    "text":"জরাথ্রুস্ট কর্তৃক প্রবর্তিত ধর্মের নাম কী?",
+    "options":[
+      "বৌদ্ধধর্ম",
+      "জরাথ্রুস্টবাদ",
+      "ইহুদিধর্ম",
+      "খ্রিস্টধর্ম"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"জরাথ্রুস্ট কর্তৃক প্রবর্তিত ধর্ম <span style=\"font-size:16px; font-weight:bold;background:yellow;\">জরাথ্রুস্টবাদ (Zoroastrianism)</span> নামে পরিচিত।"
+  },
+
+  /*৭৬*/{
+    "text":"পারস্যের ইতিহাসে সবচেয়ে সফল শাসকদের মধ্যে কারা ছিলেন?",
+    "options":[
+      "হাম্মুরাবি ও গিলগামেশ",
+      "কাইরাস ও দারিয়ুস",
+      "ক্লিওপেট্রা ও টলেমি",
+      "সোলন ও ড্রাকো"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"পারস্যের ইতিহাসে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">কাইরাস (Cyrus)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দারিয়ুস (Darius)</span> ছিলেন সবচেয়ে সফল শাসক।"
+  },
+
+  /*৭৭*/{
+    "text":"কে সমগ্র পারস্য সাম্রাজ্য দখল করেন?",
+    "options":[
+      "জুলিয়াস সিজার",
+      "নেপোলিয়ন",
+      "আলেকজান্ডার দ্য গ্রেট",
+      "অগাস্টাস"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">৩০০ খ্রিস্টপূর্বাব্দে গ্রিক বীর আলেকজান্ডার দ্য গ্রেট (Alexander the Great)</span> সমগ্র পারস্য সাম্রাজ্য দখল করেন। তিনি ছিলেন ম্যাসিডোনিয়ার (Macedonia) বিখ্যাত গ্রিক বীর ও সম্রাট। তার শিক্ষক ছিলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">এরিস্টটল (Aristotle)</span>।\n\n<span style=\"font-size:16px; font-weight:bold;background:yellow;\">আলেকজান্ডার দ্য গ্রেট (Alexander the Great)</span> মাত্র <span style=\"font-size:16px; font-weight:bold;background:yellow;\">২০ বছর বয়সে</span> ম্যাসিডোনিয়ার সিংহাসনে আরোহণ করেন এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">৩২ বছর বয়সে</span> মৃত্যুর পূর্বেই বিশাল সাম্রাজ্য গড়ে তোলেন। তিনি ইতিহাসের অন্যতম শ্রেষ্ঠ সেনাপতি হিসেবে পরিচিত।"
+  },
+  /*৭৮*/{
+    "text":"হিব্রু সভ্যতা (Hebrew Civilization) কোন নগরীকে কেন্দ্র করে বিকাশ লাভ করে?",
+    "options":[
+      "ব্যাবিলন",
+      "জেরুজালেম",
+      "এথেন্স",
+      "রোম"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"হিব্রু সভ্যতা (Hebrew Civilization) <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্যালেস্টাইনের জেরুজালেম (Jerusalem)</span> নগরীকে কেন্দ্র করে বিকাশ লাভ করে।"
+  },
+
+  /*৭৯*/{
+    "text":"হিব্রু (Hebrew) মূলত কী?",
+    "options":[
+      "একটি জাতি",
+      "একটি ধর্ম",
+      "একটি ভাষা",
+      "একটি নগর"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হিব্রু (Hebrew) কোনো জাতির নাম নয়। এটি একটি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সেমেটিক ভাষা (Semitic Language)</span>। এই ভাষায় কথা বলা লোকেরাই হিব্রু নামে পরিচিত।"
+  },
+
+  /*৮০*/{
+    "text":"হিব্রুদের আদি বাসস্থান কোথায় ছিল?",
+    "options":[
+      "আরব মরুভূমি",
+      "সিন্ধু উপত্যকা",
+      "মিশর",
+      "পারস্য"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"হিব্রুদের আদি বাসস্থান ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আরব মরুভূমি</span>।"
+  },
+
+  /*৮১*/{
+    "text":"বর্তমান কোন দেশের অধিবাসীরা হিব্রুদের বংশধর হিসেবে বিবেচিত?",
+    "options":[
+      "সিরিয়া",
+      "ইসরাইল",
+      "জর্ডান",
+      "ইরাক"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"বর্তমান <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ইসরাইল (Israel)</span> এর অধিবাসীদের হিব্রুদের বংশধর হিসেবে বিবেচনা করা হয়।"
+  },
+
+  /*৮২*/{
+    "text":"হিব্রুরা প্রধানত কোন ক্ষেত্রে অবদান রেখেছে?",
+    "options":[
+      "সামরিক ক্ষেত্রে",
+      "অর্থনৈতিক ক্ষেত্রে",
+      "ধর্মীয় ক্ষেত্রে",
+      "স্থাপত্য ক্ষেত্রে"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হিব্রুরা তাদের সবচেয়ে বড় অবদান রেখেছে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ধর্মীয় ক্ষেত্রে</span>।"
+  },
+
+  /*৮৩*/{
+    "text":"হিব্রুরা সর্বপ্রথম কোন মতবাদ ব্যাপকভাবে প্রচার করে?",
+    "options":[
+      "বহুদেববাদ",
+      "নাস্তিকবাদ",
+      "প্রকৃতিবাদ",
+      "একেশ্বরবাদ"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"হিব্রুরা সর্বপ্রথম <span style=\"font-size:16px; font-weight:bold;background:yellow;\">একেশ্বরবাদ (Monotheism)</span> ব্যাপকভাবে প্রচার করে।"
+  },
+
+  /*৮৪*/{
+    "text":"প্রাচীন চৈনিক সভ্যতা (Chinese Civilization) কোন নদীর তীরে গড়ে ওঠে?",
+    "options":[
+      "হোয়াংহো ও ইয়াংসিকিয়াং",
+      "নীল ও কঙ্গো",
+      "টাইগ্রিস ও ইউফ্রেটিস",
+      "সিন্ধু ও গঙ্গা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"খ্রিস্টপূর্ব প্রায় ৪০০০ অব্দে দক্ষিণ চীনের  <span style=\"font-size:16px; font-weight:bold;background:yellow;\">হোয়াংহো (Hwang Ho)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ইয়াংসিকিয়াং (Yangtze)</span> নদীর তীরে  প্রাচীন চৈনিক সভ্যতা গড়ে ওঠে। হোয়াংহো নদীকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পীত নদী (Yellow River)</span> বলা হয়।"
+  },
+
+  /*৮৫*/{
+    "text":"চীনের ইতিহাসে সবচেয়ে প্রভাবশালী দার্শনিক কে ছিলেন?",
+    "options":[
+      "লাওৎসে",
+      "কনফুসিয়াস",
+      "সক্রেটিস",
+      "প্লেটো"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"চীনের ইতিহাসে সবচেয়ে প্রভাবশালী দার্শনিক ছিলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">কনফুসিয়াস (Confucius)</span>। তার দর্শন চীনের সমাজ ও রাষ্ট্রব্যবস্থায় গভীর প্রভাব ফেলে।"
+  },
+
+  /*৮৬*/{
+    "text":"চীনা জনগোষ্ঠী মূলত কোন বংশোদ্ভূত?",
+    "options":[
+      "সেমেটিক",
+      "দ্রাবিড়",
+      "আর্য",
+      "মঙ্গোলীয়"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"চীনা জনগোষ্ঠী মূলত <span style=\"font-size:16px; font-weight:bold;background:yellow;\">মঙ্গোলীয় (Mongolian)</span> বংশোদ্ভূত।"
+  },
+
+  /*৮৭*/{
+    "text":"ঘুড়ির প্রচলন প্রথম কোথায় শুরু হয়?",
+    "options":[
+      "প্রাচীন চীনে",
+      "প্রাচীন ভারতে",
+      "প্রাচীন মিশরে",
+      "প্রাচীন রোমে"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"ঘুড়ির (Kite) প্রচলন সর্বপ্রথম <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্রাচীন চীনে</span> শুরু হয়।"
+  },
+
+  /*৮৮*/{
+    "text":"চৈনিক সভ্যতার বিশেষ অবদান কী ছিল?",
+    "options":[
+      "পিরামিড নির্মাণ",
+      "আধুনিক আমলাতন্ত্রের ভিত্তি",
+      "কিউনিফর্ম লিপি",
+      "আইনসংহিতা প্রণয়ন"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"চৈনিক সভ্যতার অন্যতম বিশেষ অবদান হলো <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আধুনিক আমলাতন্ত্রের ভিত্তি প্রতিষ্ঠা</span> করা।"
+  },
+
+  /*৮৯*/{
+    "text":"নিম্নের কোনটি নদীমাতৃক সভ্যতা নয়?",
+    "options":[
+      "মিশরীয় সভ্যতা",
+      "সিন্ধু সভ্যতা",
+      "রোমান সভ্যতা",
+      "মেসোপটেমীয় সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">রোমান সভ্যতা (Roman Civilization)</span> নদীমাতৃক সভ্যতা নয়।"
+  },
+
+  /*৯০*/{
+    "text":"রোমান অর্থনীতির প্রধান ভিত্তি কী ছিল?",
+    "options":[
+      "কৃষি",
+      "সমুদ্র বাণিজ্য",
+      "দাস শ্রম",
+      "পশুপালন"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"রোমান অর্থনীতির প্রধান ভিত্তি ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দাস শ্রম (Slave Labor)</span>। প্রাচীন রোমে যুদ্ধবন্দী ও বিজিত অঞ্চল থেকে মানুষকে দাস হিসেবে ব্যবহার করা হতো। এরা কৃষিকাজ, খনি, নির্মাণকাজ এবং গৃহস্থালির কাজে নিয়োজিত থাকত।  \n\nদাস প্রথা (Slavery System) রোমান সভ্যতায় বিশেষ করে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">রিপাবলিক যুগ (Republican Period)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্রারম্ভিক সাম্রাজ্য যুগে (Early Empire)</span> ব্যাপকভাবে বিস্তৃত ছিল।  \n\nপরবর্তীতে খ্রিস্টধর্মের প্রসার, অর্থনৈতিক পরিবর্তন এবং সামাজিক চাপের কারণে ধীরে ধীরে এই ব্যবস্থা দুর্বল হয়ে পড়ে এবং মধ্যযুগে এসে দাস প্রথা অনেকাংশে বিলুপ্ত হয়।  \n\nদাস শ্রমের উপর নির্ভরতার কারণে রোমে উৎপাদন বৃদ্ধি পেলেও এটি সমাজে তীব্র বৈষম্য সৃষ্টি করেছিল।"
+  },
+
+  /*৯১*/{
+    "text":"রোমানদের সবচেয়ে বড় কৃতিত্ব কোন ক্ষেত্রে ছিল?",
+    "options":[
+      "আইনের ক্ষেত্রে",
+      "চিকিৎসাবিদ্যায়",
+      "দর্শনে",
+      "জ্যোতির্বিজ্ঞানে"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"রোমানদের সবচেয়ে বড় কৃতিত্ব ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আইনের ক্ষেত্রে</span>। তারা প্রথম সুসংগঠিত আইনব্যবস্থা গড়ে তোলে, যা <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Roman Law</span> নামে পরিচিত।  \n\nএই আইনের গুরুত্বপূর্ণ ধারণাগুলোর মধ্যে ছিল— <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ন্যায়বিচার (Justice)</span>, <span style=\"font-size:16px; font-weight:bold;background:yellow;\">চুক্তি আইন (Contract Law)</span>, <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সম্পত্তির অধিকার (Property Rights)</span> এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">নাগরিক অধিকার (Civil Rights)</span>।  \n\nআধুনিক ইউরোপীয় আইনব্যবস্থা বিশেষ করে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Civil Law System</span> মূলত রোমান আইনের উপর ভিত্তি করেই গড়ে উঠেছে।"
+  },
+
+  /*৯২*/{
+    "text":"রোমানদের প্রধান দেবতার নাম কী ছিল?",
+    "options":[
+      "অ্যাপোলো",
+      "জুপিটার",
+      "মারস",
+      "ভেনাস"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"রোমানদের প্রধান দেবতার নাম ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">জুপিটার (Jupiter)</span>।"
+  },
+
+  /*৯৩*/{
+    "text":"রোমের সবচেয়ে বিখ্যাত সম্রাট কে ছিলেন?",
+    "options":[
+      "অগাস্টাস",
+      "নিরো",
+      "জুলিয়াস সিজার",
+      "ট্রাজান"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">জুলিয়াস সিজার (Julius Caesar)</span> ছিলেন প্রাচীন রোমের একজন অত্যন্ত প্রভাবশালী সেনাপতি, রাজনীতিবিদ ও শাসক। তিনি রোমান রিপাবলিকের শেষ পর্যায়ে ক্ষমতায় আসেন এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ডিক্টেটর (Dictator)</span> হিসেবে শাসন পরিচালনা করেন।  \n\nতিনি গল (বর্তমান ফ্রান্স) অঞ্চল জয় করে রোমের সামরিক শক্তি বৃদ্ধি করেন। তার শাসনামলে রোমে ক্ষমতার কেন্দ্রীকরণ শুরু হয়, যা পরবর্তীতে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">রোমান সাম্রাজ্য (Roman Empire)</span> গঠনের পথ তৈরি করে।  \n\nতবে তাকে ৪৪ খ্রিস্টপূর্বাব্দে সেনেটের সদস্যদের দ্বারা হত্যা করা হয় (Ides of March), যা রোমের রাজনৈতিক ইতিহাসে একটি গুরুত্বপূর্ণ ঘটনা।"
+  }, 
+    /*৯৪*/{
+    "text":"দার্শনিকদের মধ্যে সবচেয়ে খ্যাতিমান হিসেবে কাকে গণ্য করা হয়?",
+    "options":[
+      "অ্যারিস্টটল",
+      "সক্রেটিস",
+      "প্লেটো",
+      "কনফুসিয়াস"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">সক্রেটিস (Socrates)</span> ছিলেন প্রাচীন গ্রিসের অন্যতম শ্রেষ্ঠ দার্শনিক। তাকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">পাশ্চাত্য দর্শনের জনক (Father of Western Philosophy)</span> বলা হয়। তিনি এথেন্সে জন্মগ্রহণ করেন এবং প্রশ্নোত্তর পদ্ধতিতে শিক্ষা দিতেন, যা <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Socratic Method</span> নামে পরিচিত। তিনি নিজে কোনো গ্রন্থ রচনা করেননি। তার শিষ্য প্লেটোর লেখার মাধ্যমে তার দর্শন জানা যায়।"
+  },
+
+  /*৯৫*/{
+    "text":"সক্রেটিসের (Socrates) ছাত্র কে ছিলেন?",
+    "options":[
+      "কনফুসিয়াস",
+      "লাওৎসে",
+      "প্লেটো",
+      "হোমার"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"প্লেটো (Plato) ছিলেন প্রাচীন গ্রিসের অন্যতম শ্রেষ্ঠ দার্শনিক এবং পাশ্চাত্য দর্শনের ইতিহাসে অত্যন্ত গুরুত্বপূর্ণ ব্যক্তিত্ব। তিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সক্রেটিস (Socrates)</span> এর ছাত্র ছিলেন এবং সক্রেটিসের মৃত্যুর পর তার দর্শনকে সংরক্ষণ ও সম্প্রসারণ করেন।  \n\nপ্লেটোর দর্শনের মূল ভিত্তি ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Idealism (আদর্শবাদ)</span>, যেখানে তিনি বিশ্বাস করতেন যে বাস্তব জগতের চেয়ে চিন্তার জগৎ বেশি সত্য ও স্থায়ী। তিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Republic</span> গ্রন্থে একটি আদর্শ রাষ্ট্রের ধারণা দেন, যেখানে ন্যায়বিচার প্রতিষ্ঠার জন্য সমাজকে তিনটি শ্রেণিতে ভাগ করা হয়েছে—শাসক (Philosopher King), রক্ষক (Guardians) এবং উৎপাদক (Producers)।  \n\nতিনি এথেন্সে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Academy</span> নামে বিশ্বের প্রথম সংগঠিত উচ্চশিক্ষা প্রতিষ্ঠান প্রতিষ্ঠা করেন, যা দীর্ঘদিন দর্শন ও বিজ্ঞানের কেন্দ্র হিসেবে কাজ করেছে।"
+  },
+
+  /*৯৬*/{
+    "text":"প্লেটোর (Plato) বিখ্যাত গ্রন্থের নাম কী?",
+    "options":[
+      "The Politics",
+      "Republic",
+      "The Ethics",
+      "Iliad"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"প্লেটো (Plato) ছিলেন প্রাচীন গ্রিসের অন্যতম শ্রেষ্ঠ দার্শনিক এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সক্রেটিস (Socrates)</span> এর ছাত্র। তার বিখ্যাত গ্রন্থ হলো <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Republic</span>। এই গ্রন্থে তিনি একটি আদর্শ রাষ্ট্রের (Ideal State) ধারণা উপস্থাপন করেন, যেখানে ন্যায়বিচার, শৃঙ্খলা ও শ্রেণিবিন্যাসকে রাষ্ট্র পরিচালনার মূল ভিত্তি হিসেবে দেখানো হয়েছে।  \n\nতিনি রাষ্ট্রকে তিনটি শ্রেণিতে ভাগ করেন—শাসক (Philosopher King), রক্ষক (Guardians) এবং উৎপাদক শ্রেণি (Producers)। তার মতে, ন্যায়বিচার তখনই প্রতিষ্ঠিত হয় যখন প্রত্যেক শ্রেণি নিজ নিজ দায়িত্ব সঠিকভাবে পালন করে।"
+  },
+
+  /*৯৭*/{
+    "text":"প্লেটোর ছাত্র কে ছিলেন?",
+    "options":[
+      "অ্যারিস্টটল",
+      "সক্রেটিস",
+      "লাওৎসে",
+      "হেরোডোটাস"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">অ্যারিস্টটল (Aristotle)</span> ছিলেন প্রাচীন গ্রিসের বহুমুখী প্রতিভাধর দার্শনিক। তিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Lyceum</span> নামক শিক্ষাকেন্দ্র প্রতিষ্ঠা করেন এবং যুক্তিবিদ্যা (Logic), রাষ্ট্রবিজ্ঞান, জীববিজ্ঞান ও নীতিশাস্ত্রে গুরুত্বপূর্ণ অবদান রাখেন। তাকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">“জনক অব লজিক” (Father of Logic)</span> বলা হয়। তার ছাত্র ছিলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আলেকজান্ডার দ্য গ্রেট (Alexander the Great)</span>।"
+  },
+
+  /*৯৮*/{
+    "text":"Lyceum নামক শিক্ষাকেন্দ্রের প্রতিষ্ঠাতা কে ছিলেন?",
+    "options":[
+      "প্লেটো",
+      "অ্যারিস্টটল",
+      "সক্রেটিস",
+      "সোলন"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">Lyceum</span> ছিল প্রাচীন গ্রিসের একটি বিখ্যাত শিক্ষাকেন্দ্র, যা অ্যারিস্টটল (Aristotle) এথেন্সে প্রতিষ্ঠা করেন। এখানে দর্শন, যুক্তিবিদ্যা, রাষ্ট্রবিজ্ঞান, জীববিজ্ঞান, জ্যোতির্বিজ্ঞানসহ বিভিন্ন বিষয়ে শিক্ষা ও গবেষণা করা হতো।  \n\nLyceum-এ শিক্ষক ও শিক্ষার্থীরা হাঁটতে হাঁটতে আলোচনা করতেন বলে অ্যারিস্টটলের অনুসারীদের <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Peripatetic(পেরিপ্যাটেটিক👉 ঘুরে ঘুরে কাজ করে এমন / এক জায়গায় স্থায়ী না থেকে চলমান) School</span> বলা হতো। প্রাচীন বিশ্বের জ্ঞানচর্চা ও গবেষণার ক্ষেত্রে এই শিক্ষাকেন্দ্র অত্যন্ত গুরুত্বপূর্ণ ভূমিকা পালন করে।"
+  },
+
+  /*৯৯*/{
+    "text":"The Politics, The Ethics এবং The Logic গ্রন্থগুলোর রচয়িতা কে?",
+    "options":[
+      "সক্রেটিস",
+      "প্লেটো",
+      "অ্যারিস্টটল",
+      "হোমার"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"অ্যারিস্টটল (Aristotle) ছিলেন প্রাচীন গ্রিসের অন্যতম শ্রেষ্ঠ দার্শনিক ও বহুমুখী জ্ঞানী ব্যক্তি। তিনি খ্রিস্টপূর্ব <span style=\"font-size:16px; font-weight:bold;background:yellow;\">৩৮৪ অব্দে</span> ম্যাসিডোনিয়ার স্টাগিরা (Stagira) নগরে জন্মগ্রহণ করেন। তিনি ছিলেন দার্শনিক <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্লেটোর ছাত্র</span> এবং পরবর্তীতে বিশ্ববিজয়ী <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আলেকজান্ডার দ্য গ্রেট</span> এর শিক্ষক।\nঅ্যারিস্টটল এথেন্সে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Lyceum</span> নামক শিক্ষাকেন্দ্র প্রতিষ্ঠা করেন, যা প্রাচীন বিশ্বের অন্যতম গুরুত্বপূর্ণ জ্ঞানচর্চার কেন্দ্র ছিল। তিনি যুক্তিবিদ্যা (Logic), নীতিশাস্ত্র (Ethics), রাষ্ট্রবিজ্ঞান (Politics), জীববিজ্ঞান (Biology), পদার্থবিদ্যা (Physics) ও সাহিত্যসহ বহু বিষয়ে গবেষণা করেন।\n তার বিখ্যাত গ্রন্থগুলোর মধ্যে রয়েছে — <span style=\"font-size:16px; font-weight:bold;background:yellow;\">The Politics</span>, The Ethics এবং The Logic। তাকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">“জনক অব লজিক” (Father of Logic)</span> বলা হয়, কারণ আধুনিক যুক্তিবিদ্যার ভিত্তি তার চিন্তাধারার ওপর প্রতিষ্ঠিত।"
+  },
+
+  /*১০০*/{
+    "text":"অ্যারিস্টটলের (Aristotle) ছাত্র কে ছিলেন?",
+    "options":[
+      "জুলিয়াস সিজার",
+      "আলেকজান্ডার",
+      "কনফুসিয়াস",
+      "দারিয়ুস"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">আলেকজান্ডার দ্য গ্রেট (Alexander the Great)</span> ছিলেন প্রাচীন গ্রিসের ম্যাসিডোনিয়া (Macedonia) রাজ্যের বিখ্যাত সম্রাট ও বিশ্ববিজয়ী সেনাপতি। তার পিতার নাম ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ফিলিপ দ্বিতীয় (Philip II)</span> এবং তার শিক্ষক ছিলেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">অ্যারিস্টটল (Aristotle)</span>। তিনি মাত্র <span style=\"font-size:16px; font-weight:bold;background:yellow;\">২০ বছর বয়সে</span> সিংহাসনে আরোহণ করেন এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">৩২ বছর বয়সে</span> মৃত্যুর আগেই গ্রিস, মিশর, পারস্য ও ভারত পর্যন্ত বিশাল সাম্রাজ্য গড়ে তোলেন।\nতিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">খ্রিস্টপূর্ব ৩৩১ সালে</span> পারস্য সম্রাট <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দারিয়ুস তৃতীয় (Darius III)</span> কে পরাজিত করেন। মিশরে তিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">আলেকজান্দ্রিয়া (Alexandria)</span> নগর প্রতিষ্ঠা করেন, যা পরবর্তীতে শিক্ষা ও সংস্কৃতির গুরুত্বপূর্ণ কেন্দ্র হয়ে ওঠে। তাকে ইতিহাসের অন্যতম শ্রেষ্ঠ সামরিক কৌশলী ও সেনাপতি হিসেবে গণ্য করা হয়।"
+  },
+
+  /*১০১*/{
+    "text":"চীনের প্রাচীনতম দার্শনিক কে ছিলেন?",
+    "options":[
+      "কনফুসিয়াস",
+      "লাওৎসে",
+      "মেনসিয়াস",
+      "সান জু"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">লাওৎসে (Lao Tzu)</span> ছিলেন প্রাচীন চীনের অন্যতম গুরুত্বপূর্ণ দার্শনিক এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">তাওবাদ (Taoism)</span> মতবাদের প্রবর্তক। তার দর্শনের মূল বিষয় ছিল প্রকৃতির সঙ্গে সামঞ্জস্য রেখে সহজ ও শান্তিপূর্ণ জীবনযাপন করা। তার বিখ্যাত গ্রন্থের নাম <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Tao Te Ching</span>।"
+  },
+
+  /*১০২*/{
+    "text":"লাওৎসের (Lao Tzu) মতবাদের নাম কী ছিল?",
+    "options":[
+      "বৌদ্ধবাদ",
+      "তাওবাদ",
+      "একেশ্বরবাদ",
+      "মানবতাবাদ"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"লাওৎসের মতবাদের নাম ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">তাওবাদ (Taoism)</span>। এতে প্রকৃতি ও সরল জীবনযাপনের উপর গুরুত্ব দেওয়া হয়।"
+  },
+
+  /*১০৩*/{
+    "text":"চীনের ইতিহাসের সবচেয়ে প্রভাবশালী দার্শনিক কে ছিলেন?",
+    "options":[
+      "লাওৎসে",
+      "মেনসিয়াস",
+      "কনফুসিয়াস",
+      "সান জু"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">কনফুসিয়াস (Confucius)</span> ছিলেন প্রাচীন চীনের ইতিহাসের সবচেয়ে প্রভাবশালী দার্শনিক ও নৈতিক শিক্ষাবিদ। তিনি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">৫৫১–৪৭৯ খ্রিস্টপূর্বাব্দ</span> সময়ে জীবিত ছিলেন।  \n\nতার দর্শনের মূল ভিত্তি ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">নৈতিকতা (Ethics)</span>, পারিবারিক শৃঙ্খলা এবং সামাজিক দায়িত্ববোধ। তিনি বিশ্বাস করতেন যে একজন শাসক ও নাগরিক উভয়েরই নৈতিক চরিত্র শক্তিশালী হওয়া উচিত, কারণ সমাজের স্থিতিশীলতা নৈতিকতার উপর নির্ভরশীল।  \n\nতার শিক্ষার প্রধান ধারণাগুলোর মধ্যে ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Ren (মানবিকতা)</span>, <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Li (আচার-আচরণ)</span> এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Xiao (পিতৃভক্তি)</span>। তার এই দর্শনকে কেন্দ্র করে গড়ে ওঠে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Confucianism</span>, যা চীনের সমাজ ও রাষ্ট্রব্যবস্থায় দীর্ঘকাল গভীর প্রভাব ফেলেছে।"
+  },
+
+  /*১০৪*/{
+    "text":"কনফুসিয়াসের (Confucius) প্রধান বিশ্বাস কী ছিল?",
+    "options":[
+      "যুদ্ধই শক্তির মূল",
+      "সম্পদই সুখের উৎস",
+      "শিক্ষার মূল ভিত্তি হচ্ছে নীতিজ্ঞান",
+      "ধর্মই রাষ্ট্রের ভিত্তি"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"কনফুসিয়াসের প্রধান বিশ্বাস ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">শিক্ষার মূল ভিত্তি হচ্ছে নীতিজ্ঞান</span>। তিনি নৈতিকতা, শৃঙ্খলা ও মানবিক মূল্যবোধের উপর গুরুত্বারোপ করেন।"
+  },
+  /*১০৫*/{
+    "text":"গ্রিক সভ্যতা মূলত কোন দুটি নগর রাষ্ট্রকে কেন্দ্র করে গড়ে উঠেছিল?",
+    "options":[
+      "রোম ও কার্থেজ",
+      "পারস্য ও সিরিয়া",
+      "মিশর ও ব্যাবিলন",
+      "এথেন্স ও স্পার্টা"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"গ্রিক সভ্যতা মূলত <span style=\"font-size:16px; font-weight:bold;background:yellow;\">এথেন্স (Athens)</span> ও <span style=\"font-size:16px; font-weight:bold;background:yellow;\">স্পার্টা (Sparta)</span> কেন্দ্রিক ছিল। স্পার্টা ছিল সামরিক রাষ্ট্র এবং এথেন্স ছিল গণতান্ত্রিক নগররাষ্ট্র।"
+  },
+
+  /*১০৬*/{
+    "text":"স্পার্টা (Sparta) কেমন ধরনের নগর রাষ্ট্র ছিল?",
+    "options":[
+      "গণতান্ত্রিক রাষ্ট্র",
+      "সামরিক নগর রাষ্ট্র",
+      "বাণিজ্যিক রাষ্ট্র",
+      "ধর্মীয় রাষ্ট্র"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"স্পার্টা ছিল একটি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সামরিক নগর রাষ্ট্র (Military City-State)</span>, যেখানে নাগরিকদের কঠোর সামরিক প্রশিক্ষণ বাধ্যতামূলক ছিল।"
+  },
+
+  /*১০৭*/{
+    "text":"এথেন্স (Athens) কোন ধরনের রাষ্ট্র হিসেবে পরিচিত?",
+    "options":[
+      "সামরিক রাষ্ট্র",
+      "ধর্মীয় রাষ্ট্র",
+      "গণতান্ত্রিক রাষ্ট্র",
+      "রাজতান্ত্রিক রাষ্ট্র"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"এথেন্স ছিল প্রাচীন গ্রিসের একটি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গণতান্ত্রিক রাষ্ট্র (Democratic State)</span>, যেখানে নাগরিকদের শাসন ব্যবস্থায় অংশগ্রহণের সুযোগ ছিল।"
+  },
+
+  /*১০৮*/{
+    "text":"গণতন্ত্র (Democracy) কী?",
+    "options":[
+      "জনগণের অংশগ্রহণমূলক শাসন ব্যবস্থা",
+      "ধর্মীয় শাসন ব্যবস্থা",
+      "এক ব্যক্তির শাসন ব্যবস্থা",
+      "সামরিক শাসন ব্যবস্থা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"গণতন্ত্র (Democracy) হলো এমন শাসন ব্যবস্থা যেখানে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">জনগণ সরাসরি বা প্রতিনিধির মাধ্যমে রাষ্ট্র পরিচালনায় অংশগ্রহণ করে</span>।"
+  },
+
+  /*১০৯*/{
+    "text":"প্রাচীন পৃথিবীতে গণতন্ত্রের সূচনা কোথায় হয়?",
+    "options":[
+      "রোমে",
+      "মিশরে",
+      "এথেন্সে",
+      "পারস্যে"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"প্রাচীন পৃথিবীতে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">এথেন্স (Athens)</span> এ সর্বপ্রথম গণতন্ত্রের সূচনা হয়।"
+  },
+
+  /*১১০*/{
+    "text":"গ্রিকদের সবচেয়ে বড় অবদান কোন ক্ষেত্রে?",
+    "options":[
+      "কৃষি",
+      "দর্শন চর্চা",
+      "বাণিজ্য",
+      "যুদ্ধনীতি"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"গ্রিকদের সবচেয়ে বড় অবদান ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দর্শন চর্চা (Philosophy)</span>। সক্রেটিস, প্লেটো ও অ্যারিস্টটল তাদের প্রধান দার্শনিক।"
+  },
+
+  /*১১১*/{
+    "text":"গণতন্ত্রের সূতিকাগার বলা হয় কোন দেশকে?",
+    "options":[
+      "রোম",
+      "গ্রিস",
+      "মিশর",
+      "ভারত"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"গ্রিসকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গণতন্ত্রের সূতিকাগার (Cradle of Democracy)</span> বলা হয়।"
+  },
+
+  /*১১২*/{
+    "text":"ব্যঞ্জনবর্ণের সাথে স্বরবর্ণ যুক্ত করে লেখার পদ্ধতি প্রথম কে ব্যবহার করে?",
+    "options":[
+      "রোমানরা",
+      "ফিনিশীয়রা",
+      "চীনারা",
+      "গ্রিকরা"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"গ্রিকরা প্রথম ব্যঞ্জনবর্ণের সাথে স্বরবর্ণ যুক্ত করে আধুনিক বর্ণমালার ভিত্তি গড়ে তোলে।"
+  },
+
+  /*১১৩*/{
+    "text":"পৃথিবীর প্রথম মানচিত্র অঙ্কন করেন কারা?",
+    "options":[
+      "গ্রিক বিজ্ঞানীরা",
+      "মিশরীয়রা",
+      "ব্যাবিলনীয়রা",
+      "রোমানরা"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"পৃথিবীর প্রথম মানচিত্র অঙ্কন করেন <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গ্রিক বিজ্ঞানীরা</span>।"
+  },
+
+  /*১১৪*/{
+    "text":"প্রাচীন অলিম্পিক প্রতিযোগিতা প্রথম কোথায় শুরু হয়?",
+    "options":[
+      "প্রাচীন গ্রিসে",
+      "মিশরে",
+      "রোমে",
+      "পারস্যে"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"অলিম্পিক প্রতিযোগিতা প্রথম শুরু হয় <span style=\"font-size:16px; font-weight:bold;background:yellow;\">প্রাচীন গ্রিসে</span>, খ্রিস্টপূর্ব ৭৭৬ সালে।"
+  },
+
+  /*১১৫*/{
+    "text":"হেলেনিক ও হেলেনিস্টিক সংস্কৃতি কোন সভ্যতার সাথে সম্পর্কিত?",
+    "options":[
+      "রোমান সভ্যতা",
+      "মিশরীয় সভ্যতা",
+      "গ্রিক সভ্যতা",
+      "পারস্য সভ্যতা"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হেলেনিক (Hellenic) ও হেলেনিস্টিক (Hellenistic) সংস্কৃতি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গ্রিক সভ্যতার</span> সাথে সম্পর্কিত।"
+  },
+
+  /*১১৬*/{
+    "text":"হেরোডোটাস (Herodotus) কে ইতিহাসে কী বলা হয়?",
+    "options":[
+      "দর্শনের জনক",
+      "ইতিহাসের জনক",
+      "বিজ্ঞানের জনক",
+      "আইনের জনক"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"হেরোডোটাসকে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ইতিহাসের জনক (Father of History)</span> বলা হয়।"
+  },
+
+  /*১১৭*/{
+    "text":"হেরোডোটাসের বিখ্যাত গ্রন্থের নাম কী?",
+    "options":[
+      "Republic",
+      "Politics",
+      " The Histories",
+      "Odyssey"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"হেরোডোটাসের বিখ্যাত গ্রন্থ হলো <span style=\"font-size:16px; font-weight:bold;background:yellow;\">The Histories</span>।"
+  },
+
+  /*১১৮*/{
+    "text":"বিজ্ঞানসম্মত ইতিহাসের জনক কে?",
+    "options":[
+      "হেরোডোটাস",
+      "থুকিডাইডিস",
+      "প্লেটো",
+      "অ্যারিস্টটল"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">থুকিডাইডিস (Thucydides)</span> কে বিজ্ঞানসম্মত ইতিহাসের জনক বলা হয়, কারণ তিনি তথ্যভিত্তিক ও বিশ্লেষণধর্মী ইতিহাস রচনা করেন।"
+  },
+
+  /*১১৯*/{
+    "text":"গ্রিক সভ্যতা মূলত কোন অঞ্চলে বিকাশ লাভ করে?",
+    "options":[
+      "উত্তর আফ্রিকা",
+      "মধ্য এশিয়া",
+      "দক্ষিণ এশিয়া",
+      "	দক্ষিণ ইউরোপ"
+    ],
+    "correct":3,
+    "answered":false,
+    "explanation":"গ্রিক সভ্যতা মূলত <span style=\"font-size:16px; font-weight:bold;background:yellow;\">দক্ষিণ ইউরোপ</span> অঞ্চলে, বিশেষ করে বর্তমান গ্রিসে বিকাশ লাভ করে।"
+  },
+
+  /*১২০*/{
+    "text":"স্পার্টা নগর রাষ্ট্রের প্রধান বৈশিষ্ট্য কী ছিল?",
+    "options":[
+      "গণতান্ত্রিক শাসন",
+      "সামরিক শৃঙ্খলা ও প্রশিক্ষণ",
+      "বাণিজ্য নির্ভর অর্থনীতি",
+      "শিল্প উন্নয়ন"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"স্পার্টা ছিল একটি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">সামরিক নগর রাষ্ট্র</span>, যেখানে নাগরিকদের কঠোর সামরিক প্রশিক্ষণ বাধ্যতামূলক ছিল।"
+  },
+
+  /*১২১*/{
+    "text":"এথেন্সের রাজনৈতিক ব্যবস্থার প্রধান বৈশিষ্ট্য কী ছিল?",
+    "options":[
+      "স্বৈরাচারী শাসন",
+      "গণতান্ত্রিক শাসন",
+      "রাজতান্ত্রিক শাসন",
+      "সামরিক শাসন"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"এথেন্স ছিল প্রাচীন গ্রিসের একটি <span style=\"font-size:16px; font-weight:bold;background:yellow;\">গণতান্ত্রিক নগর রাষ্ট্র</span>, যেখানে নাগরিকরা শাসন ব্যবস্থায় অংশগ্রহণ করতে পারত।"
+  },
+
+  /*১২২*/{
+    "text":"অলিম্পিক প্রতিযোগিতা কত খ্রিস্টপূর্বাব্দে শুরু হয়?",
+    "options":[
+      "৭৭৬ খ্রিস্টপূর্বাব্দ",
+      "৫০০ খ্রিস্টপূর্বাব্দ",
+      "৩০০ খ্রিস্টপূর্বাব্দ",
+      "১০০০ খ্রিস্টপূর্বাব্দ"
+    ],
+    "correct":0,
+    "answered":false,
+    "explanation":"অলিম্পিক প্রতিযোগিতা প্রথম শুরু হয় <span style=\"font-size:16px; font-weight:bold;background:yellow;\">৭৭৬ খ্রিস্টপূর্বাব্দে</span> প্রাচীন গ্রিসে।"
+  },
+
+  /*১২৩*/{
+    "text":"গ্রিকদের দার্শনিক ঐতিহ্যের প্রধান বৈশিষ্ট্য কী ছিল?",
+    "options":[
+      "ধর্মীয় আচার নির্ভরতা",
+      "বৈজ্ঞানিক ও যুক্তিবাদী চিন্তা",
+      "যুদ্ধনীতি নির্ভরতা",
+      "কৃষিভিত্তিক চিন্তা"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"গ্রিকদের দার্শনিক ঐতিহ্যের প্রধান বৈশিষ্ট্য ছিল <span style=\"font-size:16px; font-weight:bold;background:yellow;\">বৈজ্ঞানিক ও যুক্তিবাদী চিন্তা (Rational Thinking)</span>।"
+  }, 
+    /*১২৪*/{
+    "text":"প্রাচীনতম গণতন্ত্রের অন্যতম কেন্দ্র হিসেবে কোন দেশকে ধরা হয়?",
+    "options":[
+      "ফ্রান্স",
+      "যুক্তরাজ্য",
+      "জার্মানি",
+      "ইতালি"
+    ],
+    "correct":1,
+    "answered":false,
+    "explanation":"<span style=\"font-size:16px; font-weight:bold;background:yellow;\">যুক্তরাজ্য (United Kingdom)</span> কে প্রাচীনতম গণতন্ত্রের অন্যতম কেন্দ্র হিসেবে ধরা হয়, কারণ এখানে সংসদীয় গণতন্ত্র ধীরে ধীরে বিকশিত হয়েছে এবং <span style=\"font-size:16px; font-weight:bold;background:yellow;\">Magna Carta (১২১৫ খ্রিস্টাব্দ)</span> গণতান্ত্রিক বিকাশে গুরুত্বপূর্ণ ভূমিকা রাখে।"
+  },
+
+  /*১২৫*/{
+    "text":"বর্তমানে বিশ্বের সর্ববৃহৎ গণতান্ত্রিক দেশ কোনটি?",
+    "options":[
+      "যুক্তরাষ্ট্র",
+      "চীন",
+      "ভারত",
+      "রাশিয়া"
+    ],
+    "correct":2,
+    "answered":false,
+    "explanation":"বর্তমানে <span style=\"font-size:16px; font-weight:bold;background:yellow;\">ভারত (India)</span> বিশ্বের সর্ববৃহৎ গণতান্ত্রিক দেশ, কারণ এখানে সর্বাধিক ভোটার ও বিশাল জনসংখ্যার ভিত্তিতে গণতান্ত্রিক নির্বাচন ব্যবস্থা পরিচালিত হয়।"
+  },
+  
+  ];
+
+questions.forEach((q,i)=>q.id=i+1);
+
+const quizArea=document.getElementById("quizArea");
+const totalQ=document.getElementById("totalQ");
+const answeredQ=document.getElementById("answeredQ");
+const correctQ=document.getElementById("correctQ");
+const wrongQ=document.getElementById("wrongQ");
+const scoreQ=document.getElementById("scoreQ");
+  const timerEl = document.getElementById("timer");
+
+let totalTime = 0;
+let timeLeft = 0;
+
+let timerInterval = null;
+let timerStarted = false;
+  function formatTime(seconds){
+
+const min = Math.floor(seconds / 60);
+const sec = seconds % 60;
+
+return String(min).padStart(2,"0")
++ ":"
++ String(sec).padStart(2,"0");
+
+}
+  function updateTimerDisplay(){
+
+const formatted = formatTime(timeLeft);
+
+timerEl.textContent = formatted;
+
+document.getElementById("liveTime")
+.textContent = formatted;
+
+}
+
+function startTimer(){
+
+clearInterval(timerInterval);
+  /*১২ তম রিফ্রেশ বাড়ানোর জন্য */
+  quizLocked = true;
+/*১২তম শেষ*/
+
+const inputMin = parseInt(
+document.getElementById("timeInput").value
+);
+
+if(!inputMin || inputMin <= 0){
+
+alert("টাইম সেট করুন");
+
+return;
+
+}
+
+timerStarted = true;
+
+totalTime = inputMin * 60;
+
+timeLeft = totalTime;
+
+document.getElementById("topTimerBar")
+.style.background = "#111827";
+
+updateTimerDisplay();
+
+timerInterval = setInterval(()=>{
+
+timeLeft--;
+
+if(timeLeft < 0){
+
+clearInterval(timerInterval);
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+timeUp();
+
+return;
+
+}
+
+updateTimerDisplay();
+
+if(timeLeft <= 300){
+
+document.getElementById("topTimerBar")
+.style.background = "#dc2626";
+
+}
+
+},1000);
+
+}
+
+/*Time Up fun.শুরু ১ম*/
+function timeUp(){
+
+showAlert("⛔ সময় শেষ!");
+
+quizLocked = true;
+
+questions.forEach(q=>{
+
+if(!q.answered){
+
+q.timeExpired = true;
+
+}
+
+});
+
+document.querySelectorAll(".opt").forEach(btn=>{
+
+btn.classList.add("disabled");
+
+btn.style.pointerEvents = "none";
+
+});
+
+updateCounters();
+
+}
+  /*শেষ ১ম */
+function updateCounters(){
+
+totalQ.textContent=questions.length;
+
+answeredQ.textContent=
+questions.filter(q=>q.answered).length;
+
+correctQ.textContent=
+questions.filter(q=>q.gotCorrect).length;
+
+wrongQ.textContent=
+questions.filter(q=>q.answered && !q.gotCorrect).length;
+
+let score=0;
+
+questions.forEach(q=>{
+
+if(q.answered){
+
+if(q.gotCorrect){
+
+score += Number(q.mark || 1);
+
+}
+  else{
+
+score -= Number(q.negative || 0);
+
+}
+
+}
+
+});
+
+scoreQ.textContent=score;
+
+}
+  
+function highlight(text,term){
+
+if(!term) return text;
+
+const parts = text.split(
+/(\(.*?\)|\[.*?\]|$.*?$|\begin{.*?}.*?\end{.*?})/g
+);
+
+return parts.map(part=>{
+
+// LaTeX অংশ untouched থাকবে
+if(
+part.startsWith("\(") ||
+part.startsWith("\[") ||
+part.startsWith("$") ||
+part.startsWith("\begin")
+){
+return part;
+}
+
+// normal text highlight হবে
+const regex = new RegExp("(" + term + ")","gi");
+
+return part.replace(regex,"<mark>$1</mark>");
+
+}).join("");
+
+}
+  
+ /*untouch function*/ 
+  function parseQRange(v){
+v = v.trim();
+if(v.includes("-")){
+let [a,b] = v.split("-").map(Number);
+return [a,b];
+}
+let x = Number(v);
+return [x,x];
+}
+
+document.getElementById("applyBatch").onclick = ()=>{
+  let [start,end] = parseQRange(document.getElementById("qRange").value);
+
+  let m = parseFloat(document.getElementById("mVal").value || 1);
+  let n = parseFloat(document.getElementById("nVal").value || 0);
+
+  questions.forEach((q,i)=>{
+    let qNo = i+1;
+
+    if(qNo >= start && qNo <= end){
+      q.mark = m;
+      q.negative = n;
+    }
+  });
+
+  updateCounters();
+  render(); // চাইলে এটা যোগ করতে পারো
+};
+
+function render(filtered=questions,term=""){
+
+quizArea.innerHTML="";
+
+filtered.forEach((q)=>{
+
+const qBox=document.createElement("div");
+qBox.className="question";
+
+const qh=document.createElement("div");
+qh.className="qtext";
+
+qh.innerHTML=q.id+". "+highlight(q.text,term);
+
+qBox.appendChild(qh);
+
+if(q.image){
+
+const img=document.createElement("img");
+
+img.src=q.image;
+
+img.className="img-preview";
+
+qBox.appendChild(img);
+
+}
+
+const optWrap=document.createElement("div");
+optWrap.className="options";
+
+q.options.forEach((optText,oi)=>{
+
+const opt=document.createElement("button");
+
+opt.className="opt";
+
+opt.innerHTML="<span>"+highlight(optText,term)+"</span><span></span>";
+
+  opt.onclick=()=>{
+
+if(q.answered) return;
+
+q.answered=true;
+
+const children=[...optWrap.children];
+
+children.forEach((btn,idx)=>{
+
+btn.classList.add("disabled");
+
+if(Number(idx) === Number(q.correct)){
+btn.classList.add("correct");
+
+btn.lastChild.textContent="✓";
+
+}
+
+if(idx===oi && idx!==q.correct){
+
+btn.classList.add("wrong");
+
+btn.lastChild.textContent="✕";
+
+}
+
+});
+
+q.gotCorrect=(oi===q.correct);
+
+updateCounters();
+
+};
+
+optWrap.appendChild(opt);
+
+});
+
+qBox.appendChild(optWrap);
+/*❤️‍🔥new card line*/
+  
+if(q.writtenMode){
+
+  optWrap.style.display = "none";
+
+ const answerWrap = document.createElement("div");
+  answerWrap.style.marginTop = "10px";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "উত্তর লিখুন...";
+  input.style.width = "100%";
+  input.style.boxSizing = "border-box";
+  input.style.padding = "10px";
+  input.style.borderRadius = "8px";
+  input.style.border = "1px solid #cbd5e1";
+
+  const resultBox = document.createElement("div");
+
+  resultBox.style.display = "none";
+  resultBox.style.marginTop = "10px";
+  resultBox.style.padding = "10px";
+  resultBox.style.borderRadius = "8px";
+  resultBox.style.fontWeight = "bold";
+
+input.addEventListener("change",()=>{
+  q.answered = true;
+  input.disabled = true;
+  input.style.background = "#f1f5f9";
+  input.style.border = "2px solid #10b981";
+  input.blur();
+
+  const userAns = input.value.trim().toLowerCase();
+
+const correctAnsList = q.hiddenAnswer
+  .split(",")
+  .map(v => v.trim().toLowerCase());
+
+const isCorrect = correctAnsList.includes(userAns);
+
+resultBox.style.display = "block";
+  
+
+if(isCorrect){
+
+  q.gotCorrect = true;
+
+resultBox.style.background = "#dcfce7";
+
+resultBox.innerHTML =
+    "✓ সঠিক উত্তর: " + q.hiddenAnswer;
+
+}
+  else{
+
+ q.gotCorrect = false;
+
+ resultBox.style.background = "#fee2e2";
+
+  resultBox.innerHTML =
+    "✕ সঠিক উত্তর: " + q.hiddenAnswer;
+
+}
+
+  updateCounters();
+});
+
+  answerWrap.appendChild(input);
+  answerWrap.appendChild(resultBox);
+
+ qBox.appendChild(answerWrap);
+
+}
+    
+/*❤️‍🔥new card*/ 
+const wrapper = document.createElement("div");
+
+/* ❤️‍🔥 EXTRA BOX আগে (TOP) */
+if(q.extraBox){
+  const extraDiv = document.createElement("div");
+  extraDiv.style.marginBottom = "10px";
+  extraDiv.style.padding = "10px";
+  extraDiv.style.border = "1px solid #cbd5e1";
+  extraDiv.style.borderRadius = "8px";
+  extraDiv.style.background = "#f8fafc";
+
+  extraDiv.innerHTML = highlight(q.extraBox,term);
+
+  wrapper.appendChild(extraDiv); // 👈 আগে যাবে
+}
+
+/* QUESTION পরে (BOTTOM) */
+wrapper.appendChild(qBox);
+
+quizArea.appendChild(wrapper);
+  /*❤️‍🔥new card line end*/
+ 
+const explBtn=document.createElement("button"); explBtn.className="btn ghost";
+explBtn.style.marginTop="8px";
+explBtn.textContent="ব্যাখ্যা";
+
+const exDiv=document.createElement("div");
+exDiv.className="explanation";
+
+exDiv.innerHTML=highlight(
+(q.explanation || "ব্যাখ্যা নেই")
+.replace(/\n/g,"<br>"),
+term
+);
+  if(q.table){
+
+  const tableWrap = document.createElement("div");
+
+  // ✅ table text highlight
+  tableWrap.innerHTML = highlight(q.table,term);
+
+  tableWrap.style.marginTop = "10px";
+  tableWrap.style.overflowX = "auto";
+
+  // ✅ Excel style compact table
+  tableWrap.querySelectorAll("table").forEach(tbl=>{
+
+    tbl.style.borderCollapse = "collapse";
+    tbl.style.tableLayout = "auto";
+    tbl.style.width = "auto";
+    tbl.style.maxWidth = "100%";
+
+  });
+
+  // ✅ Small compact cells
+  tableWrap.querySelectorAll("td").forEach(td=>{
+
+  td.style.minWidth = "40px";
+  td.style.height = "auto";
+  td.style.padding = "4px";
+  td.style.fontSize = "14px";
+
+  /* ✅ লেখাকে নিচে নামতে দিবে */
+ td.style.whiteSpace = "normal";
+td.style.wordBreak = "break-word";
+td.style.overflowWrap = "break-word";
+
+  /* ✅ বড় শব্দ ভাঙবে */
+  td.style.wordBreak = "break-word";
+
+  /* ✅ page এর ভিতরে রাখবে */
+  td.style.overflowWrap = "break-word";
+
+  td.style.verticalAlign = "middle";
+
+  /* ❌ resize remove */
+  td.style.resize = "none";
+
+  /* ✅ overflow hidden */
+  td.style.overflow = "hidden";
+
+});
+
+  exDiv.appendChild(tableWrap);
+
+}
+explBtn.onclick=()=>{
+
+exDiv.classList.toggle("show");
+
+if(window.MathJax){
+
+MathJax.typesetClear([exDiv]);
+
+MathJax.typesetPromise([exDiv])
+.then(()=>{})
+.catch((err)=>console.log(err));
+
+}
+
+applyFontSize();
+};
+
+qBox.appendChild(explBtn);
+qBox.appendChild(exDiv);
+
+ /*❤️‍🔥new card end line*/
+});
+
+if(window.MathJax){
+
+MathJax.typesetClear();
+
+MathJax.typesetPromise()
+.then(()=>{})
+.catch((err)=>console.log(err));
+
+}
+
+}
+  
+function normalizeLatex(str){
+  return (str || "")
+    .toLowerCase()
+    .replace(/\frac/g,"frac")
+    .replace(/\sqrt/g,"sqrt")
+    .replace(/[{}\^_]/g,"")
+    .replace(/s+/g,"")
+    .trim();
+}
+
+document.getElementById("searchBox").addEventListener("input",(e)=>{
+
+  const term = normalizeLatex(e.target.value);
+
+  const filtered = questions.filter(q =>
+
+    normalizeLatex(q.text).includes(term) ||
+
+    q.options.some(o =>
+      normalizeLatex(o).includes(term)
+    ) ||
+
+    (q.extraBox &&
+      normalizeLatex(q.extraBox).includes(term)
+    ) ||
+
+    (q.explanation &&
+      normalizeLatex(q.explanation).includes(term)
+    ) ||
+
+    (
+      q.table &&
+      normalizeLatex(
+        q.table.replace(/<[^>]*>/g," ")
+      ).includes(term)
+    )
+
+  );
+
+  render(filtered, term);
+
+});
+
+  
+   /*সার্চ ফিলিংস এর জন্য */ document.getElementById("searchBox").addEventListener("keydown",(e)=>{
+
+  if(e.key==="Enter"){
+
+  e.target.blur();
+
+  window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+  }
+
+});
+  /*সার্চ ফিলিংস এর লাস্ট লাইন */
+function renderStatsPanel(){
+  const statsContent = document.getElementById("statsContent");
+
+  let correct=[], wrong=[], pending=[];
+  let totalScore=0;
+
+  questions.forEach(q=>{
+    if(q.answered){
+      if(q.gotCorrect){
+        correct.push(q.id);
+        totalScore += Number(q.mark || 1);
+      } else {
+        wrong.push(q.id);
+        totalScore -= Number(q.negative || 0);
+      }
+    } else {
+      pending.push(q.id);
+    }
+  });
+
+  statsContent.innerHTML =
+    "<p>🏆 স্কোর: " + totalScore + "</p>" +
+    "<p>✔ সঠিক: " + correct.length + "</p>" +
+    "<p>❌ ভুল: " + wrong.length + "</p>";
+}
+document.getElementById("bgColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--bg-color",e.target.value);
+});
+
+document.getElementById("opColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--op-color",e.target.value);
+});
+
+document.getElementById("hlColor").addEventListener("input",(e)=>{
+document.documentElement.style.setProperty("--highlight-color",e.target.value);
+});
+
+let currentFontSize = "16px";
+
+function applyFontSize(){
+
+document.querySelectorAll(".qtext,.opt span,.explanation")
+.forEach(el=>{
+
+el.style.fontSize = currentFontSize;
+
+});
+
+}
+
+document.getElementById("fontSizeBox")
+.addEventListener("input",(e)=>{
+
+  let val = parseFloat(e.target.value);
+
+if(isNaN(val)) return;
+
+if(val < 10) val = 10;
+  if(val > 40) val = 40;
+
+  currentFontSize = val + "px";
+  applyFontSize();
+});
+
+/*২য় শুর Time up func.এর অংশ 👇*/
+document.getElementById("refreshViewer").onclick=()=>{
+
+if(quizLocked){
+/*৭ম দেখানোর জন্য*/
+showAlert("Timer Refresh First");
+ /*৭ম শেষ*/
+return;
+
+}
+
+questions.forEach(q=>{
+
+q.answered=false;
+q.gotCorrect=false;
+
+});
+
+document.querySelectorAll(".opt").forEach(btn=>{
+
+btn.style.pointerEvents = "auto";
+
+btn.classList.remove("disabled");
+
+});
+
+render();
+updateCounters();
+
+applyFontSize();
+
+};
+/*২য় শেষ  */
+document.getElementById("printViewer").onclick = async () => {
+
+  // print এর আগে explanation show
+  document.querySelectorAll(".explanation").forEach(el=>{
+    el.classList.add("show");
+  });
+
+  // MathJax render finish হওয়া পর্যন্ত wait
+  if(window.MathJax){
+
+    try{
+
+      await MathJax.typesetPromise();
+
+    }catch(err){
+
+     console.log(err);
+
+    }
+
+  }
+
+  applyFontSize();
+
+  // browser render settle হওয়ার জন্য ছোট delay
+  setTimeout(()=>{
+
+    window.print();
+
+  },500);
+
+};
+document.getElementById("scrollUp").onclick=()=>{
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+};
+
+document.getElementById("startTimerBtn").onclick=()=>{
+
+
+startTimer();
+
+};
+ /*৩য় শুরু TimeUp fresh Btn এর একটি অংশ*/
+document.getElementById("refreshTimerBtn").onclick=()=>{
+
+if(!checkPassword()) return;
+
+quizLocked = false;
+
+timerStarted = false;
+
+clearInterval(timerInterval);
+
+totalTime = 0;
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+document.getElementById("timeInput").value = "";
+
+document.getElementById("topTimerBar")
+.style.background = "#111827";
+
+};
+/*৩য় শেষ*/
+
+document.getElementById("pauseTimer").onclick=()=>{
+
+clearInterval(timerInterval);
+
+};
+
+document.getElementById("resumeTimer").onclick=()=>{
+
+clearInterval(timerInterval);
+
+timerInterval = setInterval(()=>{
+
+timeLeft--;
+
+updateTimerDisplay();
+
+if(timeLeft <= 300){
+
+document.getElementById("topTimerBar")
+.style.background = "#dc2626";
+
+}
+
+if(timeLeft <= 0){
+
+clearInterval(timerInterval);
+
+timeLeft = 0;
+
+updateTimerDisplay();
+
+timeUp();
+
+}
+
+},1000);
+
+};
+
+document.getElementById("fullscreenBtn").onclick=()=>{
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen();
+
+}else{
+
+document.exitFullscreen();
+
+}
+
+};
+document.getElementById("scrollDown").onclick=()=>{
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+};
+
+const statsBtn=document.getElementById("statsBtn");
+
+const statsPanel=document.getElementById("statsPanel");
+
+const statsContent=document.getElementById("statsContent");
+  document.getElementById("timeInput")
+.addEventListener("focus",()=>{
+
+setTimeout(()=>{
+
+window.scrollTo({
+top:0,
+behavior:"instant"
+});
+
+},50);
+
+});
+
+statsBtn.onclick=()=>{
+
+statsPanel.classList.toggle("show");
+
+const correct=[];
+const wrong=[];
+const pending=[];
+
+let totalScore=0;
+
+questions.forEach(q=>{
+
+if(q.answered){
+
+if(q.gotCorrect){
+
+correct.push(q.id);
+
+totalScore += Number(q.mark || 1);
+
+}else{
+
+wrong.push(q.id);
+
+totalScore -= Number(q.negative || 0);
+
+}
+
+}else{
+
+pending.push(q.id);
+
+}
+
+});
+
+  statsContent.innerHTML =
+"<p>🏆 স্কোর: " + totalScore + "</p>" +
+
+"<p>✔ সঠিক: " + correct.length + "</p>" +
+
+"<p>❌ ভুল: " + wrong.length + "</p>" +
+
+"<p><b>ভুল নং:</b><br>" + wrong.join(", ") + "</p>" +
+
+"<p><b>বাকি:</b><br>" + pending.length + "</p>";
+
+};
+
+/*৬ষ্ঠ রিফ্রেশের ফাংশন যেটা বলে আগে টাইমার রিফ্রেশ থাকুন  */
+  function showAlert(msg){
+
+const box = document.getElementById("customAlert");
+
+box.textContent = msg;
+
+box.style.display = "block";
+
+setTimeout(()=>{
+
+box.style.display = "none";
+
+},2000);
+
+}
+  /* ৬ষ্ঠ শেষ */
+render();
+updateCounters();
+applyFontSize();
+</script>
+
+<!-- ৫ম শুরু রিফ্রেশের জন্য -->
+  <div id="customAlert"></div>
+  <!--৫ম শেষ -->
+</body>
+</html>
