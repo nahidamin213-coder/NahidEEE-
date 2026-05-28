@@ -2,850 +2,1513 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>File Manager or File Organiser#01</title>
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0">
+
+<title>
+Advanced MCQ File Library
+</title>
+
 <style>
-body { font-family: 'Segoe UI', sans-serif; margin:0;
-    padding:20px;
-    background:#f2e2a3; }
-.container { max-width: 900px; margin:auto; background:#DAA520; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-h1 { text-align:center; margin-bottom:20px; color:#199; }
-    
-label { display:block; margin-top:10px;padding:6px;font-size:16px; font-weight:bold;border-radius:10px; background:#CaC3a5; }
-    
-input[type="file"], input[type="text"], textarea { width:100%; padding:6px; margin-top:5px; border-radius:5px; border:3px solid #ccc;background:#Acc;}
-   /*Add title button design */ 
-button { padding:6px 12px; margin-top:10px; border:2; border-radius:5px; background:#adAd41; color:#a00e09; font-weight:bold; font-size:18px; cursor:pointer; transition:0.2s; }
-    
-button:hover { background:#45a049; }
-    
-table { width:100%; border-collapse:collapse; margin-top:20px; }
-    
-th, td { border:1px solid #ccc; padding:10px; text-align:left; }
-    
-th { background-color:#effcf4; cursor:pointer; }
-    
-tr:nth-child(even){ background-color:#fbbb92; }
 
-#fullscreenViewer { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; }
-#fullscreenViewer iframe { width:100%; height:100%; border:none; }
-#backBtn { width:50px;
-  height:30px;
-  position:fixed;
-  top:380px;
-  right:20px;
-  font-size:12px;      /* ছোট লেখা */
-  padding:0;           /* extra space remove */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  z-index:3000;
-}
-    #backToTitlesBtn{width:50px;
-  height:30px;
-  position:fixed;
-  top:440px;
-  right:20px;
-  font-size:12px;      /* ছোট লেখা */
-  padding:0;           /* extra space remove */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  z-index:3000;
- background:#2563eb;
-        
-    }
-        
-#backBtn:hover { opacity:1; }
+/* =========================
+BODY
+========================= */
+  #viewerPage{
 
-#titlePage { max-width:600px; margin:50px auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-#titleList { margin-top:20px; text-align:left; }
-#titleList button { margin-top:5px; margin-right:5px; background-color:#2196F3; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer; position:relative; }
-#titleList button:hover { opacity:0.9; }
+overflow:auto;
 
-#titleContextMenu { display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2); z-index:9999; }
-#titleContextMenu button { display:block; width:100%; padding:5px 10px; border:none; background:none; text-align:left; cursor:pointer; color:black; }
-#titleContextMenu button:hover { background:#f2f2f2; }
+-webkit-overflow-scrolling:
+touch;
 
-@media (max-width:600px){ 
-  #fileTable { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; } 
-  button { width:100%; margin-top:5px; }
 }
 
-#searchInput { width:100%; padding:8px; margin-top:10px; border:1px solid #ccc; border-radius:5px; }
+#viewer{
 
-    /*৫ম শু*/
-    /* ===== Search Effects ===== */
-#searchInput.search-success{
-  border:3px solid green;
-  background:#eaffea;
-  box-shadow:0 0 10px rgba(0,180,0,0.4);
-  transition:0.3s;
+min-height:100vh;
+
 }
 
-#searchInput.search-empty{
-  border:3px solid red;
-  background:#fff0f0;
-  box-shadow:0 0 10px rgba(255,0,0,0.3);
+body{
+
+margin:0;
+padding:0;
+
+font-family:
+Segoe UI,sans-serif;
+
+background:#111;
+color:white;
+
 }
 
-.search-highlight{
-  background:yellow;
-  color:black;
-  font-weight:bold;
-  padding:1px 2px;
-  border-radius:3px;
+/* =========================
+TOP BAR
+========================= */
+
+.topbar{
+
+background:#1c1c1c;
+
+padding:15px;
+
+text-align:center;
+
+font-size:26px;
+font-weight:bold;
+
+color:gold;
+
+position:sticky;
+top:0;
+z-index:999;
+
+box-shadow:
+0 2px 10px rgba(0,0,0,0.5);
+
 }
-    /*৫ম শে*/
-    
-    </style>
+
+/* =========================
+CONTAINER
+========================= */
+
+.container{
+
+padding:15px;
+
+}
+
+/* =========================
+UPLOAD PANEL
+========================= */
+
+.uploadPanel{
+
+background:#222;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+}
+
+label{
+
+display:block;
+
+margin-top:10px;
+margin-bottom:5px;
+
+font-weight:bold;
+
+color:#ffda6b;
+
+}
+
+input[type="text"],
+input[type="file"]{
+
+width:100%;
+
+padding:10px;
+
+border:none;
+
+border-radius:8px;
+
+box-sizing:border-box;
+
+font-size:16px;
+
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+button{
+
+padding:10px 15px;
+
+border:none;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+margin-top:10px;
+
+}
+
+.uploadBtn{
+
+background:#00a86b;
+color:white;
+
+}
+
+.backBtn{
+
+background:#f44336;
+color:white;
+
+margin-bottom:15px;
+
+}
+
+.searchBtn{
+
+background:#2196F3;
+color:white;
+
+}
+
+.refreshBtn{
+
+background:#ff9800;
+color:white;
+
+}
+
+/* =========================
+HOME PAGE
+========================= */
+
+#homePage{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(140px,1fr));
+
+gap:15px;
+
+}
+
+/* =========================
+CATEGORY CARD
+========================= */
+
+.card{
+
+height:120px;
+
+background:#222;
+
+border-radius:18px;
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+font-size:24px;
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.3s;
+
+box-shadow:
+0 5px 10px rgba(0,0,0,0.4);
+
+text-align:center;
+
+padding:10px;
+
+}
+
+.card:hover{
+
+transform:scale(1.05);
+
+background:#333;
+
+}
+
+/* =========================
+FILE LIST
+========================= */
+
+.fileItem{
+
+background:#222;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-bottom:12px;
+
+}
+
+.fileTitle{
+
+font-size:20px;
+font-weight:bold;
+
+color:#ffda6b;
+
+margin-bottom:10px;
+
+}
+
+/* =========================
+ACTION BUTTONS
+========================= */
+
+.actionBtns button{
+
+margin-right:10px;
+
+}
+
+/* =========================
+VIEWER
+========================= */
+
+#viewerPage{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:white;
+
+z-index:99999;
+
+}
+
+#viewer{
+
+width:100%;
+height:100%;
+border:none;
+
+}
+
+/* =========================
+SEARCH
+========================= */
+
+.searchBox{
+
+margin-top:20px;
+margin-bottom:20px;
+
+}
+
+.searchBox input{
+
+margin-bottom:10px;
+
+}
+
+/* =========================
+HIDDEN
+========================= */
+
+.hidden{
+
+display:none;
+
+}
+
+</style>
 </head>
 <body>
 
-<!-- Title Page -->
-<div id="titlePage">
-  <h1>Manage Titles</h1>
-  <label>Create New Title:</label>
-  <input type="text" id="newTitleInput" placeholder="Type new title">
-  <button id="addTitleBtn">Add Title</button>
-  <div id="titleList">
-    <h3>Existing Titles:</h3>
-    <div id="titlesContainer"></div>
-  </div>
+<div class="topbar">
+
+📚 EEE & Job MCQ Library
+
 </div>
 
-<!-- Manager UI -->
-<div class="container" id="managerUI" style="display:none;">
-<h1 id="managerHeader">Fullscreen HTML File Manager</h1>
+<div class="container">
 
-<label>Select HTML file:</label>
-<input type="file" id="fileInput" accept=".html">
-<label>Enter file name:</label>
-<input type="text" id="fileName" placeholder="Enter name">
-<button id="uploadBtn">Upload HTML File</button>
+<!-- ======================
+UPLOAD PANEL
+====================== -->
 
+<div class="uploadPanel">
 
-    <!--৪র্থ শু -->
-  <!-- Search input -->
-<input type="text" id="searchInput" placeholder="Search all uploaded HTML files...">
+<label>
+Select HTML File
+</label>
 
-<div id="searchStatus" style="margin-top:8px;font-weight:bold;color:#0a5;"></div>
-     <!-- ৪র্থ শে -->
-    
-<h2>Uploaded Files</h2>
-<table id="fileTable">
-  <thead>
-      <!--১০ম শু রিপ্লেস -->
-    <tr>
-  <th>#</th>
-  <th>Search Results</th>
-  <th>Actions</th>
-</tr>
-      <!--১০ম শে -->
-  </thead>
-  <tbody></tbody>
-</table>
-<button id="backToTitlesBtn"  class="btn">Back to Titles</button>
+<input type="file"
+id="fileInput"
+accept=".html">
+
+<label>
+File Name
+</label>
+
+<input type="text"
+id="fileName"
+placeholder="Example:
+ ইসলাম">
+
+<label>
+Category
+</label>
+
+<input type="text"
+id="categoryInput"
+placeholder="Example:
+সূরা">
+
+<label>
+Sub Category
+</label>
+
+<input type="text"
+id="subCategoryInput"
+placeholder="Example:
+ফাতিহা">
+
+<button class="uploadBtn"
+id="uploadBtn">
+
+Upload File
+
+</button>
+  <!--আপলোড বাটনের লোডিং সিস্টেম দেখার জন্য  -->
+  <div id="uploadStatus"
+style="
+margin-top:10px;
+font-weight:bold;
+color:#00ff99;
+">
+</div> <!--শেষ লাইন -->
+
 </div>
 
-<!-- Fullscreen Viewer -->
-<div id="fullscreenViewer">
-  <button id="backBtn">Back</button>
-  <iframe id="viewer"></iframe>
+<!-- ======================
+SEARCH
+====================== -->
+
+<div class="searchBox">
+
+<input type="text"
+id="searchInput"
+placeholder="Search anything...">
+
+<button class="searchBtn"
+id="searchBtn">
+
+Search
+
+</button>
+
+<button class="refreshBtn"
+id="refreshBtn">
+
+Refresh
+
+</button>
+  <!-- change password এর Btn -->
+  <button
+id="changePasswordBtn"
+style="
+background:#9C27B0;
+color:white;
+">
+Change Password
+</button>
+  <!--শেষ লাইন  -->
+
 </div>
 
-<!-- Context Menu -->
-<div id="titleContextMenu">
-  <button id="renameTitleBtn">Rename</button>
-  <button id="deleteTitleBtn">Delete</button>
+<!-- ======================
+HOME PAGE
+====================== -->
+
+<div id="homePage">
+
 </div>
 
-<script>
-// ===== Password Section =====
-let PASSWORD = localStorage.getItem("managerPassword") || "N@hid53421";
-function checkAuth(){ const userPass = prompt("Enter password to continue:"); return userPass===PASSWORD; }
-function askPassword(){ const userPass = prompt("Enter password:"); return userPass===PASSWORD; }
-function changePassword(){
-  if(!askPassword()) return alert("Wrong password!");
-  const newPass = prompt("Enter new password:");
-  if(newPass && newPass.trim()!==""){ PASSWORD=newPass.trim(); localStorage.setItem("managerPassword", PASSWORD); alert("Password updated!"); }
+<!-- ======================
+SUB CATEGORY PAGE
+====================== -->
+
+<div id="subCategoryPage"
+class="hidden">
+
+<button class="backBtn"
+onclick="goHome()">
+
+⬅ Back
+
+</button>
+
+<div id="subCategoryList">
+
+</div>
+
+</div>
+
+<!-- ======================
+FILE PAGE
+====================== -->
+
+<div id="filePage"
+class="hidden">
+
+<button class="backBtn"
+onclick="goSubCategory()">
+
+⬅ Back
+
+</button>
+
+<div id="fileList">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ======================
+VIEWER
+====================== -->
+
+<div id="viewerPage">
+
+<button class="backBtn"
+style="
+position:fixed;
+top:15px;
+right:15px;
+z-index:999999;
+"
+onclick="closeViewer()">
+
+Close
+
+</button>
+
+<iframe id="viewer"
+style="
+width:100%;
+height:100%;
+border:none;
+background:white;
+">
+</iframe>
+
+</div>
+
+<script type="module">
+
+/* =========================
+FIREBASE IMPORT
+========================= */
+
+import {
+
+initializeApp
+
 }
 
-// ===== UI Elements =====
-const titlePage = document.getElementById('titlePage');
-const newTitleInput = document.getElementById('newTitleInput');
-const addTitleBtn = document.getElementById('addTitleBtn');
-const titlesContainer = document.getElementById('titlesContainer');
-const titleContextMenu = document.getElementById('titleContextMenu');
-let selectedTitleButton = null;
+from
 
-const managerUI = document.getElementById('managerUI');
-const managerHeader = document.getElementById('managerHeader');
-const fileInput = document.getElementById('fileInput');
-const fileNameInput = document.getElementById('fileName');
-const uploadBtn = document.getElementById('uploadBtn');
-const fileTableBody = document.querySelector('#fileTable tbody');
-const backToTitlesBtn = document.getElementById('backToTitlesBtn');
-const fullscreenViewer = document.getElementById('fullscreenViewer');
-const viewer = document.getElementById('viewer');
-const backBtn = document.getElementById('backBtn');
-const searchInput = document.getElementById('searchInput');
-    /*৬ষ্ঠ শু add*/
-    const searchStatus = document.getElementById('searchStatus');
-    /*৬ষ্ঠ শে*/
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-let db;
-const dbName = "HTMLManagerDB";
-let currentTitle = "";
+import {
 
-// ===== IndexedDB Setup =====
-function openDB() {
-  return new Promise((resolve,reject)=>{
-    const request = indexedDB.open(dbName,1);
-    request.onerror=()=>reject("DB open failed");
-    request.onsuccess=(e)=>{db=e.target.result; resolve();};
-    request.onupgradeneeded=(e)=>{
-      db=e.target.result;
-      if(!db.objectStoreNames.contains("titles")) db.createObjectStore("titles",{keyPath:"title"});
-    };
-  });
+getFirestore,
+
+collection,
+
+addDoc,
+
+getDocs,
+
+deleteDoc,
+
+doc,
+
+updateDoc
+
 }
 
-// ===== Add Title =====
-addTitleBtn.onclick = async ()=>{
-  if(!checkAuth()) return;
-  const title = newTitleInput.value.trim();
-  if(title==="") return alert("Title cannot be empty");
-  const tx = db.transaction(["titles"],"readwrite");
-  const store = tx.objectStore("titles");
-  store.put({title:title, files:[]});
-  newTitleInput.value='';
-  await loadTitles();
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* =========================
+FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyDnIt-qU9ohNsDSPxLykoYuCRpgE7xPAoM",
+
+authDomain:
+"nahideee-30801.firebaseapp.com",
+
+projectId:
+"nahideee-30801",
+
+storageBucket:
+"nahideee-30801.firebasestorage.app",
+
+messagingSenderId:
+"864651748283",
+
+appId:
+"1:864651748283:web:aaa2becd7fe36e75ad9a9e"
+
 };
 
-// ===== Load Titles =====
-async function loadTitles(){
-  titlesContainer.innerHTML='';
-  const tx=db.transaction(["titles"],"readonly");
-  const store=tx.objectStore("titles");
-  const req=store.getAll();
-  req.onsuccess=()=>{
-    req.result.forEach(item=>{
-      const btn=document.createElement('button');
-      btn.textContent=item.title;
-      btn.onclick=()=>enterTitle(item.title);
-      btn.oncontextmenu=(e)=>{
-        e.preventDefault();
-        selectedTitleButton=btn;
-        titleContextMenu.style.display='block';
-        titleContextMenu.style.left=e.pageX+'px';
-        titleContextMenu.style.top=e.pageY+'px';
-      };
-      titlesContainer.appendChild(btn);
-    });
-    const savedScroll = localStorage.getItem("titlesScroll");
-    if(savedScroll) titlesContainer.scrollTop=parseInt(savedScroll);
-  };
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+/* =========================
+ELEMENTS
+========================= */
+
+const fileInput =
+document.getElementById(
+"fileInput"
+);
+
+const fileName =
+document.getElementById(
+"fileName"
+);
+
+const categoryInput =
+document.getElementById(
+"categoryInput"
+);
+
+const subCategoryInput =
+document.getElementById(
+"subCategoryInput"
+);
+/*JS এর অংশ */
+const uploadBtn =
+document.getElementById(
+"uploadBtn"
+);
+/*আপলোড হচ্ছে কিনা দেখার জন্য  বাটন এর অংশ   */
+const uploadStatus =
+document.getElementById(
+"uploadStatus"
+);  /*শেষ লাইন*/
+const homePage =
+document.getElementById(
+"homePage"
+);
+
+const subCategoryPage =
+document.getElementById(
+"subCategoryPage"
+);
+
+const subCategoryList =
+document.getElementById(
+"subCategoryList"
+);
+
+const filePage =
+document.getElementById(
+"filePage"
+);
+
+const fileList =
+document.getElementById(
+"fileList"
+);
+
+const viewerPage =
+document.getElementById(
+"viewerPage"
+);
+
+const viewer =
+document.getElementById(
+"viewer"
+);
+
+const searchInput =
+document.getElementById(
+"searchInput"
+);
+  /*change password কে ধরার জন্য Js এ এটা যোগ করা হয়েছে */
+  const changePasswordBtn =
+
+document.getElementById(
+"changePasswordBtn"
+);
+  /*শেষ লাইন  */
+
+let allFiles = [];
+
+let currentCategory = "";
+
+let currentSubCategory = "";
+  /* =========================
+ADMIN PASSWORD
+========================= */ 
+/* =========================
+ADMIN PASSWORD SYSTEM
+========================= */
+
+let ADMIN_PASSWORD =
+
+localStorage.getItem(
+"adminPassword"
+)
+
+||
+
+"N@hid53421";
+
+/* =========================
+UPLOAD FILE
+========================= */
+
+uploadBtn.onclick =
+async ()=>{
+  /*upload দিতে চাইলে পাসওয়ার্ড চাইবে তার জন্য */
+/* PASSWORD CHECK */
+
+const pass =
+
+prompt(
+"Enter Admin Password"
+);
+
+if(
+pass !== ADMIN_PASSWORD
+){
+
+alert(
+"Wrong Password!"
+);
+
+return;
+
+}
+  /*শেষ লাইন */
+const file =
+fileInput.files[0];
+
+if(!file){
+
+alert(
+"Select File"
+);
+
+return;
+
 }
 
-// ===== Context Menu =====
-document.getElementById('renameTitleBtn').onclick = async ()=>{
-  if(!selectedTitleButton) return;
-  if(!askPassword()) return;
-  const oldTitle = selectedTitleButton.textContent;
-  const newTitle = prompt("Enter new title name:", oldTitle);
-  if(newTitle && newTitle.trim()!==""){
-    const tx = db.transaction(["titles"], "readwrite");
-    const store = tx.objectStore("titles");
-    const req = store.get(oldTitle);
-    req.onsuccess = ()=>{
-      const data = req.result;
-      store.delete(oldTitle);
-      data.title = newTitle.trim();
-      store.put(data);
-      loadTitles();
-    };
-  }
-  titleContextMenu.style.display = 'none';
+/* LOADING START */
+
+uploadBtn.disabled =
+true;
+
+uploadBtn.textContent =
+"Uploading...";
+
+uploadStatus.innerHTML =
+"⏳ Upload Starting...";
+
+/* FILE READER */
+
+const reader =
+new FileReader();
+
+reader.onload =
+async e=>{
+
+try{
+
+uploadStatus.innerHTML =
+"📖 Reading File...";
+
+const content =
+e.target.result;
+
+/* FILE SIZE CHECK */
+
+const sizeInKB =
+
+new Blob([content])
+.size / 1024;
+
+if(sizeInKB > 900){
+
+alert(
+"File Too Large!"
+);
+
+uploadBtn.disabled =
+false;
+
+uploadBtn.textContent =
+"Upload File";
+
+uploadStatus.innerHTML =
+"❌ Upload Failed";
+
+return;
+
+}
+
+/* PREPARING DATA */
+
+uploadStatus.innerHTML =
+"📦 Preparing Data...";
+
+const data = {
+
+name:
+fileName.value.trim(),
+
+category:
+categoryInput.value.trim(),
+
+subcategory:
+subCategoryInput.value.trim(),
+
+content,
+
+created:
+Date.now()
+
 };
 
-document.getElementById('deleteTitleBtn').onclick = async ()=>{
-  if(!selectedTitleButton) return;
-  if(!askPassword()) return;
-  if(confirm('Delete this title and all its files?')){
-    const title = selectedTitleButton.textContent;
-    const tx = db.transaction(["titles"], "readwrite");
-    const store = tx.objectStore("titles");
-    store.delete(title);
-    loadTitles();
-  }
-  titleContextMenu.style.display = 'none';
+/* FIREBASE UPLOAD */
+
+uploadStatus.innerHTML =
+"☁ Uploading To Firebase...";
+
+const docRef =
+
+await addDoc(
+
+collection(
+db,
+"mcqFiles"
+),
+
+data
+
+);
+
+/* VERIFY FROM FIREBASE */
+
+if(docRef.id){
+
+uploadStatus.innerHTML =
+
+"✅ Saved To Firebase";
+
+}
+
+/* SUCCESS */
+
+uploadStatus.innerHTML =
+"✅ Upload Complete";
+
+uploadBtn.disabled =
+false;
+
+uploadBtn.textContent =
+"Upload File";
+  /*লোড ফাইভ ক্লিয়ার দেখানোর জন্য */
+  setTimeout(()=>{
+
+uploadStatus.innerHTML =
+"";
+
+},3000);/* শেষ এটা যুক্ত করা হয়েছে  */
+
+/* CLEAR INPUTS */
+
+fileInput.value = "";
+
+fileName.value = "";
+
+categoryInput.value = "";
+
+subCategoryInput.value = "";
+
+/* RELOAD FILES */
+
+await loadFiles(); /*আগে ছিল loadFiles();👈 এটাআপলোড ক্লিয়ারেন্স দেখানোর জন্য  */
+
+}
+catch(error){
+
+console.error(error);
+
+uploadStatus.innerHTML =
+"❌ Upload Error";
+
+uploadBtn.disabled =
+false;
+
+uploadBtn.textContent =
+"Upload File";
+
+}
+
 };
 
-document.addEventListener('click', ()=>{ titleContextMenu.style.display='none'; });
+reader.readAsText(file);
 
-// ===== Enter Title =====
-function enterTitle(title){
-  currentTitle = title;
-  localStorage.setItem("lastTitle", title);
-  localStorage.setItem("titlesScroll", titlesContainer.scrollTop);
-  managerHeader.textContent = `Title: ${title}`;
-  titlePage.style.display = 'none';
-  managerUI.style.display = 'block';
-  updateTable();
-}
-
-// ===== File Operations =====
-function getFiles(){
-  return new Promise((resolve,reject)=>{
-    const tx = db.transaction(["titles"],"readonly");
-    const store = tx.objectStore("titles");
-    const req = store.get(currentTitle);
-    req.onsuccess = ()=>{ resolve(req.result ? req.result.files : []); };
-    req.onerror = ()=>reject("Failed to get files");
-  });
-}
-    /*৭ম add শু*/
-    async function getAllFilesAcrossTitles(){
-  return new Promise((resolve, reject)=>{
-    const tx = db.transaction(["titles"], "readonly");
-    const store = tx.objectStore("titles");
-    const req = store.getAll();
-
-    req.onsuccess = ()=>{
-      const allTitles = req.result || [];
-      let allFiles = [];
-
-      allTitles.forEach(t=>{
-        (t.files || []).forEach(f=>{
-          allFiles.push({
-            name: f.name,
-            content: f.content,
-            type: f.type,
-            title: t.title
-          });
-        });
-      });
-
-      resolve(allFiles);
-    };
-
-    req.onerror = ()=>reject("Failed to load global files");
-  });
-}
-    /*৭ম শে*/
-
-    /*১ম শু*/
-
-        /*১১ত + শু*/
-function extractMCQsFromHTML(htmlContent){
-
-  // HTML → plain text
-  const text = htmlContent
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<style[\s\S]*?<\/style>/gi, "")
-    .replace(/<\/p>/gi, "\n")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  // Split possible MCQs
-  const parts = text.split(
-    /(?=\s*[0-9০-৯]+\s*[.)।:-]\s*)/g
-  );
-
-  let mcqs = [];
-
-  parts.forEach(part=>{
-
-    const cleaned = part.trim();
-
-    const match = cleaned.match(
-      /^([0-9০-৯]+)\s*[.)।:-]\s*(.+)$/s
-    );
-
-    if(match){
-
-      mcqs.push({
-        number: match[1],
-        question: match[2],
-        full: cleaned
-      });
-
-    }
-
-  });
-
-  return mcqs;
-}
-    /*১১ম শে*/
-
-function saveFiles(files){
-  return new Promise((resolve,reject)=>{
-    const tx = db.transaction(["titles"],"readwrite");
-    const store = tx.objectStore("titles");
-    const reqGet = store.get(currentTitle);
-    reqGet.onsuccess = ()=>{
-      const data = reqGet.result;
-      data.files = files;
-      const reqPut = store.put(data);
-      reqPut.onsuccess = ()=>resolve();
-      reqPut.onerror = ()=>reject("Failed to save files");
-    };
-    reqGet.onerror = ()=>reject("Failed to get files for saving");
-  });
-}
-
-// ===== Update Table =====
-    /*৮ম replace শু*/
-async function updateTable(filteredFiles=null, searchText=""){
-  fileTableBody.innerHTML='';
-
-  const files = filteredFiles || await getFiles();
-
-  if(files.length===0){
-    fileTableBody.innerHTML = `
-      <tr>
-        <td colspan="3" style="text-align:center;font-weight:bold;color:red;">
-          No files found
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  files.forEach((file,idx)=>{
-    const tr = document.createElement('tr');
-
-    const tdIndex = document.createElement('td');
-    tdIndex.textContent = idx+1;
-
-    const tdName = document.createElement('td');
-
-    let displayName = file.name;
-
-    if(searchText){
-      const regex = new RegExp(searchText, 'gi');
-      displayName = displayName.replace(regex, match=>
-        `<span class="search-highlight">${match}</span>`
-      );
-    }
-
-    tdName.innerHTML = `
-      ${displayName}
-      <br>
-      <small style="color:#555;">Title: ${file.title || currentTitle}</small>
-    `;
-
-    const tdActions = document.createElement('td');
-
-    const openBtn = document.createElement('button');
-    openBtn.textContent = 'Open';
-
-    openBtn.onclick = ()=>{
-      fullscreenViewer.style.display='block';
-      managerUI.style.visibility='hidden';
-
-      const iframeDoc = viewer.contentDocument || viewer.contentWindow.document;
-      iframeDoc.open();
-      iframeDoc.write(file.content);
-      iframeDoc.close();
-    };
-
-    const renameBtn = document.createElement('button');
-    renameBtn.textContent='Rename';
-    renameBtn.style.backgroundColor='#2196F3';
-
-    renameBtn.onclick = async ()=>{
-      if(!askPassword()) return;
-
-      const newName = prompt("Enter new file name:", file.name);
-
-      if(newName && newName.trim()!==""){
-        const allFiles = await getFiles();
-        const idxToUpdate = allFiles.findIndex(f=>f.name===file.name);
-
-        allFiles[idxToUpdate].name = newName.trim();
-
-        await saveFiles(allFiles);
-        updateTable();
-      }
-    };
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent='Delete';
-    deleteBtn.style.backgroundColor='#f44336';
-
-    deleteBtn.onclick = async ()=>{
-      if(!askPassword()) return;
-
-      if(confirm('Delete this file?')){
-        const allFiles = await getFiles();
-        const idxToDelete = allFiles.findIndex(f=>f.name===file.name);
-
-        allFiles.splice(idxToDelete,1);
-
-        await saveFiles(allFiles);
-        updateTable();
-      }
-    };
-
-    tdActions.appendChild(openBtn);
-    tdActions.appendChild(renameBtn);
-    tdActions.appendChild(deleteBtn);
-
-    tr.appendChild(tdIndex);
-    tr.appendChild(tdName);
-    tr.appendChild(tdActions);
-
-    fileTableBody.appendChild(tr);
-  });
-}
-/*৮ম শে*/
-// ===== Upload File =====
-uploadBtn.onclick = async ()=>{
-  if(!askPassword()) return;
-  const file = fileInput.files[0];
-  if(!file) return alert("Select a file");
-  const name = fileNameInput.value.trim() || file.name;
-  const reader = new FileReader();
-  reader.onload = async e=>{
-    const allFiles = await getFiles();
-    allFiles.push({name:name, content:e.target.result, type:file.type});
-    await saveFiles(allFiles);
-    updateTable();
-    fileInput.value=''; fileNameInput.value='';
-  };
-  reader.readAsText(file);
 };
 
-// ===== Fullscreen Back Button =====
-let lastScrollTop = 0;
-managerUI.addEventListener("scroll",()=>{ lastScrollTop = managerUI.scrollTop; });
-backBtn.onclick = ()=>{
-  fullscreenViewer.style.display='none';
-  managerUI.style.visibility='visible';
-  viewer.src='about:blank';
-  managerUI.scrollTop = lastScrollTop;
-};
+/* =========================
+LOAD FILES
+========================= */
 
-// ===== Back to Titles =====
-let lastTitleScroll = 0;
-backToTitlesBtn.onclick = ()=>{
-  lastTitleScroll = titlePage.scrollTop;
-  managerUI.style.display='none';
-  titlePage.style.display='block';
-  currentTitle='';
-  loadTitles();
-  setTimeout(()=>{ titlePage.scrollTop = lastTitleScroll; },100);
-};
+async function loadFiles(){
 
-/*১১তম রিপ্লেস এখানে ছিল ৯ম,১ম,২য়,৩য়,*/
-// ===== Advanced MCQ Runtime Search =====
-searchInput.addEventListener('keydown', async (e)=>{
+homePage.innerHTML = "";
 
-  if(e.key !== "Enter") return;
+const snapshot =
+await getDocs(
+collection(
+db,
+"mcqFiles"
+)
+);
 
-  e.preventDefault();
+allFiles = [];
 
-  const keyword = searchInput.value.trim();
+snapshot.forEach(docItem=>{
 
-  if(keyword === ""){
-    updateTable();
-    return;
-  }
+allFiles.push({
 
-  // ===== Search Feeling =====
-  searchStatus.innerHTML = `
-    <span style="color:#004;font-weight:bold;">
-      Searching...
-    </span>
-  `;
+id:docItem.id,
 
-  searchInput.style.background = "#fff9c4";
-
-  fileTableBody.innerHTML = `
-    <tr>
-      <td colspan="3"
-          style="
-            text-align:center;
-            font-weight:bold;
-            color:#444;
-            padding:20px;
-          ">
-        Searching MCQs...
-      </td>
-    </tr>
-  `;
-
-  const allFiles = await getAllFilesAcrossTitles();
-
-  let matchedResults = [];
-
-  for(const file of allFiles){
-
-    // ===== hidden iframe =====
-    const iframe = document.createElement("iframe");
-
-    iframe.style.display = "none";
-
-    document.body.appendChild(iframe);
-
-    const iframeDoc =
-      iframe.contentDocument ||
-      iframe.contentWindow.document;
-
-    iframeDoc.open();
-    iframeDoc.write(file.content);
-    iframeDoc.close();
-
-    // wait render
-    await new Promise(resolve=>setTimeout(resolve, 500));
-
-    const plainText =
-      iframeDoc.body.innerText || "";
-
-    iframe.remove();
-
-    // ===== Split MCQs =====
-    const mcqBlocks = plainText.split(
-      /\n(?=\s*[0-9০-৯]+\s*[.)।:-])/g
-    );
-
-    mcqBlocks.forEach(block=>{
-
-      const cleanBlock = block.trim();
-
-      if(
-        cleanBlock.toLowerCase()
-        .includes(keyword.toLowerCase())
-      ){
-
-        // ===== MCQ Number =====
-        let mcqNumber = "?";
-
-        const numberMatch =
-          cleanBlock.match(
-            /^([0-9০-৯]+)\s*[.)।:-]/
-          );
-
-        if(numberMatch){
-          mcqNumber = numberMatch[1];
-        }
-
-        // ===== Small Preview =====
-        const index =
-          cleanBlock
-          .toLowerCase()
-          .indexOf(keyword.toLowerCase());
-
-        const start =
-          Math.max(0, index - 40);
-
-        const end =
-          Math.min(
-            cleanBlock.length,
-            index + keyword.length + 80
-          );
-
-        let preview =
-          cleanBlock.slice(start, end);
-
-        // ===== Highlight =====
-        const regex =
-          new RegExp(keyword, "gi");
-
-        preview =
-          preview.replace(
-            regex,
-            match=>`
-              <span class="search-highlight">
-                ${match}
-              </span>
-            `
-          );
-
-        matchedResults.push({
-          fileName: file.name,
-          title: file.title,
-          mcqNumber: mcqNumber,
-          preview: preview,
-          content: file.content
-        });
-
-      }
-
-    });
-
-  }
-
-  // ===== Clear =====
-  fileTableBody.innerHTML = '';
-
-  // ===== No Result =====
-  if(matchedResults.length === 0){
-
-    searchStatus.innerHTML = `
-      <span style="color:red;">
-        No MCQ Found
-      </span>
-    `;
-
-    fileTableBody.innerHTML = `
-      <tr>
-        <td colspan="3"
-            style="
-              text-align:center;
-              color:red;
-              font-weight:bold;
-              padding:20px;
-            ">
-          No MCQ Found
-        </td>
-      </tr>
-    `;
-
-    searchInput.classList.remove(
-      "search-success"
-    );
-
-    searchInput.classList.add(
-      "search-empty"
-    );
-
-    searchInput.style.background = "#fff0f0";
-
-    return;
-  }
-
-  // ===== Success =====
-  searchStatus.innerHTML = `
-    <span style="color:green;font-weight:bold;">
-      Found ${matchedResults.length} MCQ Result(s)
-    </span>
-  `;
-
-  searchInput.classList.remove(
-    "search-empty"
-  );
-
-  searchInput.classList.add(
-    "search-success"
-  );
-
-  searchInput.style.background = "#eaffea";
-
-  // ===== Render =====
-  matchedResults.forEach((item, idx)=>{
-
-    const tr =
-      document.createElement('tr');
-
-    // ===== Index =====
-    const tdIndex =
-      document.createElement('td');
-
-    tdIndex.textContent = idx + 1;
-
-    // ===== Info =====
-    const tdInfo =
-      document.createElement('td');
-
-    tdInfo.innerHTML = `
-
-      <div style="
-        font-weight:bold;
-        color:#003366;
-        margin-bottom:6px;
-      ">
-        MCQ No: ${item.mcqNumber}
-      </div>
-
-      <div style="
-        line-height:1.8;
-        font-size:15px;
-      ">
-        ${item.preview}
-      </div>
-
-      <div style="
-        margin-top:8px;
-        color:#555;
-        font-size:12px;
-      ">
-        File: ${item.fileName}
-      </div>
-
-      <div style="
-        color:#777;
-        font-size:12px;
-      ">
-        Title: ${item.title}
-      </div>
-    `;
-
-    // ===== Action =====
-    const tdActions =
-      document.createElement('td');
-
-    const openBtn =
-      document.createElement('button');
-
-    openBtn.textContent = 'Open';
-
-    openBtn.onclick = ()=>{
-
-      fullscreenViewer.style.display =
-        'block';
-
-      managerUI.style.visibility =
-        'hidden';
-
-      const iframeDoc =
-        viewer.contentDocument ||
-        viewer.contentWindow.document;
-
-      iframeDoc.open();
-      iframeDoc.write(item.content);
-      iframeDoc.close();
-    };
-
-    tdActions.appendChild(openBtn);
-
-    // ===== Append =====
-    tr.appendChild(tdIndex);
-    tr.appendChild(tdInfo);
-    tr.appendChild(tdActions);
-
-    fileTableBody.appendChild(tr);
-
-  });
+...docItem.data()
 
 });
-    /*১১তম শে*/
 
-// ===== Initialization =====
-(async ()=>{
-  await openDB();
-  loadTitles();
+});
 
-  const changePassBtn = document.createElement("button");
-  changePassBtn.textContent="Change Password";
-  changePassBtn.style.background="#ff9800"; changePassBtn.style.color="#fff";
-  changePassBtn.onclick = changePassword;
-  titlePage.insertBefore(changePassBtn,titlePage.children[1]);
+const categories =
+[...new Set(
+allFiles.map(
+f=>f.category
+)
+)];
 
-  const last = localStorage.getItem("lastTitle");
-  if(last){
-    /*const reopen = confirm("Reopen last title: "+last+"?");*/
-    if(last){
-  enterTitle(last);
+categories.forEach(cat=>{
+
+const card =
+document.createElement("div");
+
+card.className =
+"card";
+
+card.textContent =
+cat;
+
+card.onclick =
+()=>showSubCategories(cat);
+
+homePage.appendChild(
+card
+);
+
+});
+
 }
-  }
-})();
+
+/* =========================
+SHOW SUB CATEGORY
+========================= */
+
+window.showSubCategories =
+function(category){
+
+currentCategory =
+category;
+
+homePage.classList
+.add("hidden");
+
+subCategoryPage
+.classList
+.remove("hidden");
+
+subCategoryList
+.innerHTML = "";
+
+const filtered =
+allFiles.filter(
+f=>f.category===category
+);
+
+const subCats =
+[...new Set(
+filtered.map(
+f=>f.subcategory
+)
+)];
+
+subCats.forEach(sub=>{
+
+const card =
+document.createElement("div");
+
+card.className =
+"card";
+
+card.textContent =
+sub;
+
+card.onclick =
+()=>showFiles(sub);
+
+subCategoryList
+.appendChild(card);
+
+});
+
+};
+
+/* =========================
+SHOW FILES
+========================= */
+
+window.showFiles =
+function(sub){
+
+currentSubCategory =
+sub;
+
+subCategoryPage
+.classList
+.add("hidden");
+
+filePage.classList
+.remove("hidden");
+
+fileList.innerHTML = "";
+
+const filtered =
+allFiles.filter(
+f=>
+
+f.category===
+currentCategory
+
+&&
+
+f.subcategory===
+sub
+
+);
+
+filtered.forEach(file=>{
+
+const div =
+document.createElement("div");
+
+div.className =
+"fileItem";
+
+/* TITLE */
+
+const title =
+document.createElement("div");
+
+title.className =
+"fileTitle";
+
+title.textContent =
+file.name;
+
+/* ACTION AREA */
+
+const actions =
+document.createElement("div");
+
+actions.className =
+"actionBtns";
+
+/* OPEN BUTTON */
+
+const openBtn =
+document.createElement("button");
+
+openBtn.textContent =
+"Open";
+
+openBtn.onclick =
+()=>{
+
+openFile(
+file.content
+);
+
+};
+
+/* RENAME BUTTON */
+
+const renameBtn =
+document.createElement("button");
+
+renameBtn.textContent =
+"Rename";
+
+renameBtn.onclick =
+()=>{
+
+renameFile(
+file.id,
+file.name
+);
+
+};
+
+/* DELETE BUTTON */
+
+const deleteBtn =
+document.createElement("button");
+
+deleteBtn.textContent =
+"Delete";
+
+deleteBtn.onclick =
+()=>{
+
+deleteFile(
+file.id
+);
+
+};
+
+actions.appendChild(
+openBtn
+);
+
+actions.appendChild(
+renameBtn
+);
+
+actions.appendChild(
+deleteBtn
+);
+
+div.appendChild(
+title
+);
+
+div.appendChild(
+actions
+);
+
+fileList.appendChild(
+div
+);
+
+});
+
+};
+
+/* =========================
+OPEN FILE
+========================= */
+
+window.openFile =
+function(content){
+
+viewerPage.style
+.display = "block";
+
+const iframeDoc =
+viewer.contentDocument
+||
+viewer.contentWindow
+.document;
+
+const finalContent = `
+
+<style>
+
+html,
+body{
+
+margin:0;
+padding:0;
+
+width:100%;
+height:auto;
+
+overflow:auto !important;
+
+}
+
+*{
+
+max-width:100% !important;
+box-sizing:border-box;
+
+}
+
+img,
+table,
+iframe{
+
+max-width:100% !important;
+
+}
+
+</style>
+
+${content}
+
+`;
+
+iframeDoc.open();
+
+iframeDoc.write(
+finalContent
+);
+
+iframeDoc.close();
+
+};
+
+/* =========================
+CLOSE VIEWER
+========================= */
+
+window.closeViewer =
+function(){
+
+viewerPage.style
+.display = "none";
+
+viewer.src =
+"about:blank";
+
+};
+
+/* =========================
+RENAME
+========================= */
+
+window.renameFile =
+async function(id,name){
+  /* রিনেম করতে চাইলে পাসওয়ার্ড চাইবে তার জন্য */
+  /* PASSWORD CHECK */
+
+const pass =
+
+prompt(
+"Enter Admin Password"
+);
+
+if(
+pass !== ADMIN_PASSWORD
+){
+
+alert(
+"Wrong Password!"
+);
+
+return;
+
+}
+ /*শেষ লাইন  */
+
+const newName =
+prompt(
+"Enter new name",
+name
+);
+
+if(!newName) return;
+
+await updateDoc(
+
+doc(
+db,
+"mcqFiles",
+id
+),
+
+{
+name:newName
+}
+
+);
+
+loadFiles();
+
+showFiles(
+currentSubCategory
+);
+
+};
+
+/* =========================
+DELETE
+========================= */
+
+window.deleteFile =
+async function(id){
+ /* ডিলিট করতে চাইলে পাসওয়ার্ড যাবে তার জন্য */
+  /* PASSWORD CHECK */
+const pass =
+
+prompt(
+"Enter Admin Password"
+);
+
+if(
+pass !== ADMIN_PASSWORD
+){
+
+alert(
+"Wrong Password!"
+);
+
+return;
+
+}
+  /*শেষ লাইন */
+if(
+!confirm(
+"Delete file?"
+)
+)return;
+
+await deleteDoc(
+
+doc(
+db,
+"mcqFiles",
+id
+)
+
+);
+
+loadFiles();
+
+showFiles(
+currentSubCategory
+);
+
+};
+
+/* =========================
+GO HOME
+========================= */
+
+window.goHome =
+function(){
+
+subCategoryPage
+.classList
+.add("hidden");
+
+homePage.classList
+.remove("hidden");
+
+};
+
+/* =========================
+GO SUB CATEGORY
+========================= */
+
+window.goSubCategory =
+function(){
+
+filePage.classList
+.add("hidden");
+
+subCategoryPage
+.classList
+.remove("hidden");
+
+};
+
+/* =========================
+SEARCH
+========================= */
+
+document
+.getElementById(
+"searchBtn"
+)
+
+.onclick =
+()=>{
+
+const keyword =
+searchInput.value
+.trim()
+.toLowerCase();
+
+if(keyword===""){
+
+loadFiles();
+
+return;
+
+}
+
+homePage.innerHTML = "";
+
+const matched =
+allFiles.filter(f=>
+
+f.name
+.toLowerCase()
+.includes(keyword)
+
+||
+
+f.content
+.toLowerCase()
+.includes(keyword)
+
+);
+
+matched.forEach(file=>{
+
+const card =
+document.createElement("div");
+
+card.className =
+"card";
+
+card.textContent =
+file.name;
+
+card.onclick =
+()=>openFile(
+file.content
+);
+
+homePage.appendChild(
+card
+);
+
+});
+
+};
+
+/* =========================
+REFRESH
+========================= */
+
+document
+.getElementById(
+"refreshBtn"
+)
+
+.onclick =
+()=>{
+
+searchInput.value =
+"";
+
+loadFiles();
+
+};
+/*এ সমগ্র পাসওয়ার্ড চেইঞ্জ সিস্টেম এর জন্য  */
+  /* =========================
+CHANGE PASSWORD
+========================= */
+
+changePasswordBtn.onclick =
+()=>{
+
+/* OLD PASSWORD */
+
+const oldPass =
+
+prompt(
+"Enter Old Password"
+);
+
+if(
+oldPass !== ADMIN_PASSWORD
+){
+
+alert(
+"Wrong Old Password!"
+);
+
+return;
+
+}
+
+/* NEW PASSWORD */
+
+const newPass =
+
+prompt(
+"Enter New Password"
+);
+
+if(
+!newPass
+||
+newPass.trim()===""
+){
+
+alert(
+"Password Cannot Be Empty"
+);
+
+return;
+
+}
+
+/* SAVE PASSWORD */
+
+ADMIN_PASSWORD =
+newPass;
+
+localStorage.setItem(
+
+"adminPassword",
+
+newPass
+
+);
+
+alert(
+"Password Changed Successfully"
+);
+
+};
+  /*শেষ লাইন  */
+/* =========================
+INIT
+========================= */
+
+loadFiles();
+
 </script>
+
 </body>
 </html>
