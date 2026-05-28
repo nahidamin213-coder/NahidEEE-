@@ -1,170 +1,38 @@
-<!doctype html>
-<html lang="bn">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Manager or File Organiser#01</title>
+<style>
+body { font-family: 'Segoe UI', sans-serif; margin:0;
+    padding:20px;
+    background:#f2e2a3; }
+.container { max-width: 900px; margin:auto; background:#DAA520; padding:20px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+h1 { text-align:center; margin-bottom:20px; color:#199; }
+    
+label { display:block; margin-top:10px;padding:6px;font-size:16px; font-weight:bold;border-radius:10px; background:#CaC3a5; }
+    
+input[type="file"], input[type="text"], textarea { width:100%; padding:6px; margin-top:5px; border-radius:5px; border:3px solid #ccc;background:#Acc;}
+   /*Add title button design */ 
+button { padding:6px 12px; margin-top:10px; border:2; border-radius:5px; background:#adAd41; color:#a00e09; font-weight:bold; font-size:18px; cursor:pointer; transition:0.2s; }
+    
+button:hover { background:#45a049; }
+    
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+    
+th, td { border:1px solid #ccc; padding:10px; text-align:left; }
+    
+th { background-color:#effcf4; cursor:pointer; }
+    
+tr:nth-child(even){ background-color:#fbbb92; }
 
-<title>বাংলা ব্যাকরণ#০১</title>
-
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-
-<script id="MathJax-script" async
-src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-  <style>
-	  /*১ম table design */
-  <style>
-td:nth-child(4){
-  background-color: #ffeaa7;
-  font-size:16px;
-}
-td:nth-child(6){
-  background-color: #dfe6e9;
-  font-size:16px;
-  font-weight:0;
-}
-  </style>
-  <style>  tr:nth-child(odd){
-background:#a5cfba;
-}
-
-tr:nth-child(2n+2){
-background:#DAe000;
-  }
-  /*১ম যদি css মানে style এ এটা রাখি তাহলে আর টেবিলের মার্জিন[ style="margin:50px 0" অথবা <table border="1" style="margin-top:20px;">] লিখতে হবে না শুধু class="tb1 or tb2..."ইত্যাদি দিলেই চলবে।তাহলে দুটি টেবিলের মাঝে গ্যাপ সৃষ্টি হবে  */  
-  table{
-margin:10px 0;
-}
-  /* ১ম শেষ টেবিল নকশা */
-#searchBox{padding:8px;
-  width:100%;
-  max-width:300px;
-  margin-bottom:12px;
-  border:1;/*px solid #cbd5e1*/
-  border-radius:6px
-}
-:root{
-  --highlight-color: yellow;
-  --bg-color:#DAA520;
-  --op-color:#B9AF63;
-}
-
-body{
-  font-family:sans-serif;
-  padding:20px;
-  background:var(--bg-color);
-}
-
-.question{
-  border:2px solid #ccc;/*px solid #ccc*/
-  padding:12px;
-  margin-bottom:10px;
-  border-radius:8px;
-  background:var(--bg-color);
-}
-
-.qtext{
-  font-weight:600;
-  margin-bottom:8px;
-}
-
-.options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.opt{/*❤️‍🔥❤️‍🔥option button design করার কোড */
-  padding:10px;
-  border-radius:8px;
-  border:5;/*px solid #cbd5e1*/
-  cursor:pointer;
-  display:flex;
-  justify-content:space-between;
-  background:var(--op-color);
-}
-
-.opt.correct{
-  background:#a7f3d0;
-  border-color:#10b981;
-  color:#065f46;
-}
-
-.opt.wrong{
-  background:#ffcaca;
-  border-color:#f87171;
-  color:#7f1d1d;
-}
-
-.opt.disabled{
-  opacity:.95;
-  cursor:default;
-}
-
-.btn{
-  padding:8px 10px;
-  border-radius:6px;
-  border:1;
-  background:#2563eb;
-  color:#fff;
-  cursor:pointer;
-  opacity: 0.5;
-}
-
-.btn.ghost{
-  background:#e2e8f0;
-  color:#111;
-  opacity: 1;
-}
-
-.explanation{
-  margin-top:6px;
-  font-size:16px;
-  color:#334155;/*334155*/
-  display:none;
-  background:var(--op-color);
-  padding:6px;
-  border-radius:6px;
-  white-space:pre-line;
-  font-weight:300;/*লেখা কতটুকু মোটা হবে*/
-}
-
-.explanation.show{
-  display:block;
-}
-
-.img-preview{
-  max-width:100%;
-  border-radius:6px;
-  margin-top:8px;
-}
-
-.controls{
-  margin-bottom:12px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-}
-
-.scroll-btn{
-  position:fixed;
-  right:20px;
-  width:42px;
-  height:42px;
-  border:1;
-  border-radius:50%;
-  background:#2563eb;
-  color:white;
-  cursor:pointer;
-  z-index:1000;
-  opacity:0.4;
-}
-#refreshViewer{
-  width:50px;
+#fullscreenViewer { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; }
+#fullscreenViewer iframe { width:100%; height:100%; border:none; }
+#backBtn { width:50px;
   height:30px;
   position:fixed;
-  top:415px;
+  top:380px;
   right:20px;
   font-size:12px;      /* ছোট লেখা */
   padding:0;           /* extra space remove */
@@ -174,1175 +42,810 @@ body{
   text-align:center;
   z-index:3000;
 }
-#scrollUp{bottom:70px;}
-#scrollDown{bottom:20px;}
-
-#statsBtn{
-  bottom:120px;
-}
-
-#statsPanel{
+    #backToTitlesBtn{width:50px;
+  height:30px;
   position:fixed;
-  right:70px;
-  bottom:120px;
-  width:250px;
-  background:var(--bg-color);
-  border:1px solid #ccc;
-  border-radius:10px;
-  padding:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+  top:440px;
+  right:20px;
+  font-size:12px;      /* ছোট লেখা */
+  padding:0;           /* extra space remove */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  z-index:3000;
+ background:#2563eb;
+        
+    }
+        
+#backBtn:hover { opacity:1; }
 
-  display:none;
-  z-index:2000;
-  
-  overscroll-behavior: contain;
-  touch-action: manipulation;
+#titlePage { max-width:600px; margin:50px auto; background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+#titleList { margin-top:20px; text-align:left; }
+#titleList button { margin-top:5px; margin-right:5px; background-color:#2196F3; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer; position:relative; }
+#titleList button:hover { opacity:0.9; }
+
+#titleContextMenu { display:none; position:absolute; background:#fff; border:1px solid #ccc; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,0.2); z-index:9999; }
+#titleContextMenu button { display:block; width:100%; padding:5px 10px; border:none; background:none; text-align:left; cursor:pointer; color:black; }
+#titleContextMenu button:hover { background:#f2f2f2; }
+
+@media (max-width:600px){ 
+  #fileTable { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; } 
+  button { width:100%; margin-top:5px; }
 }
 
-#statsPanel.show{
-  display:block;
+#searchInput { width:100%; padding:8px; margin-top:10px; border:1px solid #ccc; border-radius:5px; }
+
+    /*৫ম শু*/
+    /* ===== Search Effects ===== */
+#searchInput.search-success{
+  border:3px solid green;
+  background:#eaffea;
+  box-shadow:0 0 10px rgba(0,180,0,0.4);
+  transition:0.3s;
 }
-#fontSizeBox{
-  width:70px;
-  padding:6px;
-  border-radius:6px;
-  border:1px solid #cbd5e1;
+
+#searchInput.search-empty{
+  border:3px solid red;
+  background:#fff0f0;
+  box-shadow:0 0 10px rgba(255,0,0,0.3);
 }
-mark{
-  background:var(--highlight-color);
-  padding:2px;
+
+.search-highlight{
+  background:yellow;
+  color:black;
+  font-weight:bold;
+  padding:1px 2px;
   border-radius:3px;
 }
-@media print{
-
-.scroll-btn,
-.controls,
-#statsBtn,
-#statsPanel,
-.btn{
-display:none !important;
-}
-
-.explanation{
-display:block !important;
-}
-
-body{
-background:white !important;
-}
-
-.question{
-break-inside:avoid;
-page-break-inside:avoid;
--webkit-print-color-adjust:exact;
-print-color-adjust:exact;
-}
-  table{
-width:100% !important;
-table-layout:fixed !important;
-}
-
-td{
-white-space:normal !important;
-word-break:break-word !important;
-overflow-wrap:break-word !important;
-font-size:12px !important;
-padding:4px !important;
-}
-
-.explanation{
-overflow:visible !important;
-}
-
-}
-  
-  /* ৪র্থ শুরু রিফ্রেশ এলার্ট দেওয়ার যে সংকেত */
-  #customAlert{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,0.75);
-color:white;
-padding:12px 20px;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
-z-index:5000;
-display:none;
-backdrop-filter:blur(4px);
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-}
-  /* ৪র্থ শেষ */
-</style>
+    /*৫ম শে*/
+    
+    </style>
 </head>
-
 <body>
 
-<h2>Engr.Md.Nahid Amin<br><span style="font-size:18px;font-weight:bold;background:yellow;">	বাংলা ব্যাকরণ#01</span></h2><h3><b>Quiz search👇</h3><h4><b>সকল</b></h4>
-
-<div class="controls">
-  <input type="text" id="searchBox" placeholder="প্রশ্ন সার্চ করুন..."/>
-  
-  <button id="refreshViewer" class="btn">রিফ্রেশ</button>
-  <button id="printViewer" class="btn">প্রিন্ট</button>
-  <input type="color" id="bgColor" value="#DAA520">
-  <label>:BG</label>
-  <input type="color" id="opColor" value="#B9AF63">
-  <label>:OP</label>
-  <input type="color" id="hlColor" value="#ffff00">
-					<label>:HL</label> <input type="number" id="fontSizeBox" placeholder="Size">
-  <label>:Font</label>
-<input id="qRange" placeholder="QBox (1 or 1-50)">
-<input id="mVal" type="number" placeholder="Mark">
-<input id="nVal" type="number" placeholder="Negative">
-<button id="applyBatch">Apply</button>
+<!-- Title Page -->
+<div id="titlePage">
+  <h1>Manage Titles</h1>
+  <label>Create New Title:</label>
+  <input type="text" id="newTitleInput" placeholder="Type new title">
+  <button id="addTitleBtn">Add Title</button>
+  <div id="titleList">
+    <h3>Existing Titles:</h3>
+    <div id="titlesContainer"></div>
+  </div>
 </div>
 
-<div class="stats">
-মোট: <span id="totalQ">0</span> |
-উত্তর দেয়া: <span id="answeredQ">0</span> |
-সঠিক: <span id="correctQ">0</span> |
-ভুল: <span id="wrongQ">0</span> |
-স্কোর: <span id="scoreQ">0</span>
+<!-- Manager UI -->
+<div class="container" id="managerUI" style="display:none;">
+<h1 id="managerHeader">Fullscreen HTML File Manager</h1>
+
+<label>Select HTML file:</label>
+<input type="file" id="fileInput" accept=".html">
+<label>Enter file name:</label>
+<input type="text" id="fileName" placeholder="Enter name">
+<button id="uploadBtn">Upload HTML File</button>
+
+
+    <!--৪র্থ শু -->
+  <!-- Search input -->
+<input type="text" id="searchInput" placeholder="Search all uploaded HTML files...">
+
+<div id="searchStatus" style="margin-top:8px;font-weight:bold;color:#0a5;"></div>
+     <!-- ৪র্থ শে -->
+    
+<h2>Uploaded Files</h2>
+<table id="fileTable">
+  <thead>
+      <!--১০ম শু রিপ্লেস -->
+    <tr>
+  <th>#</th>
+  <th>Search Results</th>
+  <th>Actions</th>
+</tr>
+      <!--১০ম শে -->
+  </thead>
+  <tbody></tbody>
+</table>
+<button id="backToTitlesBtn"  class="btn">Back to Titles</button>
 </div>
 
-<div id="topTimerBar" style="
-position:sticky;
-top:0;
-z-index:1000;
-background:#111827;
-color:white;
-padding:10px;
-border-radius:8px;
-margin-bottom:12px;
-font-size:18px;
-font-weight:bold;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.3);
-">
-⏳ সময় বাকি:
-<span id="timer">00:00</span>
-</div>
-<div id="quizArea"></div>
-
-<button id="statsBtn" class="scroll-btn">📊</button>
-
-<div id="statsPanel">
-
-<h3>MCQ রিপোর্ট</h3>
-
-<p>
-<b>সময় বাকি:</b>
-<span id="liveTime">00:00</span>
-</p>
-
-<div style="
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-margin-bottom:10px;
-">
-
-<input
-type="number"
-id="timeInput"
-placeholder="মিনিট"
-style="
-width:80px;
-padding:6px;
-border-radius:6px;
-border:1px solid #ccc;
-"
-/>
-
-<button id="startTimerBtn" class="btn">
-▶ Start
-</button> <button id="refreshTimerBtn" class="btn">
-⟳ Refresh
-</button>
- <!-- ১০ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড  --><button id="changePasswordBtn" class="btn">🔑 Change Pass</button><!--১০ম শেষ -->
-
-<button id="pauseTimer" class="btn">
-⏸ Pause
-</button>
-
-<button id="resumeTimer" class="btn">
-▶ Resume
-</button>
-
-<button id="fullscreenBtn" class="btn">
-📱 Full
-</button>
-
+<!-- Fullscreen Viewer -->
+<div id="fullscreenViewer">
+  <button id="backBtn">Back</button>
+  <iframe id="viewer"></iframe>
 </div>
 
-<div id="statsContent"></div>
-
+<!-- Context Menu -->
+<div id="titleContextMenu">
+  <button id="renameTitleBtn">Rename</button>
+  <button id="deleteTitleBtn">Delete</button>
 </div>
-
-<button id="scrollUp" class="scroll-btn">👆</button>
-<button id="scrollDown" class="scroll-btn">👇</button>
 
 <script>
-
-  
-/*৮ম শুরু রিফ্রেশ বাটনের পাসওয়ার্ড */
-  let timerPassword = "1234"; // default password
- /*৮ম শেষ */
-  /*৯ম শুরু রিফ্রেস বাটন এর পাসওয়ার্ডের ফাংশন */
-  function checkPassword(){
-
-const input = prompt("Password দিন:");
-
-if(input === timerPassword){
-return true;
+// ===== Password Section =====
+let PASSWORD = localStorage.getItem("managerPassword") || "N@hid53421";
+function checkAuth(){ const userPass = prompt("Enter password to continue:"); return userPass===PASSWORD; }
+function askPassword(){ const userPass = prompt("Enter password:"); return userPass===PASSWORD; }
+function changePassword(){
+  if(!askPassword()) return alert("Wrong password!");
+  const newPass = prompt("Enter new password:");
+  if(newPass && newPass.trim()!==""){ PASSWORD=newPass.trim(); localStorage.setItem("managerPassword", PASSWORD); alert("Password updated!"); }
 }
 
-showAlert("Wrong Password ❌");
-return false;
-
-}
-  /* ৯ম শেষ*/
-  /*১১তম রিফ্রেশ বাটন পাসওয়ার্ড এর লজিক */
-  document.getElementById("changePasswordBtn").onclick=()=>{
-
-const oldPass = prompt("Old Password দিন:");
-
-if(oldPass !== timerPassword){
-
-showAlert("Old password ভুল ❌");
-
-return;
-
-}
-
-const newPass = prompt("New Password দিন:");
-
-if(!newPass){
-
-showAlert("Invalid password ❌");
-
-return;
-
-}
-
-timerPassword = newPass;
-
-showAlert("Password changed ✅");
-
-};
-  /*১১তম শেষ*/
-const questions = [
-  {
-    "text": "শব্দের উৎস মূলক শ্রেণীবিভাগ কয়টি?",
-    "options": ["৩","৪","৫","৬"
-    ],
-    "correct": 2,
-    "answered": false,
-    "explanation": "👉শব্দ হলো বাগযন্ত্রের সাহায্যে বিশেষ কৌশলে উচ্চারিত অর্থবোধক ধ্বনি সমষ্টি। অর্থাৎ এক বা একাধিক ধ্বনি বা বর্ণ মিলে যখন একটি পূর্ণ অর্থ প্রকাশ করে তাকে শব্দ বলে। \n❤️‍🔥বিভিন্ন দৃষ্টিকোণ থেকে শব্দের শ্রেণীবিভাগ করা যায় ❤️‍🔥👇\n<u>শ্রেণীবিভাগঃ—</u>\n\n১. ◑ গঠনমূলক  =২টি (মৌলিক ও সাধিত) \n২. ◑ অর্থ মূলক =৩টি (যৌগিক，রূঢ়ি，যোগরূঢ়)\n৩. ◑ উৎস মূলক =৫টি (তৎসম ，অর্থ তৎসম， তদ্ভব， দেশি， ও বিদেশি ) \n৪. ◑ পদভিত্তিক =৮টি (বিশেষ্য， বিশেষণ ，সর্বনাম ，ক্রিয়া，ক্রিয়া বিশেষণ ，অনুসর্গ যোজক，ও আবেগ) \n👉◑ গঠনমূলক =২টি (মৌলিক শব্দ，সাধিত শব্দ) \n☞<u>মৌলিক শব্দঃ </u>যে সকল শব্দগুলোকে আর কোন অর্থযুক্ত ক্ষুদ্রতম অংশে বিশ্লেষণ করা যায় না বা ভেঙে আলাদা করা যায় না এগুলোকে মৌলিক শব্দ বলে।<span style=\"font-size:18px; font-weight:bold;background:yellow;\"> যেমনঃ গোলাপ， ভাই ，বোন， মাছ ，বই， লাল， গোলাম， ফুল ，নাক， তিন ，হাত， কলম </span>ইত্যাদি। \n<u>মৌলিক শব্দগুলোই ভাষার মূল উপকরণ </u>\n🤔এখানে একটি বিষয় লক্ষ্য করুন 👉মৌলিক শব্দগুলোর সাথে কোন বিভক্তি বা প্রত্যয় যুক্ত হয়নি। আর আমরা জানি，<u style=\"font-size:18px; font-weight:bold;\">বিভক্তিহীন নাম শব্দকে বলে প্রাতিপদিক</u>।তার মানে মৌলিক শব্দগুলোকেই আমরা প্রাতিপদিক বলতে পারি।\n☞<u>সাধিত শব্দঃ—</u> মৌলিক শব্দ বা ধাতু অথবা প্রকৃতির সঙ্গে সন্ধি， উপসর্গ বা প্রত্যয় যোগে কিংবা সমাসনিষ্পন্ন হয়ে যেসব শব্দ গঠিত হয় তাকে সাধিত শব্দ বলে। যেমনঃ—\n🔹উপসর্গ যোগেঃ- পরাজয় ，উপহার ，উপকার， গরমিল। \n🔹প্রত্যয় যোগেঃ- গোলাপি, হাতা, ঢাকাই, চলন্ত, ফুলেল। \n🔹সমাস যোগেঃ- নীলপদ্ম，পীতাম্বর，বীণাপাণি\n🔹সন্ধি যোগেঃ- দ্বৈপায়ন，হিমাচল，বিদ্যালয়，দম্পতি \n👉 ◑ শব্দের অর্থমূলকঃ—\n☞যৌগিক শব্দঃ- যে সকল শব্দের ব্যুৎপত্তিগত অর্থ ও ব্যবহারিক অর্থ একই তাদেরকে যৌগিক শব্দ বলে। \n🤔 ব্যুৎপত্তিগত অর্থ মানে হলো শব্দটি বিশ্লেষণ করলে আমরা যে অর্থ পায়，আর ব্যবহারিক অর্থ মানে হলো বাস্তবে আমরা শব্দটিকে যে অর্থে ব্যবহার করি। \nএই দুটো দিক বিবেচনা করে অর্থ যদি একই রকম হয় তাহলে তাকে যৌগিক শব্দ বলে। \n যেমনঃ-❤️‍🔥❤️‍🔥<table border=\"2\" style=\"border-collapse:2; width:100%; text-align:center;\"><tr><th>শব্দ</th><th>ব্যুৎপত্তিগত অর্থ</th><th>ব্যবহারিক অর্থ</th></tr>		<tr><td>গায়ক</td>	<td>√গৈ+ণক(অক)</td>	<td>গান করে যে</td></tr> <tr> <td>কর্তব্য</td> <td>√কৃ+তব্য</td> <td>যা করা উচিত</td></tr> <tr> <td>মধুর</td><td>মধু+র</td> <td>মধুর মত মিষ্টি গুণযুক্ত</td></tr><tr><td>বাবুয়ানা</td><td>বাবু+আনা</td><td>বাবুর ভাব</td></tr><tr><td>দৌহিত্র</td><td>দুহিতা+ষ্ণ্য</td><td>কন্যার পুত্র, নাতি</td></tr><tr><td>চিকামারা</td><td>চিকা+মারা</td><td>দেওয়ালে লিখন</td></tr><tr><td>গোলাপি</td><td>গোলাপ+ই</td><td>গোলাপের মতো</td></tr><tr><td>পিতৃহীন</td><td>পিতা+হীন</td><td>যার পিতা নেই</td></tr><tr><td>পক্ষী</td><td>পক্ষ+ইন</td><td>যার পক্ষ (ডানা) আছে</td></tr><tr><td>মিতালি</td><td>মিতা+আলি</td><td>বন্ধুর মতো ভাব</td></tr></table>	",
-    "image": null,
-    "writtenMode": false,
-    "hiddenAnswer": "৫",
-    "extraBox": "<b style= \"display:block;text-align:center\">বাংলা ভাষার শব্দভান্ডার ও শব্দের শ্রেণীবিভাগ<br>19-05-2026</b>",
-    "mark": 1,
-    "negative": 0,
-    "id": 1,
-    "gotCorrect": false
-  },{
-    "text": "<u style=\"font-weight : bold;\">‘দহন’</u> শব্দের বিশেষণ কোনটি?",
-    "options": ["দাহ্য","দগ্ধ","দহনকারী","দহনীয়"
-    ],
-    "correct": 0,
-    "answered": false,
-    "explanation": "❤️‍🔥❤️‍🔥\n ব্যাকরণে বিশেষ্য বলতে বোঝায় —\nযে শব্দ দ্বারা কোনো ব্যক্তি, বস্তু, স্থান, গুণ, অবস্থা, কাজ বা ভাবের নাম বোঝায়।\nঅর্থাৎ সহজভাবে:\n“নামের পদ” = বিশেষ্য\nযেমন: মানুষ ; ঢাকা ; বই ; সৌন্দর্য ; দহন\nএগুলো সব কোনো না কোনো কিছুর “নাম” প্রকাশ করছে।\nএখন  উদাহরণে আসি —\n“দহন একটি বিশেষ্য পদ”\nএখানে “দহন” দ্বারা “পোড়ার ঘটনা/অবস্থা”র নাম বোঝানো হচ্ছে।\nঅর্থাৎ এটি কোনো কাজকে শুধু করা বোঝাচ্ছে না, বরং সেই কাজ বা অবস্থার নাম হিসেবে ব্যবহৃত হচ্ছে।\nতাই “দহন” এখানে বিশেষ্য।\nতুলনা করো:\n“কাঠ পুড়ছে।” → এখানে “পুড়ছে” ক্রিয়া (কাজ হচ্ছে)\n“কাঠের দহন দ্রুত ঘটেছে।” → এখানে “দহন” একটি ঘটনার নাম, তাই বিশেষ্য\nঅর্থাৎ, কোনো শব্দ যদি “কাজ করা” বোঝায় → ক্রিয়া হতে পারে\nআর সেই কাজ/অবস্থার “নাম” বোঝালে → বিশেষ্য হতে পারে।\n\n❤️‍🔥বিশেষণ মানে হলো —\nযে শব্দ কোনো বিশেষ্য বা সর্বনামের দোষ, গুণ, অবস্থা, পরিমাণ, সংখ্যা ইত্যাদি বোঝায়, তাকে বিশেষণ বলে।\nসহজভাবে:\nবিশেষ্য “কেমন”, “কত”, “কোন”, “কতগুলো” — এসব জানায় যে শব্দ, সেটাই বিশেষণ।\n\nএখন “ভালো” দেখি 👇\nভালো মানুষ\nভালো বই\nভালো ছেলে\nএখানে “ভালো” শব্দটি মানুষ/বই/ছেলের গুণ কেমন তা বোঝাচ্ছে।\nঅর্থাৎ “কেমন?” প্রশ্নের উত্তর দিচ্ছে।\nতাই “ভালো” = বিশেষণ।\nতুলনা করো:\n“রহিম ছাত্র।” → শুধু নাম বলা হয়েছে\n“রহিম ভালো ছাত্র।” → “কেমন ছাত্র?” → ভালো\nঅর্থাৎ:\nনাম বোঝায় → বিশেষ্য\nনামের গুণ/অবস্থা বোঝায় → বিশেষণ\nআরেকটু সহজভাবে:\n“মানুষ” = কে? → বিশেষ্য\n“ভালো মানুষ” → কেমন মানুষ? → “ভালো” = বিশেষণ\n❤️‍🔥👉এখানে “বিশেষণ”কে শুধু “কেমন?” প্রশ্ন দিয়ে ধরতে গেলে একটু বিভ্রান্তি হয়। এখন ধীরে ধীরে দেখি।\n\nপ্রথমেঃ\n☞“দহন” = পোড়ার ঘটনা/প্রক্রিয়ার নাম → বিশেষ্য\n☞“দহনীয়” = যা পোড়ানো যায় / যা দাহ হতে পারে\nএখন “দহনীয়” কেন বিশেষণ?\n☞ কারণ এটি কোনো বস্তুর গুণ বা বৈশিষ্ট্য বোঝায়।\n\nযেমনঃ—\n◑ দহনীয় পদার্থ\n◑ দহনীয় গ্যাস\n\nএখানে প্রশ্ন করলে পাইঃ—\n“কেমন পদার্থ?” → দহনীয় পদার্থ\nঅর্থাৎ এমন পদার্থ যার জ্বলে যাওয়ার ক্ষমতা আছে।\n☞তাই “দহনীয়” পদার্থের একটি বৈশিষ্ট্য বা গুণ জানাচ্ছে। এজন্য এটি বিশেষণ।\n\n👇\n“দহনীয়” শুনে তো সরাসরি “ভালো”, “খারাপ”, “বড়” এর মতো মনে হচ্ছে না! ঠিক। \n\nকারণ সব বিশেষণ খুব সরল গুণ বোঝায় না। কিছু বিশেষণঃ—\n◑ সক্ষমতা বোঝায়\n◑ অবস্থা বোঝায়\n◑ প্রকৃতি বোঝায়\n◑ সম্পর্ক বোঝায়\n☞ “দহনীয়” আসলে বোঝাচ্ছে: “যা দহন হতে সক্ষম”\n\nআরও উদাহরণ দেখোঃ—\n◑ ভঙ্গুর কাচ → যে কাচ সহজে ভাঙে\n◑ খাদ্যযোগ্য ফল → যে ফল খাওয়া যায়\n◑ পাঠ্য বই → যা পড়ার জন্য নির্ধারিত\n◑ দহনীয় পদার্থ → যা জ্বলে যেতে পারে\n◑ এগুলো সবই বস্তুর বৈশিষ্ট্য বোঝাচ্ছে, তাই বিশেষণ।\n\nঅর্থাৎ বিশেষণ শুধু “ভালো/মন্দ” না; কোনো কিছুর ধর্ম, ক্ষমতা, অবস্থা, উপযোগিতা—এসবও বোঝাতে পারে।\n\n👉দহনীয়” আর “দাহ্য” — দুটোই প্রায় একই ধরনের বিশেষণ।\nদাহ্য পদার্থ\nদহনীয় পদার্থ\nদুটোরই অর্থ: “যে পদার্থ জ্বলতে পারে / পোড়ানো যায়”\nঅর্থাৎ এখানে বস্তুটির একটি বৈশিষ্ট্য বোঝানো হচ্ছে। তাই এগুলো বিশেষণ।\nতুমি ঠিকই ধরেছো যে:\n“এটা দ্বারা কি আমি বুঝতেছি না যে বস্তুটি পুড়ানো যাবে?”\nহ্যাঁ, ঠিক সেটাই বোঝা যাচ্ছে। আর কোনো বস্তুর এই ধরনের গুণ/ধর্ম/ক্ষমতা বোঝানোর কারণেই “দাহ্য” বিশেষণ।\nএখন পার্থক্যটা দেখো:\n“দহন” → পোড়ার ঘটনা বা প্রক্রিয়ার নাম → বিশেষ্য\n“দাহ্য” → কেমন বস্তু? যে জ্বলে → বিশেষণ\nউদাহরণ:\n“কাগজের দহন দ্রুত হয়।”\nএখানে “দহন” = একটি ঘটনার নাম → বিশেষ্য\n“কাগজ দাহ্য পদার্থ।”\nএখানে “দাহ্য” = কাগজের ধর্ম/গুণ → বিশেষণ\n<table border=\"1px\" class=\"tb3\"><!--1 row --> <tr><th>বিশেষ্য </th><th>বিশেষণ</th><th>বিশেষ্য </th><th>বিশেষণ</th></tr><!--2 row --> <tr><td>ইচ্ছা </td><td>ঐচ্ছিক </td><td>গুরু </td><td>গরিষ্ঠ </td></tr><!--৩ row --> <tr><td>জীবন </td><td>জীবনী </td><td>সন্ধ্যা </td><td>সান্ধ্য</td></tr><!--৪ row --> <tr><td>চাতুর্য </td><td>চতুর </td><td>লাজ </td><td>লাজুক </td></tr><!--৫ row --> <tr><td>প্রাচুর্য </td><td>প্রচুর </td><td>চালাকি </td><td>চালাক </td></tr><!--৬ row --> <tr><td>লবণ </td><td>লবণাক্ত </td><td>দর্শন </td><td>দার্শনিক </td></tr><!--৭ row --> <tr><td>দহন </td><td>দাহ্য </td><td>গাম্ভীর্য </td><td>গম্ভীর</td></tr></table>❤️‍🔥তথ্যসূত্রঃ— \n<a href=\" https://sattacademy.com/mcq/%E0%A6%A6%E0%A6%B9%E0%A6%A8-%E0%A6%B6%E0%A6%AC%E0%A7%8D%E0%A6%A6%E0%A7%87%E0%A6%B0-%E0%A6%AC%E0%A6%BF%E0%A6%B6%E0%A7%87%E0%A6%B7%E0%A6%A3-%E0%A6%95%E0%A7%8B%E0%A6%A8%E0%A6%9F%E0%A6%BF   \" target=\"_blank\"> sattacademy</a>",
-    "image": null,
-    "writtenMode": false,
-    "hiddenAnswer": "দাহ্য",
-    "extraBox": null,
-    "mark": 1,
-    "negative": 0,
-    "id": 2,
-"gotCorrect": false
-  },
-  ];
-
-questions.forEach((q,i)=>q.id=i+1);
-
-const quizArea=document.getElementById("quizArea");
-const totalQ=document.getElementById("totalQ");
-const answeredQ=document.getElementById("answeredQ");
-const correctQ=document.getElementById("correctQ");
-const wrongQ=document.getElementById("wrongQ");
-const scoreQ=document.getElementById("scoreQ");
-  const timerEl = document.getElementById("timer");
-
-let totalTime = 0;
-let timeLeft = 0;
-
-let timerInterval = null;
-let timerStarted = false;
-  function formatTime(seconds){
-
-const min = Math.floor(seconds / 60);
-const sec = seconds % 60;
-
-return String(min).padStart(2,"0")
-+ ":"
-+ String(sec).padStart(2,"0");
-
-}
-  function updateTimerDisplay(){
-
-const formatted = formatTime(timeLeft);
-
-timerEl.textContent = formatted;
-
-document.getElementById("liveTime")
-.textContent = formatted;
-
-}
-
-function startTimer(){
-
-clearInterval(timerInterval);
-  /*১২ তম রিফ্রেশ বাড়ানোর জন্য */
-  quizLocked = true;
-/*১২তম শেষ*/
-
-const inputMin = parseInt(
-document.getElementById("timeInput").value
-);
-
-if(!inputMin || inputMin <= 0){
-
-alert("টাইম সেট করুন");
-
-return;
-
-}
-
-timerStarted = true;
-
-totalTime = inputMin * 60;
-
-timeLeft = totalTime;
-
-document.getElementById("topTimerBar")
-.style.background = "#111827";
-
-updateTimerDisplay();
-
-timerInterval = setInterval(()=>{
-
-timeLeft--;
-
-if(timeLeft < 0){
-
-clearInterval(timerInterval);
-
-timeLeft = 0;
-
-updateTimerDisplay();
-
-timeUp();
-
-return;
-
-}
-
-updateTimerDisplay();
-
-if(timeLeft <= 300){
-
-document.getElementById("topTimerBar")
-.style.background = "#dc2626";
-
-}
-
-},1000);
-
-}
-
-/*Time Up fun.শুরু ১ম*/
-function timeUp(){
-
-showAlert("⛔ সময় শেষ!");
-
-quizLocked = true;
-
-questions.forEach(q=>{
-
-if(!q.answered){
-
-q.timeExpired = true;
-
-}
-
-});
-
-document.querySelectorAll(".opt").forEach(btn=>{
-
-btn.classList.add("disabled");
-
-btn.style.pointerEvents = "none";
-
-});
-
-updateCounters();
-
-}
-  /*শেষ ১ম */
-function updateCounters(){
-
-totalQ.textContent=questions.length;
-
-answeredQ.textContent=
-questions.filter(q=>q.answered).length;
-
-correctQ.textContent=
-questions.filter(q=>q.gotCorrect).length;
-
-wrongQ.textContent=
-questions.filter(q=>q.answered && !q.gotCorrect).length;
-
-let score=0;
-
-questions.forEach(q=>{
-
-if(q.answered){
-
-if(q.gotCorrect){
-
-score += Number(q.mark || 1);
-
-}
-  else{
-
-score -= Number(q.negative || 0);
-
-}
-
-}
-
-});
-
-scoreQ.textContent=score;
-
-}
-  
-function highlight(text,term){
-
-if(!term) return text;
-
-const parts = text.split(
-/(\(.*?\)|\[.*?\]|$.*?$|\begin{.*?}.*?\end{.*?})/g
-);
-
-return parts.map(part=>{
-
-// LaTeX অংশ untouched থাকবে
-if(
-part.startsWith("\(") ||
-part.startsWith("\[") ||
-part.startsWith("$") ||
-part.startsWith("\begin")
-){
-return part;
-}
-
-// normal text highlight হবে
-const regex = new RegExp("(" + term + ")","gi");
-
-return part.replace(regex,"<mark>$1</mark>");
-
-}).join("");
-
-}
-  
- /*untouch function*/ 
-  function parseQRange(v){
-v = v.trim();
-if(v.includes("-")){
-let [a,b] = v.split("-").map(Number);
-return [a,b];
-}
-let x = Number(v);
-return [x,x];
-}
-
-document.getElementById("applyBatch").onclick = ()=>{
-  let [start,end] = parseQRange(document.getElementById("qRange").value);
-
-  let m = parseFloat(document.getElementById("mVal").value || 1);
-  let n = parseFloat(document.getElementById("nVal").value || 0);
-
-  questions.forEach((q,i)=>{
-    let qNo = i+1;
-
-    if(qNo >= start && qNo <= end){
-      q.mark = m;
-      q.negative = n;
-    }
+// ===== UI Elements =====
+const titlePage = document.getElementById('titlePage');
+const newTitleInput = document.getElementById('newTitleInput');
+const addTitleBtn = document.getElementById('addTitleBtn');
+const titlesContainer = document.getElementById('titlesContainer');
+const titleContextMenu = document.getElementById('titleContextMenu');
+let selectedTitleButton = null;
+
+const managerUI = document.getElementById('managerUI');
+const managerHeader = document.getElementById('managerHeader');
+const fileInput = document.getElementById('fileInput');
+const fileNameInput = document.getElementById('fileName');
+const uploadBtn = document.getElementById('uploadBtn');
+const fileTableBody = document.querySelector('#fileTable tbody');
+const backToTitlesBtn = document.getElementById('backToTitlesBtn');
+const fullscreenViewer = document.getElementById('fullscreenViewer');
+const viewer = document.getElementById('viewer');
+const backBtn = document.getElementById('backBtn');
+const searchInput = document.getElementById('searchInput');
+    /*৬ষ্ঠ শু add*/
+    const searchStatus = document.getElementById('searchStatus');
+    /*৬ষ্ঠ শে*/
+
+let db;
+const dbName = "HTMLManagerDB";
+let currentTitle = "";
+
+// ===== IndexedDB Setup =====
+function openDB() {
+  return new Promise((resolve,reject)=>{
+    const request = indexedDB.open(dbName,1);
+    request.onerror=()=>reject("DB open failed");
+    request.onsuccess=(e)=>{db=e.target.result; resolve();};
+    request.onupgradeneeded=(e)=>{
+      db=e.target.result;
+      if(!db.objectStoreNames.contains("titles")) db.createObjectStore("titles",{keyPath:"title"});
+    };
   });
+}
 
-  updateCounters();
-  render(); // চাইলে এটা যোগ করতে পারো
+// ===== Add Title =====
+addTitleBtn.onclick = async ()=>{
+  if(!checkAuth()) return;
+  const title = newTitleInput.value.trim();
+  if(title==="") return alert("Title cannot be empty");
+  const tx = db.transaction(["titles"],"readwrite");
+  const store = tx.objectStore("titles");
+  store.put({title:title, files:[]});
+  newTitleInput.value='';
+  await loadTitles();
 };
 
-function render(filtered=questions,term=""){
-
-quizArea.innerHTML="";
-
-filtered.forEach((q)=>{
-
-const qBox=document.createElement("div");
-qBox.className="question";
-
-const qh=document.createElement("div");
-qh.className="qtext";
-
-qh.innerHTML=q.id+". "+highlight(q.text,term);
-
-qBox.appendChild(qh);
-
-if(q.image){
-
-const img=document.createElement("img");
-
-img.src=q.image;
-
-img.className="img-preview";
-
-qBox.appendChild(img);
-
+// ===== Load Titles =====
+async function loadTitles(){
+  titlesContainer.innerHTML='';
+  const tx=db.transaction(["titles"],"readonly");
+  const store=tx.objectStore("titles");
+  const req=store.getAll();
+  req.onsuccess=()=>{
+    req.result.forEach(item=>{
+      const btn=document.createElement('button');
+      btn.textContent=item.title;
+      btn.onclick=()=>enterTitle(item.title);
+      btn.oncontextmenu=(e)=>{
+        e.preventDefault();
+        selectedTitleButton=btn;
+        titleContextMenu.style.display='block';
+        titleContextMenu.style.left=e.pageX+'px';
+        titleContextMenu.style.top=e.pageY+'px';
+      };
+      titlesContainer.appendChild(btn);
+    });
+    const savedScroll = localStorage.getItem("titlesScroll");
+    if(savedScroll) titlesContainer.scrollTop=parseInt(savedScroll);
+  };
 }
 
-const optWrap=document.createElement("div");
-optWrap.className="options";
-
-q.options.forEach((optText,oi)=>{
-
-const opt=document.createElement("button");
-
-opt.className="opt";
-
-opt.innerHTML="<span>"+highlight(optText,term)+"</span><span></span>";
-
-  opt.onclick=()=>{
-
-if(q.answered) return;
-
-q.answered=true;
-
-const children=[...optWrap.children];
-
-children.forEach((btn,idx)=>{
-
-btn.classList.add("disabled");
-
-if(Number(idx) === Number(q.correct)){
-btn.classList.add("correct");
-
-btn.lastChild.textContent="✓";
-
-}
-
-if(idx===oi && idx!==q.correct){
-
-btn.classList.add("wrong");
-
-btn.lastChild.textContent="✕";
-
-}
-
-});
-
-q.gotCorrect=(oi===q.correct);
-
-updateCounters();
-
+// ===== Context Menu =====
+document.getElementById('renameTitleBtn').onclick = async ()=>{
+  if(!selectedTitleButton) return;
+  if(!askPassword()) return;
+  const oldTitle = selectedTitleButton.textContent;
+  const newTitle = prompt("Enter new title name:", oldTitle);
+  if(newTitle && newTitle.trim()!==""){
+    const tx = db.transaction(["titles"], "readwrite");
+    const store = tx.objectStore("titles");
+    const req = store.get(oldTitle);
+    req.onsuccess = ()=>{
+      const data = req.result;
+      store.delete(oldTitle);
+      data.title = newTitle.trim();
+      store.put(data);
+      loadTitles();
+    };
+  }
+  titleContextMenu.style.display = 'none';
 };
 
-optWrap.appendChild(opt);
+document.getElementById('deleteTitleBtn').onclick = async ()=>{
+  if(!selectedTitleButton) return;
+  if(!askPassword()) return;
+  if(confirm('Delete this title and all its files?')){
+    const title = selectedTitleButton.textContent;
+    const tx = db.transaction(["titles"], "readwrite");
+    const store = tx.objectStore("titles");
+    store.delete(title);
+    loadTitles();
+  }
+  titleContextMenu.style.display = 'none';
+};
 
-});
+document.addEventListener('click', ()=>{ titleContextMenu.style.display='none'; });
 
-qBox.appendChild(optWrap);
-/*❤️‍🔥new card line*/
-  
-if(q.writtenMode){
-
-  optWrap.style.display = "none";
-
- const answerWrap = document.createElement("div");
-  answerWrap.style.marginTop = "10px";
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = "উত্তর লিখুন...";
-  input.style.width = "100%";
-  input.style.boxSizing = "border-box";
-  input.style.padding = "10px";
-  input.style.borderRadius = "8px";
-  input.style.border = "1px solid #cbd5e1";
-
-  const resultBox = document.createElement("div");
-
-  resultBox.style.display = "none";
-  resultBox.style.marginTop = "10px";
-  resultBox.style.padding = "10px";
-  resultBox.style.borderRadius = "8px";
-  resultBox.style.fontWeight = "bold";
-
-input.addEventListener("change",()=>{
-  q.answered = true;
-  input.disabled = true;
-  input.style.background = "#f1f5f9";
-  input.style.border = "2px solid #10b981";
-  input.blur();
-
-  const userAns = input.value.trim().toLowerCase();
-
-const correctAnsList = q.hiddenAnswer
-  .split(",")
-  .map(v => v.trim().toLowerCase());
-
-const isCorrect = correctAnsList.includes(userAns);
-
-resultBox.style.display = "block";
-  
-
-if(isCorrect){
-
-  q.gotCorrect = true;
-
-resultBox.style.background = "#dcfce7";
-
-resultBox.innerHTML =
-    "✓ সঠিক উত্তর: " + q.hiddenAnswer;
-
-}
-  else{
-
- q.gotCorrect = false;
-
- resultBox.style.background = "#fee2e2";
-
-  resultBox.innerHTML =
-    "✕ সঠিক উত্তর: " + q.hiddenAnswer;
-
+// ===== Enter Title =====
+function enterTitle(title){
+  currentTitle = title;
+  localStorage.setItem("lastTitle", title);
+  localStorage.setItem("titlesScroll", titlesContainer.scrollTop);
+  managerHeader.textContent = `Title: ${title}`;
+  titlePage.style.display = 'none';
+  managerUI.style.display = 'block';
+  updateTable();
 }
 
-  updateCounters();
-});
-
-  answerWrap.appendChild(input);
-  answerWrap.appendChild(resultBox);
-
- qBox.appendChild(answerWrap);
-
-}
-    
-/*❤️‍🔥new card*/ 
-const wrapper = document.createElement("div");
-
-/* ❤️‍🔥 EXTRA BOX আগে (TOP) */
-if(q.extraBox){
-  const extraDiv = document.createElement("div");
-  extraDiv.style.marginBottom = "10px";
-  extraDiv.style.padding = "10px";
-  extraDiv.style.border = "1px solid #cbd5e1";
-  extraDiv.style.borderRadius = "8px";
-  extraDiv.style.background = "#f8fafc";
-
-  extraDiv.innerHTML = highlight(q.extraBox,term);
-
-  wrapper.appendChild(extraDiv); // 👈 আগে যাবে
-}
-
-/* QUESTION পরে (BOTTOM) */
-wrapper.appendChild(qBox);
-
-quizArea.appendChild(wrapper);
-  /*❤️‍🔥new card line end*/
- 
-const explBtn=document.createElement("button"); explBtn.className="btn ghost";
-explBtn.style.marginTop="8px";
-explBtn.textContent="ব্যাখ্যা";
-
-const exDiv=document.createElement("div");
-exDiv.className="explanation";
-
-exDiv.innerHTML=highlight(
-(q.explanation || "ব্যাখ্যা নেই")
-.replace(/\n/g,"<br>"),
-term
-);
-  if(q.table){
-
-  const tableWrap = document.createElement("div");
-
-  // ✅ table text highlight
-  tableWrap.innerHTML = highlight(q.table,term);
-
-  tableWrap.style.marginTop = "10px";
-  tableWrap.style.overflowX = "auto";
-
-  // ✅ Excel style compact table
-  tableWrap.querySelectorAll("table").forEach(tbl=>{
-
-    tbl.style.borderCollapse = "collapse";
-    tbl.style.tableLayout = "auto";
-    tbl.style.width = "auto";
-    tbl.style.maxWidth = "100%";
-
+// ===== File Operations =====
+function getFiles(){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(["titles"],"readonly");
+    const store = tx.objectStore("titles");
+    const req = store.get(currentTitle);
+    req.onsuccess = ()=>{ resolve(req.result ? req.result.files : []); };
+    req.onerror = ()=>reject("Failed to get files");
   });
-
-  // ✅ Small compact cells
-  tableWrap.querySelectorAll("td").forEach(td=>{
-
-  td.style.minWidth = "40px";
-  td.style.height = "auto";
-  td.style.padding = "4px";
-  td.style.fontSize = "14px";
-
-  /* ✅ লেখাকে নিচে নামতে দিবে */
- td.style.whiteSpace = "normal";
-td.style.wordBreak = "break-word";
-td.style.overflowWrap = "break-word";
-
-  /* ✅ বড় শব্দ ভাঙবে */
-  td.style.wordBreak = "break-word";
-
-  /* ✅ page এর ভিতরে রাখবে */
-  td.style.overflowWrap = "break-word";
-
-  td.style.verticalAlign = "middle";
-
-  /* ❌ resize remove */
-  td.style.resize = "none";
-
-  /* ✅ overflow hidden */
-  td.style.overflow = "hidden";
-
-});
-
-  exDiv.appendChild(tableWrap);
-
 }
-explBtn.onclick=()=>{
+    /*৭ম add শু*/
+    async function getAllFilesAcrossTitles(){
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction(["titles"], "readonly");
+    const store = tx.objectStore("titles");
+    const req = store.getAll();
 
-exDiv.classList.toggle("show");
+    req.onsuccess = ()=>{
+      const allTitles = req.result || [];
+      let allFiles = [];
 
-if(window.MathJax){
+      allTitles.forEach(t=>{
+        (t.files || []).forEach(f=>{
+          allFiles.push({
+            name: f.name,
+            content: f.content,
+            type: f.type,
+            title: t.title
+          });
+        });
+      });
 
-MathJax.typesetClear([exDiv]);
+      resolve(allFiles);
+    };
 
-MathJax.typesetPromise([exDiv])
-.then(()=>{})
-.catch((err)=>console.log(err));
-
+    req.onerror = ()=>reject("Failed to load global files");
+  });
 }
+    /*৭ম শে*/
 
-applyFontSize();
-};
+    /*১ম শু*/
 
-qBox.appendChild(explBtn);
-qBox.appendChild(exDiv);
+        /*১১ত + শু*/
+function extractMCQsFromHTML(htmlContent){
 
- /*❤️‍🔥new card end line*/
-});
-
-if(window.MathJax){
-
-MathJax.typesetClear();
-
-MathJax.typesetPromise()
-.then(()=>{})
-.catch((err)=>console.log(err));
-
-}
-
-}
-  
-function normalizeLatex(str){
-  return (str || "")
-    .toLowerCase()
-    .replace(/\frac/g,"frac")
-    .replace(/\sqrt/g,"sqrt")
-    .replace(/[{}\^_]/g,"")
-    .replace(/s+/g,"")
+  // HTML → plain text
+  const text = htmlContent
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
-}
 
-document.getElementById("searchBox").addEventListener("input",(e)=>{
-
-  const term = normalizeLatex(e.target.value);
-
-  const filtered = questions.filter(q =>
-
-    normalizeLatex(q.text).includes(term) ||
-
-    q.options.some(o =>
-      normalizeLatex(o).includes(term)
-    ) ||
-
-    (q.extraBox &&
-      normalizeLatex(q.extraBox).includes(term)
-    ) ||
-
-    (q.explanation &&
-      normalizeLatex(q.explanation).includes(term)
-    ) ||
-
-    (
-      q.table &&
-      normalizeLatex(
-        q.table.replace(/<[^>]*>/g," ")
-      ).includes(term)
-    )
-
+  // Split possible MCQs
+  const parts = text.split(
+    /(?=\s*[0-9০-৯]+\s*[.)।:-]\s*)/g
   );
 
-  render(filtered, term);
+  let mcqs = [];
 
-});
+  parts.forEach(part=>{
 
-  
-   /*সার্চ ফিলিংস এর জন্য */ document.getElementById("searchBox").addEventListener("keydown",(e)=>{
+    const cleaned = part.trim();
 
-  if(e.key==="Enter"){
+    const match = cleaned.match(
+      /^([0-9০-৯]+)\s*[.)।:-]\s*(.+)$/s
+    );
 
-  e.target.blur();
+    if(match){
 
-  window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+      mcqs.push({
+        number: match[1],
+        question: match[2],
+        full: cleaned
+      });
+
+    }
+
+  });
+
+  return mcqs;
+}
+    /*১১ম শে*/
+
+function saveFiles(files){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(["titles"],"readwrite");
+    const store = tx.objectStore("titles");
+    const reqGet = store.get(currentTitle);
+    reqGet.onsuccess = ()=>{
+      const data = reqGet.result;
+      data.files = files;
+      const reqPut = store.put(data);
+      reqPut.onsuccess = ()=>resolve();
+      reqPut.onerror = ()=>reject("Failed to save files");
+    };
+    reqGet.onerror = ()=>reject("Failed to get files for saving");
+  });
+}
+
+// ===== Update Table =====
+    /*৮ম replace শু*/
+async function updateTable(filteredFiles=null, searchText=""){
+  fileTableBody.innerHTML='';
+
+  const files = filteredFiles || await getFiles();
+
+  if(files.length===0){
+    fileTableBody.innerHTML = `
+      <tr>
+        <td colspan="3" style="text-align:center;font-weight:bold;color:red;">
+          No files found
+        </td>
+      </tr>
+    `;
+    return;
   }
 
-});
-  /*সার্চ ফিলিংস এর লাস্ট লাইন */
-function renderStatsPanel(){
-  const statsContent = document.getElementById("statsContent");
+  files.forEach((file,idx)=>{
+    const tr = document.createElement('tr');
 
-  let correct=[], wrong=[], pending=[];
-  let totalScore=0;
+    const tdIndex = document.createElement('td');
+    tdIndex.textContent = idx+1;
 
-  questions.forEach(q=>{
-    if(q.answered){
-      if(q.gotCorrect){
-        correct.push(q.id);
-        totalScore += Number(q.mark || 1);
-      } else {
-        wrong.push(q.id);
-        totalScore -= Number(q.negative || 0);
+    const tdName = document.createElement('td');
+
+    let displayName = file.name;
+
+    if(searchText){
+      const regex = new RegExp(searchText, 'gi');
+      displayName = displayName.replace(regex, match=>
+        `<span class="search-highlight">${match}</span>`
+      );
+    }
+
+    tdName.innerHTML = `
+      ${displayName}
+      <br>
+      <small style="color:#555;">Title: ${file.title || currentTitle}</small>
+    `;
+
+    const tdActions = document.createElement('td');
+
+    const openBtn = document.createElement('button');
+    openBtn.textContent = 'Open';
+
+    openBtn.onclick = ()=>{
+      fullscreenViewer.style.display='block';
+      managerUI.style.visibility='hidden';
+
+      const iframeDoc = viewer.contentDocument || viewer.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(file.content);
+      iframeDoc.close();
+    };
+
+    const renameBtn = document.createElement('button');
+    renameBtn.textContent='Rename';
+    renameBtn.style.backgroundColor='#2196F3';
+
+    renameBtn.onclick = async ()=>{
+      if(!askPassword()) return;
+
+      const newName = prompt("Enter new file name:", file.name);
+
+      if(newName && newName.trim()!==""){
+        const allFiles = await getFiles();
+        const idxToUpdate = allFiles.findIndex(f=>f.name===file.name);
+
+        allFiles[idxToUpdate].name = newName.trim();
+
+        await saveFiles(allFiles);
+        updateTable();
       }
-    } else {
-      pending.push(q.id);
-    }
+    };
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent='Delete';
+    deleteBtn.style.backgroundColor='#f44336';
+
+    deleteBtn.onclick = async ()=>{
+      if(!askPassword()) return;
+
+      if(confirm('Delete this file?')){
+        const allFiles = await getFiles();
+        const idxToDelete = allFiles.findIndex(f=>f.name===file.name);
+
+        allFiles.splice(idxToDelete,1);
+
+        await saveFiles(allFiles);
+        updateTable();
+      }
+    };
+
+    tdActions.appendChild(openBtn);
+    tdActions.appendChild(renameBtn);
+    tdActions.appendChild(deleteBtn);
+
+    tr.appendChild(tdIndex);
+    tr.appendChild(tdName);
+    tr.appendChild(tdActions);
+
+    fileTableBody.appendChild(tr);
   });
-
-  statsContent.innerHTML =
-    "<p>🏆 স্কোর: " + totalScore + "</p>" +
-    "<p>✔ সঠিক: " + correct.length + "</p>" +
-    "<p>❌ ভুল: " + wrong.length + "</p>";
 }
-document.getElementById("bgColor").addEventListener("input",(e)=>{
-document.documentElement.style.setProperty("--bg-color",e.target.value);
-});
-
-document.getElementById("opColor").addEventListener("input",(e)=>{
-document.documentElement.style.setProperty("--op-color",e.target.value);
-});
-
-document.getElementById("hlColor").addEventListener("input",(e)=>{
-document.documentElement.style.setProperty("--highlight-color",e.target.value);
-});
-
-let currentFontSize = "16px";
-
-function applyFontSize(){
-
-document.querySelectorAll(".qtext,.opt span,.explanation")
-.forEach(el=>{
-
-el.style.fontSize = currentFontSize;
-
-});
-
-}
-
-document.getElementById("fontSizeBox")
-.addEventListener("input",(e)=>{
-
-  let val = parseFloat(e.target.value);
-
-if(isNaN(val)) return;
-
-if(val < 10) val = 10;
-  if(val > 40) val = 40;
-
-  currentFontSize = val + "px";
-  applyFontSize();
-});
-
-/*২য় শুর Time up func.এর অংশ 👇*/
-document.getElementById("refreshViewer").onclick=()=>{
-
-if(quizLocked){
-/*৭ম দেখানোর জন্য*/
-showAlert("Timer Refresh First");
- /*৭ম শেষ*/
-return;
-
-}
-
-questions.forEach(q=>{
-
-q.answered=false;
-q.gotCorrect=false;
-
-});
-
-document.querySelectorAll(".opt").forEach(btn=>{
-
-btn.style.pointerEvents = "auto";
-
-btn.classList.remove("disabled");
-
-});
-
-render();
-updateCounters();
-
-applyFontSize();
-
+/*৮ম শে*/
+// ===== Upload File =====
+uploadBtn.onclick = async ()=>{
+  if(!askPassword()) return;
+  const file = fileInput.files[0];
+  if(!file) return alert("Select a file");
+  const name = fileNameInput.value.trim() || file.name;
+  const reader = new FileReader();
+  reader.onload = async e=>{
+    const allFiles = await getFiles();
+    allFiles.push({name:name, content:e.target.result, type:file.type});
+    await saveFiles(allFiles);
+    updateTable();
+    fileInput.value=''; fileNameInput.value='';
+  };
+  reader.readAsText(file);
 };
-/*২য় শেষ  */
-document.getElementById("printViewer").onclick = async () => {
 
-  // print এর আগে explanation show
-  document.querySelectorAll(".explanation").forEach(el=>{
-    el.classList.add("show");
-  });
+// ===== Fullscreen Back Button =====
+let lastScrollTop = 0;
+managerUI.addEventListener("scroll",()=>{ lastScrollTop = managerUI.scrollTop; });
+backBtn.onclick = ()=>{
+  fullscreenViewer.style.display='none';
+  managerUI.style.visibility='visible';
+  viewer.src='about:blank';
+  managerUI.scrollTop = lastScrollTop;
+};
 
-  // MathJax render finish হওয়া পর্যন্ত wait
-  if(window.MathJax){
+// ===== Back to Titles =====
+let lastTitleScroll = 0;
+backToTitlesBtn.onclick = ()=>{
+  lastTitleScroll = titlePage.scrollTop;
+  managerUI.style.display='none';
+  titlePage.style.display='block';
+  currentTitle='';
+  loadTitles();
+  setTimeout(()=>{ titlePage.scrollTop = lastTitleScroll; },100);
+};
 
-    try{
+/*১১তম রিপ্লেস এখানে ছিল ৯ম,১ম,২য়,৩য়,*/
+// ===== Advanced MCQ Runtime Search =====
+searchInput.addEventListener('keydown', async (e)=>{
 
-      await MathJax.typesetPromise();
+  if(e.key !== "Enter") return;
 
-    }catch(err){
+  e.preventDefault();
 
-     console.log(err);
+  const keyword = searchInput.value.trim();
 
-    }
+  if(keyword === ""){
+    updateTable();
+    return;
+  }
+
+  // ===== Search Feeling =====
+  searchStatus.innerHTML = `
+    <span style="color:#004;font-weight:bold;">
+      Searching...
+    </span>
+  `;
+
+  searchInput.style.background = "#fff9c4";
+
+  fileTableBody.innerHTML = `
+    <tr>
+      <td colspan="3"
+          style="
+            text-align:center;
+            font-weight:bold;
+            color:#444;
+            padding:20px;
+          ">
+        Searching MCQs...
+      </td>
+    </tr>
+  `;
+
+  const allFiles = await getAllFilesAcrossTitles();
+
+  let matchedResults = [];
+
+  for(const file of allFiles){
+
+    // ===== hidden iframe =====
+    const iframe = document.createElement("iframe");
+
+    iframe.style.display = "none";
+
+    document.body.appendChild(iframe);
+
+    const iframeDoc =
+      iframe.contentDocument ||
+      iframe.contentWindow.document;
+
+    iframeDoc.open();
+    iframeDoc.write(file.content);
+    iframeDoc.close();
+
+    // wait render
+    await new Promise(resolve=>setTimeout(resolve, 500));
+
+    const plainText =
+      iframeDoc.body.innerText || "";
+
+    iframe.remove();
+
+    // ===== Split MCQs =====
+    const mcqBlocks = plainText.split(
+      /\n(?=\s*[0-9০-৯]+\s*[.)।:-])/g
+    );
+
+    mcqBlocks.forEach(block=>{
+
+      const cleanBlock = block.trim();
+
+      if(
+        cleanBlock.toLowerCase()
+        .includes(keyword.toLowerCase())
+      ){
+
+        // ===== MCQ Number =====
+        let mcqNumber = "?";
+
+        const numberMatch =
+          cleanBlock.match(
+            /^([0-9০-৯]+)\s*[.)।:-]/
+          );
+
+        if(numberMatch){
+          mcqNumber = numberMatch[1];
+        }
+
+        // ===== Small Preview =====
+        const index =
+          cleanBlock
+          .toLowerCase()
+          .indexOf(keyword.toLowerCase());
+
+        const start =
+          Math.max(0, index - 40);
+
+        const end =
+          Math.min(
+            cleanBlock.length,
+            index + keyword.length + 80
+          );
+
+        let preview =
+          cleanBlock.slice(start, end);
+
+        // ===== Highlight =====
+        const regex =
+          new RegExp(keyword, "gi");
+
+        preview =
+          preview.replace(
+            regex,
+            match=>`
+              <span class="search-highlight">
+                ${match}
+              </span>
+            `
+          );
+
+        matchedResults.push({
+          fileName: file.name,
+          title: file.title,
+          mcqNumber: mcqNumber,
+          preview: preview,
+          content: file.content
+        });
+
+      }
+
+    });
 
   }
 
-  applyFontSize();
+  // ===== Clear =====
+  fileTableBody.innerHTML = '';
+
+  // ===== No Result =====
+  if(matchedResults.length === 0){
+
+    searchStatus.innerHTML = `
+      <span style="color:red;">
+        No MCQ Found
+      </span>
+    `;
+
+    fileTableBody.innerHTML = `
+      <tr>
+        <td colspan="3"
+            style="
+              text-align:center;
+              color:red;
+              font-weight:bold;
+              padding:20px;
+            ">
+          No MCQ Found
+        </td>
+      </tr>
+    `;
+
+    searchInput.classList.remove(
+      "search-success"
+    );
+
+    searchInput.classList.add(
+      "search-empty"
+    );
+
+    searchInput.style.background = "#fff0f0";
+
+    return;
+  }
+
+  // ===== Success =====
+  searchStatus.innerHTML = `
+    <span style="color:green;font-weight:bold;">
+      Found ${matchedResults.length} MCQ Result(s)
+    </span>
+  `;
+
+  searchInput.classList.remove(
+    "search-empty"
+  );
+
+  searchInput.classList.add(
+    "search-success"
+  );
+
+  searchInput.style.background = "#eaffea";
+
+  // ===== Render =====
+  matchedResults.forEach((item, idx)=>{
+
+    const tr =
+      document.createElement('tr');
+
+    // ===== Index =====
+    const tdIndex =
+      document.createElement('td');
+
+    tdIndex.textContent = idx + 1;
+
+    // ===== Info =====
+    const tdInfo =
+      document.createElement('td');
+
+    tdInfo.innerHTML = `
+
+      <div style="
+        font-weight:bold;
+        color:#003366;
+        margin-bottom:6px;
+      ">
+        MCQ No: ${item.mcqNumber}
+      </div>
+
+      <div style="
+        line-height:1.8;
+        font-size:15px;
+      ">
+        ${item.preview}
+      </div>
+
+      <div style="
+        margin-top:8px;
+        color:#555;
+        font-size:12px;
+      ">
+        File: ${item.fileName}
+      </div>
+
+      <div style="
+        color:#777;
+        font-size:12px;
+      ">
+        Title: ${item.title}
+      </div>
+    `;
 
-  // browser render settle হওয়ার জন্য ছোট delay
-  setTimeout(()=>{
+    // ===== Action =====
+    const tdActions =
+      document.createElement('td');
 
-    window.print();
+    const openBtn =
+      document.createElement('button');
 
-  },500);
+    openBtn.textContent = 'Open';
 
-};
-document.getElementById("scrollUp").onclick=()=>{
+    openBtn.onclick = ()=>{
 
-window.scrollTo({top:0,behavior:"smooth"});
+      fullscreenViewer.style.display =
+        'block';
 
-};
+      managerUI.style.visibility =
+        'hidden';
 
-document.getElementById("startTimerBtn").onclick=()=>{
+      const iframeDoc =
+        viewer.contentDocument ||
+        viewer.contentWindow.document;
 
+      iframeDoc.open();
+      iframeDoc.write(item.content);
+      iframeDoc.close();
+    };
 
-startTimer();
+    tdActions.appendChild(openBtn);
 
-};
- /*৩য় শুরু TimeUp fresh Btn এর একটি অংশ*/
-document.getElementById("refreshTimerBtn").onclick=()=>{
+    // ===== Append =====
+    tr.appendChild(tdIndex);
+    tr.appendChild(tdInfo);
+    tr.appendChild(tdActions);
 
-if(!checkPassword()) return;
+    fileTableBody.appendChild(tr);
 
-quizLocked = false;
-
-timerStarted = false;
-
-clearInterval(timerInterval);
-
-totalTime = 0;
-
-timeLeft = 0;
-
-updateTimerDisplay();
-
-document.getElementById("timeInput").value = "";
-
-document.getElementById("topTimerBar")
-.style.background = "#111827";
-
-};
-/*৩য় শেষ*/
-
-document.getElementById("pauseTimer").onclick=()=>{
-
-clearInterval(timerInterval);
-
-};
-
-document.getElementById("resumeTimer").onclick=()=>{
-
-clearInterval(timerInterval);
-
-timerInterval = setInterval(()=>{
-
-timeLeft--;
-
-updateTimerDisplay();
-
-if(timeLeft <= 300){
-
-document.getElementById("topTimerBar")
-.style.background = "#dc2626";
-
-}
-
-if(timeLeft <= 0){
-
-clearInterval(timerInterval);
-
-timeLeft = 0;
-
-updateTimerDisplay();
-
-timeUp();
-
-}
-
-},1000);
-
-};
-
-document.getElementById("fullscreenBtn").onclick=()=>{
-
-if(!document.fullscreenElement){
-
-document.documentElement.requestFullscreen();
-
-}else{
-
-document.exitFullscreen();
-
-}
-
-};
-document.getElementById("scrollDown").onclick=()=>{
-
-window.scrollTo({
-top:document.body.scrollHeight,
-behavior:"smooth"
-});
-
-};
-
-const statsBtn=document.getElementById("statsBtn");
-
-const statsPanel=document.getElementById("statsPanel");
-
-const statsContent=document.getElementById("statsContent");
-  document.getElementById("timeInput")
-.addEventListener("focus",()=>{
-
-setTimeout(()=>{
-
-window.scrollTo({
-top:0,
-behavior:"instant"
-});
-
-},50);
-
-});
-
-statsBtn.onclick=()=>{
-
-statsPanel.classList.toggle("show");
-
-const correct=[];
-const wrong=[];
-const pending=[];
-
-let totalScore=0;
-
-questions.forEach(q=>{
-
-if(q.answered){
-
-if(q.gotCorrect){
-
-correct.push(q.id);
-
-totalScore += Number(q.mark || 1);
-
-}else{
-
-wrong.push(q.id);
-
-totalScore -= Number(q.negative || 0);
-
-}
-
-}else{
-
-pending.push(q.id);
-
-}
+  });
 
 });
+    /*১১তম শে*/
 
-  statsContent.innerHTML =
-"<p>🏆 স্কোর: " + totalScore + "</p>" +
+// ===== Initialization =====
+(async ()=>{
+  await openDB();
+  loadTitles();
 
-"<p>✔ সঠিক: " + correct.length + "</p>" +
+  const changePassBtn = document.createElement("button");
+  changePassBtn.textContent="Change Password";
+  changePassBtn.style.background="#ff9800"; changePassBtn.style.color="#fff";
+  changePassBtn.onclick = changePassword;
+  titlePage.insertBefore(changePassBtn,titlePage.children[1]);
 
-"<p>❌ ভুল: " + wrong.length + "</p>" +
-
-"<p><b>ভুল নং:</b><br>" + wrong.join(", ") + "</p>" +
-
-"<p><b>বাকি:</b><br>" + pending.length + "</p>";
-
-};
-
-/*৬ষ্ঠ রিফ্রেশের ফাংশন যেটা বলে আগে টাইমার রিফ্রেশ থাকুন  */
-  function showAlert(msg){
-
-const box = document.getElementById("customAlert");
-
-box.textContent = msg;
-
-box.style.display = "block";
-
-setTimeout(()=>{
-
-box.style.display = "none";
-
-},2000);
-
+  const last = localStorage.getItem("lastTitle");
+  if(last){
+    /*const reopen = confirm("Reopen last title: "+last+"?");*/
+    if(last){
+  enterTitle(last);
 }
-  /* ৬ষ্ঠ শেষ */
-render();
-updateCounters();
-applyFontSize();
+  }
+})();
 </script>
-
-<!-- ৫ম শুরু রিফ্রেশের জন্য -->
-  <div id="customAlert"></div>
-  <!--৫ম শেষ -->
 </body>
 </html>
