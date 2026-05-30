@@ -507,7 +507,7 @@ background:white;
 </iframe>
 
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="module">
 
 /* =========================
@@ -566,7 +566,13 @@ initializeApp(firebaseConfig);
 
 const db =
 getFirestore(app);
+const supabaseUrl = "https://yixkarsciqesdfygjgjx.supabase.co";
+const supabaseKey = "sb_publishable_peaAaCQNVzNb8OOVIKFJFw_om1XUO9o";
 
+const supabase = window.supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 /* =========================
 ELEMENTS
 ========================= */
@@ -733,85 +739,47 @@ try{
 uploadStatus.innerHTML =
 "📖 Reading File...";
 
-const content =
-e.target.result;
+const fileNameUnique = Date.now() + "_" + file.name;
 
-/* FILE SIZE CHECK */
+/* UPLOAD TO SUPABASE */
+uploadStatus.innerHTML = "☁ Uploading To Storage...";
 
-const sizeInKB =
+const { data, error } = await supabase.storage
+  .from("files")
+  .upload(fileNameUnique, file);
 
-new Blob([content])
-.size / 1024;
-
-if(sizeInKB > 900){
-
-alert(
-"File Too Large!"
-);
-
-uploadBtn.disabled =
-false;
-
-uploadBtn.textContent =
-"Upload File";
-
-uploadStatus.innerHTML =
-"❌ Upload Failed";
-
-return;
-
+if (error) {
+  uploadStatus.innerHTML = "❌ Upload Failed";
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = "Upload File";
+  return;
 }
 
-/* PREPARING DATA */
+/* GET PUBLIC URL */
+const { data: urlData } = supabase.storage
+  .from("files")
+  .getPublicUrl(fileNameUnique);
 
-uploadStatus.innerHTML =
-"📦 Preparing Data...";
+const fileUrl = urlData.publicUrl;
 
-const data = {
+/* SAVE METADATA TO FIRESTORE */
+uploadStatus.innerHTML = "📦 Saving Data...";
 
-name:
-fileName.value.trim(),
-
-category:
-categoryInput.value.trim(),
-
-subcategory:
-subCategoryInput.value.trim(),
-
-content,
-
-created:
-Date.now()
-
+const dataToSave = {
+  name: fileName.value.trim(),
+  category: categoryInput.value.trim(),
+  subcategory: subCategoryInput.value.trim(),
+  url: fileUrl,
+  created: Date.now()
 };
 
-/* FIREBASE UPLOAD */
-
-uploadStatus.innerHTML =
-"☁ Uploading To Firebase...";
-
-const docRef =
-
 await addDoc(
-
-collection(
-db,
-"mcqFiles"
-),
-
-data
-
+  collection(db, "mcqFiles"),
+  dataToSave
 );
-
 /* VERIFY FROM FIREBASE */
 
-if(docRef.id){
 
-uploadStatus.innerHTML =
-
-"✅ Saved To Firebase";
-
-}
 
 /* SUCCESS */
 
@@ -1050,8 +1018,9 @@ openBtn.textContent =
 openBtn.onclick =
 ()=>{
 
-openFile(
-file.content
+window.open(
+file.url,
+"_blank"
 );
 
 };
@@ -1362,9 +1331,6 @@ loadFiles();
 return;
 
 }
-
-homePage.innerHTML = "";
-
 const matched =
 allFiles.filter(f=>
 
@@ -1372,13 +1338,10 @@ f.name
 .toLowerCase()
 .includes(keyword)
 
-||
-
-f.content
-.toLowerCase()
-.includes(keyword)
-
 );
+homePage.innerHTML = "";
+
+
 
 matched.forEach(file=>{
 
@@ -1392,9 +1355,14 @@ card.textContent =
 file.name;
 
 card.onclick =
-()=>openFile(
-file.content
+()=>{
+
+window.open(
+file.url,
+"_blank"
 );
+
+};
 
 homePage.appendChild(
 card
