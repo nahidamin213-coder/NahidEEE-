@@ -514,58 +514,11 @@ background:white;
 FIREBASE IMPORT
 ========================= */
 
-import {
-
-initializeApp
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-
-getFirestore,
-
-collection,
-
-addDoc,
-
-getDocs,
-
-deleteDoc,
-
-doc,
-
-updateDoc
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* =========================
 FIREBASE CONFIG
 ========================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyD5B4w6U7mCX2auzCBA7LksKRThR_sIgpQ",
-  authDomain: "gen-lang-client-0337985071.firebaseapp.com",
-  projectId: "gen-lang-client-0337985071",
-  storageBucket: "gen-lang-client-0337985071.firebasestorage.app",
-  messagingSenderId: "451129426509",
-  appId: "1:451129426509:web:7d8652f684620d271c1204",
-  measurementId: "G-94EKSKLTB9"
-};
-
-
-const app =
-initializeApp(firebaseConfig);
-
-const db =
-getFirestore(app);
+  
 const supabaseUrl = "https://yixkarsciqesdfygjgjx.supabase.co";
 const supabaseKey = "sb_publishable_peaAaCQNVzNb8OOVIKFJFw_om1XUO9o";
 
@@ -679,159 +632,88 @@ localStorage.getItem(
 UPLOAD FILE
 ========================= */
 
-uploadBtn.onclick =
-async ()=>{
-  /*upload দিতে চাইলে পাসওয়ার্ড চাইবে তার জন্য */
-/* PASSWORD CHECK */
-
-const pass =
-
-prompt(
-"Enter Admin Password"
-);
-
-if(
-pass !== ADMIN_PASSWORD
-){
-
-alert(
-"Wrong Password!"
-);
-
-return;
-
-}
-  /*শেষ লাইন */
-const file =
-fileInput.files[0];
-
-if(!file){
-
-alert(
-"Select File"
-);
-
-return;
-
-}
-
-/* LOADING START */
-
-uploadBtn.disabled =
-true;
-
-uploadBtn.textContent =
-"Uploading...";
-
-uploadStatus.innerHTML =
-"⏳ Upload Starting...";
 
 /* FILE READER */
 
-const reader =
-new FileReader();
+uploadBtn.onclick = async () => {
 
-reader.onload =
-async e=>{
+const pass = prompt("Enter Admin Password");
 
-try{
-
-uploadStatus.innerHTML =
-"📖 Reading File...";
-
-const fileNameUnique = Date.now() + "_" + file.name;
-
-/* UPLOAD TO SUPABASE */
-uploadStatus.innerHTML = "☁ Uploading To Storage...";
-
-const { data, error } = await supabase.storage
-  .from("files")
-  .upload(fileNameUnique, file);
-
-if (error) {
-  uploadStatus.innerHTML = "❌ Upload Failed";
-  uploadBtn.disabled = false;
-  uploadBtn.textContent = "Upload File";
-  return;
+if(pass !== ADMIN_PASSWORD){
+alert("Wrong Password!");
+return;
 }
 
-/* GET PUBLIC URL */
+const file = fileInput.files[0];
+
+if(!file){
+alert("Select File");
+return;
+}
+
+uploadBtn.disabled = true;
+uploadBtn.textContent = "Uploading...";
+uploadStatus.innerHTML = "Uploading...";
+
+try {
+
+const fileNameUnique = Date.now() + "_" + file.name;
+console.log("START STORAGE UPLOAD");
+const { error } = await supabase.storage
+.from("files")
+.upload(fileNameUnique, file, {
+  contentType: "text/html"
+});
+console.log("STORAGE UPLOAD FINISHED");
+if(error){
+throw error;
+}
+
 const { data: urlData } = supabase.storage
-  .from("files")
-  .getPublicUrl(fileNameUnique);
+.from("files")
+.getPublicUrl(fileNameUnique);
 
 const fileUrl = urlData.publicUrl;
 
-/* SAVE METADATA TO FIRESTORE */
-uploadStatus.innerHTML = "📦 Saving Data...";
-
 const dataToSave = {
-  name: fileName.value.trim(),
-  category: categoryInput.value.trim(),
-  subcategory: subCategoryInput.value.trim(),
-  url: fileUrl,
-  created: Date.now()
+Name: fileName.value.trim(),
+Category: categoryInput.value.trim(),
+Subcategory: subCategoryInput.value.trim(),
+url: fileUrl,
+created: Date.now()
 };
 
-await addDoc(
-  collection(db, "mcqFiles"),
-  dataToSave
-);
-/* VERIFY FROM FIREBASE */
+const { error: dbError } = await supabase
+.from("mcqFiles")
+.insert([dataToSave]);
 
+if(dbError){
+throw dbError;
+}
 
-
-/* SUCCESS */
-
-uploadStatus.innerHTML =
-"✅ Upload Complete";
-
-uploadBtn.disabled =
-false;
-
-uploadBtn.textContent =
-"Upload File";
-  /*লোড ফাইভ ক্লিয়ার দেখানোর জন্য */
-  setTimeout(()=>{
-
-uploadStatus.innerHTML =
-"";
-
-},3000);/* শেষ এটা যুক্ত করা হয়েছে  */
-
-/* CLEAR INPUTS */
+uploadStatus.innerHTML = "Uploaded Successfully";
 
 fileInput.value = "";
-
 fileName.value = "";
-
 categoryInput.value = "";
-
 subCategoryInput.value = "";
 
-/* RELOAD FILES */
+await loadFiles();
 
-await loadFiles(); /*আগে ছিল loadFiles();👈 এটাআপলোড ক্লিয়ারেন্স দেখানোর জন্য  */
+setTimeout(()=>{
+uploadStatus.innerHTML = "";
+},2000);
 
-}
-catch(error){
+} catch(err){
 
-console.error(error);
+uploadStatus.innerHTML = "Error: " + err.message;
 
-uploadStatus.innerHTML =
-"❌ Upload Error";
+} finally {
 
-uploadBtn.disabled =
-false;
-
-uploadBtn.textContent =
-"Upload File";
+uploadBtn.disabled = false;
+uploadBtn.textContent = "Upload File";
 
 }
-
-};
-
-reader.readAsText(file);
 
 };
 
@@ -843,32 +725,25 @@ async function loadFiles(){
 
 homePage.innerHTML = "";
 
-const snapshot =
-await getDocs(
-collection(
-db,
-"mcqFiles"
-)
-);
+const { data, error } =
+await supabase
+.from("mcqFiles")
+.select("*");
 
-allFiles = [];
+if(error){
 
-snapshot.forEach(docItem=>{
+console.error(error);
 
-allFiles.push({
+return;
 
-id:docItem.id,
+}
 
-...docItem.data()
-
-});
-
-});
+allFiles = data || [];
 
 const categories =
 [...new Set(
 allFiles.map(
-f=>f.category
+f=>f.Category
 )
 )];
 
@@ -916,13 +791,13 @@ subCategoryList
 
 const filtered =
 allFiles.filter(
-f=>f.category===category
+f=>f.Category===category
 );
 
 const subCats =
 [...new Set(
 filtered.map(
-f=>f.subcategory
+f=>f.Subcategory
 )
 )];
 
@@ -970,13 +845,9 @@ const filtered =
 allFiles.filter(
 f=>
 
-f.category===
-currentCategory
-
+f.Category===currentCategory
 &&
-
-f.subcategory===
-sub
+f.Subcategory===sub
 
 );
 
@@ -997,7 +868,7 @@ title.className =
 "fileTitle";
 
 title.textContent =
-file.name;
+file.Name;
 
 /* ACTION AREA */
 
@@ -1038,7 +909,7 @@ renameBtn.onclick =
 
 renameFile(
 file.id,
-file.name
+file.Name
 );
 
 };
@@ -1203,19 +1074,12 @@ name
 
 if(!newName) return;
 
-await updateDoc(
-
-doc(
-db,
-"mcqFiles",
-id
-),
-
-{
-name:newName
-}
-
-);
+await supabase
+.from("mcqFiles")
+.update({
+Name:newName
+})
+.eq("id",id);
 
 loadFiles();
 
@@ -1257,15 +1121,10 @@ if(
 )
 )return;
 
-await deleteDoc(
-
-doc(
-db,
-"mcqFiles",
-id
-)
-
-);
+await supabase
+.from("mcqFiles")
+.delete()
+.eq("id",id);
 
 loadFiles();
 
@@ -1334,7 +1193,7 @@ return;
 const matched =
 allFiles.filter(f=>
 
-f.name
+f.Name
 .toLowerCase()
 .includes(keyword)
 
@@ -1352,7 +1211,7 @@ card.className =
 "card";
 
 card.textContent =
-file.name;
+file.Name;
 
 card.onclick =
 ()=>{
@@ -1468,4 +1327,4 @@ loadFiles();
 </script>
 
 </body>
-</html>
+</html> 
