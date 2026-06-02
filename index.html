@@ -6,10 +6,12 @@
 <meta name="viewport"
 content="width=device-width,
 initial-scale=1.0">
+  
 
 <title>
 Advanced MCQ File Library
 </title>
+  
 
 <style>
 
@@ -67,9 +69,39 @@ z-index:999;
 
 box-shadow:
 0 2px 10px rgba(0,0,0,0.5);
-
+  
 }
 
+  .menuIcon{
+position:absolute;
+right:15px;
+top:10px;
+font-size:30px;
+cursor:pointer;
+color:white;
+}
+
+.adminMenu{
+position:absolute;
+right:15px;
+top:55px;
+background:#222;
+padding:10px;
+border-radius:10px;
+display:flex;
+flex-direction:column;
+gap:10px;
+z-index:9999;
+}
+
+.adminMenu button{
+background:#333;
+color:white;
+padding:8px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
 /* =========================
 CONTAINER
 ========================= */
@@ -327,10 +359,16 @@ display:none;
 <body>
 
 <div class="topbar">
-
-📚 EEE & Job MCQ Library
-
+  <div class="menuIcon" id="menuIcon">☰</div>
+<div class="adminMenu hidden" id="adminMenu">
+  <button id="adminLoginBtn">Admin Panel</button>
+  <button id="logoutAdminBtn">Logout</button>
 </div>
+  
+📚 EEE & Job MCQ Library
+  						
+
+</div> 
 
 <div class="container">
 
@@ -338,7 +376,7 @@ display:none;
 UPLOAD PANEL
 ====================== -->
 
-<div class="uploadPanel">
+<div class="uploadPanel hidden" id="uploadPanel">
 
 <label>
 Select HTML File
@@ -418,15 +456,18 @@ Refresh
   <!-- change password এর Btn -->
   <button
 id="changePasswordBtn"
+class="hidden"
 style="
 background:#9C27B0;
 color:white;
 ">
+    
 Change Password
 </button>
+  
   <!--শেষ লাইন  -->
-
 </div>
+  
 
 <!-- ======================
 HOME PAGE
@@ -514,58 +555,11 @@ background:white;
 FIREBASE IMPORT
 ========================= */
 
-import {
-
-initializeApp
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-
-getFirestore,
-
-collection,
-
-addDoc,
-
-getDocs,
-
-deleteDoc,
-
-doc,
-
-updateDoc
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* =========================
 FIREBASE CONFIG
 ========================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyD5B4w6U7mCX2auzCBA7LksKRThR_sIgpQ",
-  authDomain: "gen-lang-client-0337985071.firebaseapp.com",
-  projectId: "gen-lang-client-0337985071",
-  storageBucket: "gen-lang-client-0337985071.firebasestorage.app",
-  messagingSenderId: "451129426509",
-  appId: "1:451129426509:web:7d8652f684620d271c1204",
-  measurementId: "G-94EKSKLTB9"
-};
-
-
-const app =
-initializeApp(firebaseConfig);
-
-const db =
-getFirestore(app);
+  
 const supabaseUrl = "https://yixkarsciqesdfygjgjx.supabase.co";
 const supabaseKey = "sb_publishable_peaAaCQNVzNb8OOVIKFJFw_om1XUO9o";
 
@@ -651,6 +645,10 @@ document.getElementById(
 document.getElementById(
 "changePasswordBtn"
 );
+  const uploadPanel =
+document.getElementById(
+"uploadPanel"
+);
   /*শেষ লাইন  */
 
 let allFiles = [];
@@ -661,6 +659,69 @@ let currentSubCategory = "";
   /* =========================
 ADMIN PASSWORD
 ========================= */ 
+  const menuIcon = document.getElementById("menuIcon");
+const adminMenu = document.getElementById("adminMenu");
+const adminLoginBtn = document.getElementById("adminLoginBtn");
+const logoutAdminBtn = document.getElementById("logoutAdminBtn");
+
+let isAdminLoggedIn = false;
+
+/* MENU OPEN CLOSE */
+menuIcon.onclick = () => {
+  adminMenu.classList.toggle("hidden");
+};
+
+/* ADMIN LOGIN */
+adminLoginBtn.onclick = () => {
+
+const pass = prompt(
+"Enter Admin Password"
+);
+
+if(pass === ADMIN_PASSWORD){
+
+isAdminLoggedIn = true;
+
+uploadPanel.classList.remove(
+"hidden"
+);
+
+changePasswordBtn.classList.remove(
+"hidden"
+);
+
+alert(
+"Admin Access Granted"
+);
+
+}else{
+
+alert(
+"Wrong Password!"
+);
+
+}
+
+};
+
+/* LOGOUT */
+logoutAdminBtn.onclick = () => {
+
+isAdminLoggedIn = false;
+
+uploadPanel.classList.add(
+"hidden"
+);
+
+changePasswordBtn.classList.add(
+"hidden"
+);
+
+alert(
+"Logged out"
+);
+
+};
 /* =========================
 ADMIN PASSWORD SYSTEM
 ========================= */
@@ -679,159 +740,96 @@ localStorage.getItem(
 UPLOAD FILE
 ========================= */
 
-uploadBtn.onclick =
-async ()=>{
-  /*upload দিতে চাইলে পাসওয়ার্ড চাইবে তার জন্য */
-/* PASSWORD CHECK */
-
-const pass =
-
-prompt(
-"Enter Admin Password"
-);
-
-if(
-pass !== ADMIN_PASSWORD
-){
-
-alert(
-"Wrong Password!"
-);
-
-return;
-
-}
-  /*শেষ লাইন */
-const file =
-fileInput.files[0];
-
-if(!file){
-
-alert(
-"Select File"
-);
-
-return;
-
-}
-
-/* LOADING START */
-
-uploadBtn.disabled =
-true;
-
-uploadBtn.textContent =
-"Uploading...";
-
-uploadStatus.innerHTML =
-"⏳ Upload Starting...";
 
 /* FILE READER */
 
-const reader =
-new FileReader();
+uploadBtn.onclick = async () => {
 
-reader.onload =
-async e=>{
+if(!isAdminLoggedIn){
 
-try{
+alert(
+"Admin Login Required"
+);
 
-uploadStatus.innerHTML =
-"📖 Reading File...";
+return;
 
-const fileNameUnique = Date.now() + "_" + file.name;
-
-/* UPLOAD TO SUPABASE */
-uploadStatus.innerHTML = "☁ Uploading To Storage...";
-
-const { data, error } = await supabase.storage
-  .from("files")
-  .upload(fileNameUnique, file);
-
-if (error) {
-  uploadStatus.innerHTML = "❌ Upload Failed";
-  uploadBtn.disabled = false;
-  uploadBtn.textContent = "Upload File";
-  return;
 }
 
-/* GET PUBLIC URL */
+const file = fileInput.files[0];
+
+if(!file){
+alert("Select File");
+return;
+}
+
+uploadBtn.disabled = true;
+uploadBtn.textContent = "Uploading...";
+uploadStatus.innerHTML = "Uploading...";
+
+try {
+
+const safeName = file.name
+  .replace(/[^a-zA-Z0-9.\-_]/g, "_");
+
+const fileNameUnique = Date.now() + "_" + safeName;
+console.log("START STORAGE UPLOAD");
+const { error } = await supabase.storage
+.from("files")
+.upload(fileNameUnique, file, {
+  contentType: "text/html"
+});
+console.log("STORAGE UPLOAD FINISHED");
+if(error){
+throw error;
+}
+
 const { data: urlData } = supabase.storage
-  .from("files")
-  .getPublicUrl(fileNameUnique);
+.from("files")
+.getPublicUrl(fileNameUnique);
 
 const fileUrl = urlData.publicUrl;
+console.log(fileUrl);
 
-/* SAVE METADATA TO FIRESTORE */
-uploadStatus.innerHTML = "📦 Saving Data...";
-
+  
 const dataToSave = {
-  name: fileName.value.trim(),
-  category: categoryInput.value.trim(),
-  subcategory: subCategoryInput.value.trim(),
-  url: fileUrl,
-  created: Date.now()
+Name: fileName.value.trim(),
+Category: categoryInput.value.trim(),
+Subcategory: subCategoryInput.value.trim(),
+url: fileUrl,
+created: Date.now()
 };
 
-await addDoc(
-  collection(db, "mcqFiles"),
-  dataToSave
-);
-/* VERIFY FROM FIREBASE */
+const { error: dbError } = await supabase
+.from("mcqFiles")
+.insert([dataToSave]);
 
+if(dbError){
+throw dbError;
+}
 
-
-/* SUCCESS */
-
-uploadStatus.innerHTML =
-"✅ Upload Complete";
-
-uploadBtn.disabled =
-false;
-
-uploadBtn.textContent =
-"Upload File";
-  /*লোড ফাইভ ক্লিয়ার দেখানোর জন্য */
-  setTimeout(()=>{
-
-uploadStatus.innerHTML =
-"";
-
-},3000);/* শেষ এটা যুক্ত করা হয়েছে  */
-
-/* CLEAR INPUTS */
+uploadStatus.innerHTML = "Uploaded Successfully";
 
 fileInput.value = "";
-
 fileName.value = "";
-
 categoryInput.value = "";
-
 subCategoryInput.value = "";
 
-/* RELOAD FILES */
+await loadFiles();
 
-await loadFiles(); /*আগে ছিল loadFiles();👈 এটাআপলোড ক্লিয়ারেন্স দেখানোর জন্য  */
+setTimeout(()=>{
+uploadStatus.innerHTML = "";
+},2000);
 
-}
-catch(error){
+} catch(err){
 
-console.error(error);
+uploadStatus.innerHTML = "Error: " + err.message;
 
-uploadStatus.innerHTML =
-"❌ Upload Error";
+} finally {
 
-uploadBtn.disabled =
-false;
-
-uploadBtn.textContent =
-"Upload File";
+uploadBtn.disabled = false;
+uploadBtn.textContent = "Upload File";
 
 }
-
-};
-
-reader.readAsText(file);
 
 };
 
@@ -843,32 +841,25 @@ async function loadFiles(){
 
 homePage.innerHTML = "";
 
-const snapshot =
-await getDocs(
-collection(
-db,
-"mcqFiles"
-)
-);
+const { data, error } =
+await supabase
+.from("mcqFiles")
+.select("*");
 
-allFiles = [];
+if(error){
 
-snapshot.forEach(docItem=>{
+console.error(error);
 
-allFiles.push({
+return;
 
-id:docItem.id,
+}
 
-...docItem.data()
-
-});
-
-});
+allFiles = data || [];
 
 const categories =
 [...new Set(
 allFiles.map(
-f=>f.category
+f=>f.Category
 )
 )];
 
@@ -916,13 +907,13 @@ subCategoryList
 
 const filtered =
 allFiles.filter(
-f=>f.category===category
+f=>f.Category===category
 );
 
 const subCats =
 [...new Set(
 filtered.map(
-f=>f.subcategory
+f=>f.Subcategory
 )
 )];
 
@@ -970,13 +961,9 @@ const filtered =
 allFiles.filter(
 f=>
 
-f.category===
-currentCategory
-
+f.Category===currentCategory
 &&
-
-f.subcategory===
-sub
+f.Subcategory===sub
 
 );
 
@@ -997,7 +984,7 @@ title.className =
 "fileTitle";
 
 title.textContent =
-file.name;
+file.Name;
 
 /* ACTION AREA */
 
@@ -1015,14 +1002,8 @@ document.createElement("button");
 openBtn.textContent =
 "Open";
 
-openBtn.onclick =
-()=>{
-
-window.open(
-file.url,
-"_blank"
-);
-
+openBtn.onclick = () => {
+  openFile(file.url);
 };
 
 /* RENAME BUTTON */
@@ -1038,7 +1019,7 @@ renameBtn.onclick =
 
 renameFile(
 file.id,
-file.name
+file.Name
 );
 
 };
@@ -1092,63 +1073,23 @@ div
 OPEN FILE
 ========================= */
 
-window.openFile =
-function(content){
+window.openFile = function(url){
 
-viewerPage.style
-.display = "block";
+viewerPage.style.display = "block";
 
-const iframeDoc =
-viewer.contentDocument
-||
-viewer.contentWindow
-.document;
+fetch(url)
+  .then(res => res.text())
+  .then(html => {
 
-const finalContent = `
+    const iframeDoc =
+      viewer.contentDocument ||
+      viewer.contentWindow.document;
 
-<style>
+    iframeDoc.open();
+    iframeDoc.write(html);
+    iframeDoc.close();
 
-html,
-body{
-
-margin:0;
-padding:0;
-
-width:100%;
-height:auto;
-
-overflow:auto !important;
-
-}
-
-*{
-
-max-width:100% !important;
-box-sizing:border-box;
-
-}
-
-img,
-table,
-iframe{
-
-max-width:100% !important;
-
-}
-
-</style>
-
-${content}
-
-`;
-
-iframeDoc.open();
-
-iframeDoc.write(
-finalContent
-);
-
-iframeDoc.close();
+  });
 
 };
 
@@ -1176,18 +1117,10 @@ async function(id,name){
   /* রিনেম করতে চাইলে পাসওয়ার্ড চাইবে তার জন্য */
   /* PASSWORD CHECK */
 
-const pass =
-
-prompt(
-"Enter Admin Password"
-);
-
-if(
-pass !== ADMIN_PASSWORD
-){
+if(!isAdminLoggedIn){
 
 alert(
-"Wrong Password!"
+"Admin Login Required"
 );
 
 return;
@@ -1203,19 +1136,12 @@ name
 
 if(!newName) return;
 
-await updateDoc(
-
-doc(
-db,
-"mcqFiles",
-id
-),
-
-{
-name:newName
-}
-
-);
+await supabase
+.from("mcqFiles")
+.update({
+Name:newName
+})
+.eq("id",id);
 
 loadFiles();
 
@@ -1233,18 +1159,10 @@ window.deleteFile =
 async function(id){
  /* ডিলিট করতে চাইলে পাসওয়ার্ড যাবে তার জন্য */
   /* PASSWORD CHECK */
-const pass =
-
-prompt(
-"Enter Admin Password"
-);
-
-if(
-pass !== ADMIN_PASSWORD
-){
+  if(!isAdminLoggedIn){
 
 alert(
-"Wrong Password!"
+"Admin Login Required"
 );
 
 return;
@@ -1257,15 +1175,10 @@ if(
 )
 )return;
 
-await deleteDoc(
-
-doc(
-db,
-"mcqFiles",
-id
-)
-
-);
+await supabase
+.from("mcqFiles")
+.delete()
+.eq("id",id);
 
 loadFiles();
 
@@ -1334,7 +1247,7 @@ return;
 const matched =
 allFiles.filter(f=>
 
-f.name
+f.Name
 .toLowerCase()
 .includes(keyword)
 
@@ -1352,15 +1265,10 @@ card.className =
 "card";
 
 card.textContent =
-file.name;
+file.Name;
 
 card.onclick =
 ()=>{
-
-window.open(
-file.url,
-"_blank"
-);
 
 };
 
@@ -1468,4 +1376,4 @@ loadFiles();
 </script>
 
 </body>
-</html>
+</html> 
