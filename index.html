@@ -1244,13 +1244,10 @@ loadFiles();
 return;
 
 }
-const matched =
-allFiles.filter(f=>
-
-f.Name
-.toLowerCase()
-.includes(keyword)
-
+const matched = allFiles.filter(f =>
+  (f.Name || "").toLowerCase().includes(keyword) ||
+  (f.Category || "").toLowerCase().includes(keyword) ||
+  (f.Subcategory || "").toLowerCase().includes(keyword)
 );
 homePage.innerHTML = "";
 
@@ -1267,9 +1264,8 @@ card.className =
 card.textContent =
 file.Name;
 
-card.onclick =
-()=>{
-
+card.onclick = () => {
+  openFile(file.url);
 };
 
 homePage.appendChild(
