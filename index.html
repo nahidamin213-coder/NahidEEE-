@@ -768,63 +768,183 @@ uploadStatus.innerHTML = "Uploading...";
 
 try {
 
-const safeName = file.name
-  .replace(/[^a-zA-Z0-9.\-_]/g, "_");
+const nameValue =
+fileName.value.trim();
 
-const fileNameUnique = Date.now() + "_" + safeName;
-console.log("START STORAGE UPLOAD");
-const { error } = await supabase.storage
-.from("files")
-.upload(fileNameUnique, file, {
-  contentType: "text/html"
-});
-console.log("STORAGE UPLOAD FINISHED");
-if(error){
-throw error;
+const categoryValue =
+categoryInput.value.trim();
+
+const subCategoryValue =
+subCategoryInput.value.trim();
+
+if(
+!nameValue ||
+!categoryValue ||
+!subCategoryValue
+){
+throw new Error(
+"সব তথ্য পূরণ করুন"
+);
 }
 
-const { data: urlData } = supabase.storage
-.from("files")
-.getPublicUrl(fileNameUnique);
+/* পুরোনো ফাইল আছে কিনা খুঁজে দেখবে */
 
-const fileUrl = urlData.publicUrl;
-console.log(fileUrl);
-
-  
-const dataToSave = {
-Name: fileName.value.trim(),
-Category: categoryInput.value.trim(),
-Subcategory: subCategoryInput.value.trim(),
-url: fileUrl,
-created: Date.now()
-};
-
-const { error: dbError } = await supabase
+const {
+data: existingFile,
+error: findError
+}
+=
+await supabase
 .from("mcqFiles")
-.insert([dataToSave]);
+.select("*")
+.eq("Name", nameValue)
+.eq("Category", categoryValue)
+.eq("Subcategory", subCategoryValue)
+.maybeSingle();
 
-if(dbError){
-throw dbError;
+if(findError){
+
+throw findError;
+
 }
 
-uploadStatus.innerHTML = "Uploaded Successfully";
+/* একই storage path ব্যবহার হবে */
 
-fileInput.value = "";
-fileName.value = "";
-categoryInput.value = "";
-subCategoryInput.value = "";
+const safeName =
+(
+categoryValue +
+"_" +
+subCategoryValue +
+"_" +
+nameValue +
+".html"
+)
+
+.replace(
+/[^a-zA-Z0-9.\-_]/g,
+"_"
+);
+
+/* Storage Upload */
+
+const { error: uploadError } =
+await supabase.storage
+.from("files")
+.upload(
+safeName,
+file,
+{
+contentType:"text/html",
+upsert:true
+}
+);
+
+if(uploadError){
+
+throw uploadError;
+
+}
+
+/* URL */
+
+const { data:urlData } =
+supabase.storage
+.from("files")
+.getPublicUrl(
+safeName
+);
+
+const fileUrl =
+urlData.publicUrl;
+
+/* Database */
+
+if(existingFile){
+
+/* Update */
+
+const { error: updateError } =
+await supabase
+.from("mcqFiles")
+.update({
+
+url:fileUrl,
+
+created:Date.now()
+
+})
+.eq(
+"id",
+existingFile.id
+);
+
+if(updateError){
+
+throw updateError;
+
+}
+
+uploadStatus.innerHTML =
+"File Updated Successfully";
+
+}else{
+
+/* Insert */
+
+const { error: insertError } =
+await supabase
+.from("mcqFiles")
+.insert([{
+
+Name:nameValue,
+
+Category:categoryValue,
+
+Subcategory:subCategoryValue,
+
+url:fileUrl,
+
+created:Date.now()
+
+}]);
+
+if(insertError){
+
+throw insertError;
+
+}
+
+uploadStatus.innerHTML =
+"Uploaded Successfully";
+
+}
+
+/* Clear */
+
+fileInput.value="";
+
+fileName.value="";
+
+categoryInput.value="";
+
+subCategoryInput.value="";
 
 await loadFiles();
 
 setTimeout(()=>{
-uploadStatus.innerHTML = "";
+
+uploadStatus.innerHTML="";
+
 },2000);
 
-} catch(err){
+}
+catch(err){
 
-uploadStatus.innerHTML = "Error: " + err.message;
+uploadStatus.innerHTML =
+"Error: " +
+err.message;
 
-} finally {
+  } finally {
 
 uploadBtn.disabled = false;
 uploadBtn.textContent = "Upload File";
