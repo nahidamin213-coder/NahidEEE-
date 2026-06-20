@@ -366,7 +366,8 @@ display:none;
 </div>
   
 📚 EEE & Job MCQ Library
-  	Engr.Md.Nahid Amin			
+  Engr.Md.Nahid Amin
+  						
 
 </div> 
 
@@ -415,6 +416,16 @@ placeholder="Example:
 
 <button class="uploadBtn"
 id="uploadBtn">
+  <!-- প্রতিটি ফাইল এর পাসওয়ার্ড  -->
+  <label>
+File Password (Optional)
+</label>
+
+<input
+type="text"
+id="filePassword"
+placeholder="Leave empty for public file">
+  <!-- শেষ কোডিং লাইন -->
 
 Upload File
 
@@ -650,6 +661,12 @@ document.getElementById(
 "uploadPanel"
 );
   /*শেষ লাইন  */
+  /*প্রতিটি ফাইল এর পাসওয়ার্ড */
+  const filePassword =
+document.getElementById(
+"filePassword"
+);
+  /*শেষ লাইন*/
 
 let allFiles = [];
 
@@ -776,6 +793,13 @@ categoryInput.value.trim();
 
 const subCategoryValue =
 subCategoryInput.value.trim();
+  /*প্রতিটি ফাইল এর পাসওয়ার্ড */
+  const passwordValue =
+filePassword.value.trim();
+
+const isProtected =
+passwordValue !== "";
+  /*শেষ লাইন */
 
 if(
 !nameValue ||
@@ -870,6 +894,10 @@ await supabase
 
 url:fileUrl,
 
+filePassword:passwordValue,
+
+isProtected:isProtected,
+
 created:Date.now()
 
 })
@@ -904,6 +932,10 @@ Subcategory:subCategoryValue,
 
 url:fileUrl,
 
+filePassword:passwordValue,
+
+isProtected:isProtected,
+
 created:Date.now()
 
 }]);
@@ -920,7 +952,7 @@ uploadStatus.innerHTML =
 }
 
 /* Clear */
-
+filePassword.value = "";
 fileInput.value="";
 
 fileName.value="";
@@ -944,7 +976,7 @@ uploadStatus.innerHTML =
 "Error: " +
 err.message;
 
-  } finally {
+} finally {
 
 uploadBtn.disabled = false;
 uploadBtn.textContent = "Upload File";
@@ -1123,7 +1155,31 @@ openBtn.textContent =
 "Open";
 
 openBtn.onclick = () => {
-  openFile(file.url);
+
+if(file.isProtected){
+
+const enteredPassword =
+prompt(
+"Enter File Password"
+);
+
+if(
+enteredPassword !==
+file.filePassword
+){
+
+alert(
+"Wrong Password"
+);
+
+return;
+
+}
+
+}
+
+openFile(file.url);
+
 };
 
 /* RENAME BUTTON */
@@ -1172,7 +1228,26 @@ renameBtn
 actions.appendChild(
 deleteBtn
 );
+  /*প্রতিটি ফাইল এর পাসওয়ার্ড */
+  const passBtn =
+document.createElement("button");
 
+passBtn.textContent =
+"Password";
+
+passBtn.onclick =
+()=>{
+
+changeFilePassword(
+file.id
+);
+
+};
+
+actions.appendChild(
+passBtn
+);
+  /*শেষ লাইন */
 div.appendChild(
 title
 );
@@ -1188,6 +1263,52 @@ div
 });
 
 };
+
+  /*প্রতিটি ফাইল এর পাসওয়ার্ড */
+  window.changeFilePassword =
+async function(id){
+
+if(!isAdminLoggedIn){
+
+alert(
+"Admin Login Required"
+);
+
+return;
+
+}
+
+const newPass =
+prompt(
+"New Password (leave empty for public)"
+);
+
+await supabase
+.from("mcqFiles")
+.update({
+
+filePassword:newPass,
+
+isProtected:newPass !== ""
+
+})
+.eq(
+"id",
+id
+);
+
+alert(
+"Password Updated"
+);
+
+loadFiles();
+
+showFiles(
+currentSubCategory
+);
+
+};
+  /*শেষ লাইন */
 
 /* =========================
 OPEN FILE
@@ -1492,4 +1613,4 @@ loadFiles();
 </script>
 
 </body>
-  </html>
+</html>
