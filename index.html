@@ -813,18 +813,16 @@ throw new Error(
 
 /* পুরোনো ফাইল আছে কিনা খুঁজে দেখবে */
 
-const {
-data: existingFile,
-error: findError
-}
-=
+const { data: existingFile, error: findError } =
 await supabase
 .from("mcqFiles")
-.select("*")
+.select("id")
 .eq("Name", nameValue)
 .eq("Category", categoryValue)
 .eq("Subcategory", subCategoryValue)
-.maybeSingle();
+.limit(1);
+  const exists = existingFile && existingFile.length > 0;
+const fileId = exists ? existingFile[0].id : null;
 
 if(findError){
 
@@ -883,7 +881,7 @@ urlData.publicUrl;
 
 /* Database */
 
-if(existingFile){
+if(exists){
 
 /* Update */
 
@@ -903,7 +901,7 @@ created:Date.now()
 })
 .eq(
 "id",
-existingFile.id
+fileId
 );
 
 if(updateError){
@@ -1613,4 +1611,4 @@ loadFiles();
 </script>
 
 </body>
-</html>
+</html> 
